@@ -1,53 +1,4 @@
-# [Paper Dashboard React](https://demos.creative-tim.com/paper-dashboard-react/#/dashboard) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fpaper-dashboard-react%2F%23%2Fdashboard&text=Paper%20Dashboard%20React%20by%20Creative%20Tim%20%7C%20Free%20React%20Admin%20Template&original_referer=https%3A%2F%2Fdemos.creative-tim.com%2Fpaper-dashboard-react%2F&via=creativetim&hashtags=react%2Ccreativetim%2Cpaper%2Cdashboard%2Cbootstrap%2Creactstrap%2Creactjs)
-
-
-
-![version](https://img.shields.io/badge/version-1.2.0-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/paper-dashboard-react.svg?maxAge=2592000)]() [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/paper-dashboard-react.svg?maxAge=2592000)]()  [![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/E4aHAQy)
-
-![Product Gif](./src/assets/github/paper-dashboard-react.gif)
-
-If you are a react developer or a react website owner that needs to work within a dashboard and want to have a pretty sight while doing so, Paper Dashboard React is for you. Paper Dashboard React is a Bootstrap Admin Panel which combines soft colours with beautiful typography and spacious cards and graphics. It is a powerful tool, but it is light and easy to use. It has enough features to allow you to get the job done, but it is not crowded to the point where you can't find the files for a specific plugin.
-
-We like consistency and design that blends into its purpose. Paper Dashboard React is a perfect example of our most thoughtful work. It combines over a dozen components and plugins, while looking like everything fits together. For an easy start or inspiration for you project, we have also create a set of example pages, like the user settings or usage graphics.
-
-Paper Dashboard React is built using the same design language as [Paper Dashboard 2](https://www.creative-tim.com/product/paper-dashboard-2).
-
-**Bootstrap 4 Support** Paper Dashboard React is built on top of the much awaited Bootstrap 4 and uses the most used react framework that implements the Bootstrap 4 components on react, reactstrap. This makes starting a new project very simple. It also provides benefits if you are already working on a Bootstrap 4 and/or reactstrap project; you can just import the Paper Dashboard React style over it. Most of the elements have been redesigned; but if you are using an element we have not touched, it will fall back to the Bootstrap default.
-
-**Example Pages** We wanted to fully display the power of this dashboard, so the kit comes packed with examples showing you how to use the components.
-
-## Table of Contents
-
-* [Versions](#versions)
-* [Demo](#demo)
-* [Quick Start](#quick-start)
-* [Documentation](#documentation)
-* [File Structure](#file-structure)
-* [Browser Support](#browser-support)
-* [Resources](#resources)
-* [Reporting Issues](#reporting-issues)
-* [Technical Support or Questions](#technical-support-or-questions)
-* [Licensing](#licensing)
-* [Useful Links](#useful-links)
-
-
-## Versions
-
-[<img src="https://s3.amazonaws.com/creativetim_bucket/github/html.png" width="60" height="60" />](https://www.creative-tim.com/product/paper-dashboard-2)
-[<img src="https://s3.amazonaws.com/creativetim_bucket/github/react.svg" width="60" height="60" />](https://www.creative-tim.com/product/paper-dashboard-react)
-
-
-| HTML | React |
-| --- | --- |
-| [![Paper Dashboard 2 HTML](https://s3.amazonaws.com/creativetim_bucket/products/86/thumb/opt_pd2_thumbnail.jpg)](https://www.creative-tim.com/product/paper-dashboard-2) | [![Paper Dashboard React](https://s3.amazonaws.com/creativetim_bucket/products/98/thumb/opt_pd_react_thumbnail.jpg)](https://www.creative-tim.com/product/paper-dashboard-react) |
-
-## Demo
-
-| Dashboard | User Profile | Tables | Maps | Notification |
-| --- | --- | --- | --- | --- |
-| [![Start page](./src/assets/github/paper-dashboard-react-dashboard-page.png)](https://demos.creative-tim.com/paper-dashboard-react/#/dashboard) | [![User profile page](./src/assets/github/paper-dashboard-react-user-page.png)](https://demos.creative-tim.com/paper-dashboard-react/#/user-page) | [![Tables page ](./src/assets/github/paper-dashboard-react-table-page.png)](https://demos.creative-tim.com/paper-dashboard-react/#/table-list) | [![Maps Page](./src/assets/github/paper-dashboard-react-maps-page.png)](https://demos.creative-tim.com/paper-dashboard-react/#/maps) | [![Notification page](./src/assets/github/paper-dashboard-react-notifications-page.png)](https://demos.creative-tim.com/paper-dashboard-react/#/notifications)
-
-[View More](https://demos.creative-tim.com/paper-dashboard-react/#/dashboard).
+ 
 
 
 ## Quick start
@@ -172,14 +123,4 @@ Freebies: <https://www.creative-tim.com/products>
 
 Affiliate Program (earn money): <https://www.creative-tim.com/affiliates/new>
 
-Social Media:
-
-Twitter: <https://twitter.com/CreativeTim>
-
-Facebook: <https://www.facebook.com/CreativeTim>
-
-Dribbble: <https://dribbble.com/creativetim>
-
-Google+: <https://plus.google.com/+CreativetimPage>
-
-Instagram: <https://instagram.com/creativetimofficial>
+ 
