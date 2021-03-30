@@ -49,7 +49,7 @@ class Sidebar extends React.Component {
             </div>
           </a>
           <a
-            href="/dashboard"
+            href="/admin/dashboard"
             className="simple-text logo-normal"
           >
              Phòng Khám
