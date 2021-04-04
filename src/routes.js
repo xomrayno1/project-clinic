@@ -7,6 +7,7 @@ import TableList from "views/Tables.js";
 import Maps from "views/Map.js";
 import UserPage from "views/User.js";
 import UpgradeToPro from "views/Upgrade.js";
+import DoctorList from "views/DoctorList";
 
 var routes = [
   {
@@ -14,6 +15,12 @@ var routes = [
     name: "Trang chủ",
     icon: "nc-icon nc-bank",
     component: Dashboard,
+    layout: "/admin",
+  },{
+    path: "/doctors",
+    name: "Doctor",
+    icon: "nc-icon nc-badge",
+    component: DoctorList,
     layout: "/admin",
   },{
     path: "/icons",

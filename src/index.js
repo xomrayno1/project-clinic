@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/paper-dashboard.scss?v=1.2.0";
 import "assets/demo/demo.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-
+import 'antd/dist/antd.css';
 import AdminLayout from "layouts/Admin.js";
 import Login from "components/Auth/Login";
 import Register from 'components/Auth/Register'
