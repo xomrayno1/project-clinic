@@ -1,8 +1,8 @@
 package com.tampro.model;
 
 public enum Status {
-	WAITING(1,"waiting");
-	
+	WAITING(1,"waiting"),
+	COMPLETE(2,"complete");
 	
 	private final int statusCode;
 	private final String statusName;

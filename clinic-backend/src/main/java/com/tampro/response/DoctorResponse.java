@@ -1,36 +1,20 @@
-package com.tampro.entity;
+package com.tampro.response;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.tampro.model.Gender;
-
-@Entity
-public class Doctor extends BaseEntity{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DoctorResponse {
 	private Long id;
 	private String name;
 	private String email;
 	private String phone;
-	private Gender gender;
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private Users users;
+	private String gender;
+	private Long userId;
 	private String imageUrl;
-	@Column(columnDefinition = "TEXT")
 	private String description;
 	private String domain;
 	private String education;
-	private String level; //thạc sĩ , tiến sĩ vv
+	private String level;
 	private String address;
 	private String city;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,17 +39,17 @@ public class Doctor extends BaseEntity{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Gender getGender() {
+	public String getGender() {
 		return gender;
 	}
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Users getUsers() {
-		return users;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setUsers(Users users) {
-		this.users = users;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	public String getImageUrl() {
 		return imageUrl;
@@ -79,7 +63,7 @@ public class Doctor extends BaseEntity{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String data() {
+	public String getDomain() {
 		return domain;
 	}
 	public void setDomain(String domain) {
@@ -97,9 +81,6 @@ public class Doctor extends BaseEntity{
 	public void setLevel(String level) {
 		this.level = level;
 	}
-	public String getDomain() {
-		return domain;
-	}
 	public String getAddress() {
 		return address;
 	}
@@ -112,7 +93,6 @@ public class Doctor extends BaseEntity{
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
 	
 	
 }

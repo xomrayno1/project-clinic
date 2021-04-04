@@ -1,5 +1,6 @@
 package com.tampro.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +23,17 @@ public class Patients  extends BaseEntity{
 	@JoinColumn(name = "user_id")
 	private Users users;
 	private String imageUrl;
+	@Column(columnDefinition = "TEXT")
+	private String description;
 	
+	
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -1,5 +1,7 @@
 package com.tampro.service;
 
-public interface UserService {
+import com.tampro.entity.Users;
 
+public interface UserService {
+	Users getOne(Long id);
 }

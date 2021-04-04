@@ -1,5 +1,12 @@
 package com.tampro.repository;
 
-public class UserRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
+import com.tampro.entity.Users;
+
+@Repository
+public interface UserRepository extends PagingAndSortingRepository<Users, Long>{
+
+	Users getOne(Long id);
 }
