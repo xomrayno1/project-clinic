@@ -1,5 +1,6 @@
 package com.tampro.controller;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +13,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +39,7 @@ import com.tampro.utils.Constant;
 
 @RestController
 @RequestMapping(Constant.API_DOCTOR)
+@CrossOrigin(Constant.CROSS_ORIGIN)
 public class DoctorController {
 
 	@Autowired
@@ -45,7 +49,8 @@ public class DoctorController {
 	
 	@GetMapping
 	public ResponseEntity<APIResponse> getAllSearchPagination(
-			@RequestParam("search") String search, @RequestParam("limit") int limit,
+			@RequestParam("search") String search, 
+			@RequestParam("limit") int limit,
 			@RequestParam("page") int page){
 		
 		Pageable pageable =	PageRequest.of(page - 1, limit);
@@ -63,8 +68,8 @@ public class DoctorController {
 		return new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
 	}
 	@PostMapping
-	public ResponseEntity<DoctorResponse> createDoctor(@RequestBody @Valid DoctorRequest doctorRequest){
-		boolean isExist = doctorService.isExist(doctorRequest.getEmail());
+	public ResponseEntity<DoctorResponse> createDoctor(@ModelAttribute @Valid DoctorRequest doctorRequest){
+		boolean isExist = doctorService.isExist(doctorRequest.getEmail());	
 		if(isExist) {
 			throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
 		}
@@ -76,8 +81,16 @@ public class DoctorController {
 		doctor.setEmail(doctorRequest.getEmail());
 		doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
 		if(doctorRequest.getImageUpload() != null) {
-			String image = AppUtils.uploadFile(doctorRequest.getImageUpload());
-			doctor.setImageUrl(image);
+			try {
+				String image = AppUtils.uploadFile(doctorRequest.getImageUpload());
+				doctor.setImageUrl("upload/"+image);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		doctor.setLevel(doctorRequest.getLevel());
 		doctor.setName(doctorRequest.getName());
@@ -94,6 +107,51 @@ public class DoctorController {
 											.buildAndExpand(doctorResponse.getId()) 
 											.toUri();
 		return ResponseEntity.created(uri).body(doctorResponse);
+	}
+	@PutMapping
+	public ResponseEntity<DoctorResponse> updateDoctor(@ModelAttribute @Valid DoctorRequest doctorRequest){
+		
+		Doctor doctor = doctorService.findById(doctorRequest.getId());
+		if(doctor == null) {
+			throw new ApplicationException("Doctor not found exception with id: "+doctorRequest.getId(), HttpStatus.NOT_FOUND);
+		}
+		
+//		
+//		boolean isExist = doctorService.isExist(doctorRequest.getEmail());	
+//		if(isExist) {
+//			throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+//		}
+		//convert request to entity
+		 
+		doctor.setDescription(doctorRequest.getDescription());
+		doctor.setDomain(doctorRequest.getDomain());
+		doctor.setEducation(doctorRequest.getEducation());
+		doctor.setEmail(doctorRequest.getEmail());
+		doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
+		if(doctorRequest.getImageUpload() != null) {
+			try {
+				String image = AppUtils.uploadFile(doctorRequest.getImageUpload());
+				doctor.setImageUrl("upload/"+image);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		doctor.setLevel(doctorRequest.getLevel());
+		doctor.setName(doctorRequest.getName());
+		doctor.setPhone(doctorRequest.getPhone());
+		doctor.setAddress(doctorRequest.getAddress());
+		doctor.setCity(doctorRequest.getCity());
+		doctor.setUsers(userService.getOne(doctorRequest.getUserId()));
+		// save to database
+		doctor = doctorService.save(doctor);  
+		//convert entity to doctorResponse
+		DoctorResponse doctorResponse =  AppUtils.convertDoctorEntityToResponse(doctor);
+		//get Uri
+		return new ResponseEntity<DoctorResponse>(doctorResponse,  HttpStatus.OK);
 	}
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteDoctor(@PathVariable("id") Long id){

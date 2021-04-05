@@ -6,4 +6,4 @@ INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER,
 values('Dong Hoa - HHT', 'PY', 'Mo Ta Mo Ta', 'Y Khoa', ' DH Y Duoc TP HCM', 'xr3@gmail.com', '1', 'Thạc sĩ', 'Le Van A', '03231242', 1);
 
 INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER, LEVEL, NAME, PHONE, USER_ID) 
-values('Dong Hoa ', 'PY', 'Mo Ta Mo Ta', 'Y Khoa', ' DH Y Duoc Huế', 'xr5@gmail.com', '0', 'Thạc sĩ', 'Tran Van B', '03231242', 2);
+values('Dong Hoa ', 'PY', 'Mo Ta Mo Ta', 'Y Khoa', ' DH Y Duoc Huế', 'xr5@gmail.com', '1', 'Thạc sĩ', 'Tran Van B', '03231242', 2);

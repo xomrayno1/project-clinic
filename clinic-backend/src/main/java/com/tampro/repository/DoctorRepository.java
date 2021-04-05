@@ -14,7 +14,9 @@ public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Lon
 	@Query(value="SELECT DT FROM Doctor DT "
 			+ " WHERE UPPER(DT.name) LIKE CONCAT('%',UPPER(?1),'%') "
 		 
-			,countQuery = "SELECT DT FROM Doctor DT  ")
+			,countQuery = "SELECT COUNT(DT) FROM Doctor DT   "
+					+ " WHERE UPPER(DT.name) LIKE CONCAT('%',UPPER(?1),'%') "
+					)
 	Page<Doctor> findAll(String search, Pageable pageable); // 
 	
 	Doctor getOne(Long id);

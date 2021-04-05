@@ -1,21 +1,35 @@
 package com.tampro.request;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class DoctorRequest {
 	private Long id;
+	@NotBlank(message = "Please input your name!")
 	private String name;
+	@NotBlank(message = "Please input your email!")
+	@Email
 	private String email;
+	@NotBlank(message = "Please input your phone!")
 	private String phone;
+	@NotBlank(message = "Please input your gender!")
 	private String gender;
 	private Long userId;
 	private MultipartFile imageUpload;
 	private String description;
+	@NotBlank(message = "Please input your domain!")
 	private String domain;
+	@NotBlank(message = "Please input your education!")
 	private String education;
+	@NotBlank(message = "Please input your level!")
 	private String level;
+	@NotBlank(message = "Please input your address!")
 	private String address;
+	@NotBlank(message = "Please input your city!")
 	private String city;
+	
 	public Long getId() {
 		return id;
 	}

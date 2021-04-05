@@ -1,7 +1,5 @@
 package com.tampro.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,6 +51,7 @@ public class DoctorServiceImpl implements DoctorService{
 		// TODO Auto-generated method stub
 		return doctorRepo.findByEmail(email) != null ? true : false;
 	}
+	
 
 	 
 
