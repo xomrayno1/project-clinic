@@ -7,7 +7,7 @@ import TableList from "views/Tables.js";
 import Maps from "views/Map.js";
 import UserPage from "views/User.js";
 import UpgradeToPro from "views/Upgrade.js";
-import DoctorList from "views/DoctorList";
+import DoctorList from "views/Doctor/DoctorList";
 
 var routes = [
   {
