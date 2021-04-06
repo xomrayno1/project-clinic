@@ -1,16 +1,26 @@
 package com.tampro.request;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class PatientRequest {
 	private Long id;
+	@NotBlank(message = "Please input your name!")
 	private String name;
+	@Email
+	@NotBlank(message = "Please input your email!")
 	private String email;
+	@NotBlank(message = "Please input your phone!")
 	private String phone;
+	@NotBlank(message = "Please input your gender!")
 	private String gender;
 	private MultipartFile imageUpload;
 	private String description;
 	private Long userId;
+	@NotBlank(message = "Please input your name!")
+	private String address;
 	public Long getId() {
 		return id;
 	}
@@ -59,6 +69,12 @@ public class PatientRequest {
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	

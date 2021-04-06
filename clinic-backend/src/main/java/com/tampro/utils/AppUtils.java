@@ -6,7 +6,9 @@ import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tampro.entity.Doctor;
+import com.tampro.entity.Patients;
 import com.tampro.response.DoctorResponse;
+import com.tampro.response.PatientResponse;
 
 public class AppUtils {
 	
@@ -37,5 +39,21 @@ public class AppUtils {
 		}
 		return doctorResponse;
 	}
-
+	public static PatientResponse convertPatientEntityToResponse(Patients patient) {
+		PatientResponse patientResponse = new PatientResponse();
+		patientResponse.setDescription(patient.getDescription());	 
+		patientResponse.setEmail(patient.getEmail());
+		patientResponse.setGender(patient.getGender().getGenderName());
+		patientResponse.setId(patient.getId());
+		patientResponse.setImageUrl(patient.getImageUrl());
+		patientResponse.setName(patient.getName());
+		patientResponse.setPhone(patient.getPhone());
+		patientResponse.setAddress(patient.getAddress());
+		 
+		if(patient.getUsers() != null) {
+			patientResponse.setUserId(patient.getUsers().getId());
+			patientResponse.setUsername(patient.getUsers().getUsername());
+		}
+		return patientResponse;
+	}
 }

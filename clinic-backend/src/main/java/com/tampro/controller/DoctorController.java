@@ -75,6 +75,7 @@ public class DoctorController {
 		}
 		//convert request to entity
 		Doctor doctor = new Doctor();
+		 
 		doctor.setDescription(doctorRequest.getDescription());
 		doctor.setDomain(doctorRequest.getDomain());
 		doctor.setEducation(doctorRequest.getEducation());
@@ -115,12 +116,12 @@ public class DoctorController {
 		if(doctor == null) {
 			throw new ApplicationException("Doctor not found exception with id: "+doctorRequest.getId(), HttpStatus.NOT_FOUND);
 		}
-		
-//		
-//		boolean isExist = doctorService.isExist(doctorRequest.getEmail());	
-//		if(isExist) {
-//			throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
-//		}
+		boolean isExist = doctorService.isExist(doctorRequest.getEmail());
+		if(isExist) {
+			if(!doctor.getEmail().equals(doctorRequest.getEmail())) {
+				throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+			}
+		}
 		//convert request to entity
 		 
 		doctor.setDescription(doctorRequest.getDescription());

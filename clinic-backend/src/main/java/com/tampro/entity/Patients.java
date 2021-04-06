@@ -25,6 +25,7 @@ public class Patients  extends BaseEntity{
 	private String imageUrl;
 	@Column(columnDefinition = "TEXT")
 	private String description;
+	private String address;
 	
 	
 	
@@ -75,6 +76,12 @@ public class Patients  extends BaseEntity{
 	}
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	

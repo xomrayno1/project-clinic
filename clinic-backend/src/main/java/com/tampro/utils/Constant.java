@@ -7,6 +7,7 @@ public class Constant {
 	public static final String API_PORT = "http://localhost:8080";
 	
 	public static final String API_DOCTOR = API_PREFIX + "/doctors";
+	public static final String API_PATIENT = API_PREFIX + "/patients";
 	public static final String CROSS_ORIGIN = "http://localhost:3000";
 	
 	
