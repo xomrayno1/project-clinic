@@ -1,4 +1,4 @@
-import {takeEvery, put, call} from 'redux-saga/effects'
+import {takeLatest, put, call} from 'redux-saga/effects'
 import {
     GET_ALL_DOCTOR_FAILED,
     GET_ALL_DOCTOR,
@@ -9,6 +9,7 @@ import {
 }
 from '../../utils/Constant'
 import doctorApi from '../../api/doctorApi'
+import {defaultFilter} from '../../utils/AppUtils'
 
 function* fetchDoctor({payload}){
     try {
@@ -21,7 +22,7 @@ function* fetchDoctor({payload}){
 function* updateDoctor({payload}){
     try {
         yield call(doctorApi.update,payload);
-        const response = yield call(doctorApi.getAll,{search : '', limit: 5, page : 1});
+        const response = yield call(doctorApi.getAll,defaultFilter);
         yield put({type: UPDATE_DOCTOR_SUCCESS, payload: response})
     } catch (error) {
         yield put({type: UPDATE_DOCTOR_FAILED, payload: error})
@@ -30,7 +31,7 @@ function* updateDoctor({payload}){
 
 
 function* doctorSaga(){
-    yield takeEvery(GET_ALL_DOCTOR, fetchDoctor)
-    yield takeEvery(UPDATE_DOCTOR, updateDoctor)
+    yield takeLatest(GET_ALL_DOCTOR, fetchDoctor)
+    yield takeLatest(UPDATE_DOCTOR, updateDoctor)
 }
 export default doctorSaga;

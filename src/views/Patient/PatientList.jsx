@@ -10,49 +10,34 @@ import {
     Col,
     Button
   } from "reactstrap";
-
-import {
-    Table,
-    Space,
-    Modal,
-    Form,
-    Input,
-    Popconfirm
-} 
-from 'antd';
-import { Radio } from 'antd';
-import { useDispatch, useSelector} from 'react-redux'
-import {fetchDoctor, updateDoctor, setStateModal} from '../../redux/action/doctorAction'
-import DoctorTable from './DoctorTable';
-import DoctorSearch from './DoctorSearch';
-import ModalDoctor from './ModalDoctor';
  
+import PatientSearch from './PatientSearch'
+import PatientTable from './PatientTable'
+import PatientModal from './PatientModal'
 
-function DoctorList(props) {
-    
+import { useDispatch, useSelector} from 'react-redux'
+import {
+    fetchPatient
+} from '../../redux/action/patientAction';
+ 
+function PatientList(props) {
     const dispatch = useDispatch();
-    const {doctors,isLoading} = useSelector(state => state.doctor);
+    const {patients,isLoading} = useSelector(state => state.patient);
+
     const [filter, setFilter] = useState({
         search: '',
         limit : 5,
         page : 1
     })
-    
-    const {data, pagination} = doctors;
-    console.log(data)
-  
  
     useEffect(()=>{
-        dispatch(fetchDoctor(filter))
+        dispatch(fetchPatient(filter))
     },[filter])
 
-  
-    // function handleVisible(result){
-    //     setStateModal({
-    //         ...stateModal,
-    //         visible : result
-    //     })
-    // }
+    const {data, pagination} = patients 
+    //|| {data :[], pagination: null};
+
+ 
     function handleChangePage(page){
         setFilter({
             ...filter,
@@ -67,15 +52,14 @@ function DoctorList(props) {
         })
     }
  
-
     return (
-       <>
+        <>
         <div className="content">
           <Row>
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Danh sách bác sĩ </CardTitle>
+                  <CardTitle tag="h4">Danh sách bệnh nhân </CardTitle>
                 </CardHeader>
                 <CardBody>
                     <Row>
@@ -83,26 +67,25 @@ function DoctorList(props) {
                             {/* <Button color="success" onClick={onHandleAddClick}>Thêm</Button> */}
                         </Col>
                         <Col md="6"  >
-                            <DoctorSearch   handleSearch={handleSearch}/>
+                            <PatientSearch   handleSearch={handleSearch}/>
                         </Col>
                     </Row>
-                    <DoctorTable isLoading={isLoading}  
-                                // handleVisible={handleVisible} 
-                                 data={data} 
-                                 pagination={pagination}
-                                 handleChangePage={handleChangePage}
-                               
-                                 />
+                       <PatientTable 
+                            isLoading={isLoading}  
+                            data={data} 
+                            pagination={pagination}
+                            handleChangePage={handleChangePage}
+                        />
                 </CardBody>
               </Card>
             </Col>
           </Row>
         
-            <ModalDoctor   />
+            <PatientModal   />
           
         </div>
        </>
     );
 }
 
-export default DoctorList;
+export default PatientList;

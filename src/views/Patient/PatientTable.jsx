@@ -16,28 +16,28 @@ import {
 } 
 from 'antd';
 import { useDispatch, useSelector} from 'react-redux'
-import {fetchDoctor,setStateModal} from '../../redux/action/doctorAction'
-DoctorTable.propTypes = {
+import {fetchPatient,setStateModal} from '../../redux/action/patientAction'
+
+PatientTable.propTypes = {
     pagination: PropTypes.object,
     data : PropTypes.array,
     isLoading:  PropTypes.bool,
     handleChangePage : PropTypes.func,
  
 };
-DoctorTable.defaultProps = {
+PatientTable.defaultProps = {
     pagination : {
-        limit : 10,
+        limit : 5,
         totalRows: 1,
         page : 1
     },
     data : [],
     isLoading : false,
-    handleChangePage: null,
-    
+    handleChangePage: null,   
 }
 
-function DoctorTable({data, pagination, isLoading, handleChangePage}) {
-    const stateModal = useSelector(state => state.stateDoctorModal);
+function PatientTable({data, pagination, isLoading, handleChangePage}) {
+    const stateModal = useSelector(state => state.statePatientModalReducer);
     const dispatch = useDispatch();
     const columns = [
         {
@@ -69,10 +69,6 @@ function DoctorTable({data, pagination, isLoading, handleChangePage}) {
                 gender === 'male' ? 'Nam' : 'Nữ'
             )
         },{
-            title: 'Trình độ',
-            dataIndex: 'level',
-            key: 'level',
-        },{
             title : '+',
             dataIndex: 'action',
             align : 'center',
@@ -91,7 +87,6 @@ function DoctorTable({data, pagination, isLoading, handleChangePage}) {
         dispatch(setStateModal({
             ...stateModal,
             visible : true,
-            image : item.imageUrl,
             item : item
         }))
     }
@@ -100,23 +95,22 @@ function DoctorTable({data, pagination, isLoading, handleChangePage}) {
             ...stateModal,
             visible : true,
             viewOnly: true,
-            image : item.imageUrl,
             item : item
         }))
     }
     return (
         <>
-             <Table columns={columns}  
-                loading={isLoading}  
-                dataSource={data}
-                pagination={{
-                    pageSize: pagination.limit,
-                    current: pagination.page,
-                    total : pagination.totalRows,
-                    onChange: handleChangePage
-                }}   />
+            <Table columns={columns}  
+            loading={isLoading}  
+            dataSource={data}
+            pagination={{
+                pageSize: pagination.limit,
+                current: pagination.page,
+                total : pagination.totalRows,
+                onChange: handleChangePage
+            }}   />
         </>
     );
 }
 
-export default DoctorTable;
+export default PatientTable;

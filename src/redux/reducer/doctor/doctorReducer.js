@@ -6,7 +6,7 @@ import {
     UPDATE_DOCTOR_SUCCESS,
     UPDATE_DOCTOR_FAILED
 }
-    from '../../utils/Constant'
+    from '../../../utils/Constant'
 const initalState = {
     doctors : '',
     isLoading: false,
@@ -49,6 +49,7 @@ function doctorReducer(state = initalState, action){
                 isLoading: false,
                 error : payload
             }
+        
         default:
             return state;
     }
