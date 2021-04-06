@@ -4,13 +4,17 @@ import {
     GET_ALL_DOCTOR_FAILED,
     UPDATE_DOCTOR,
     UPDATE_DOCTOR_SUCCESS,
-    UPDATE_DOCTOR_FAILED
+    UPDATE_DOCTOR_FAILED,
+    GET_DOCTOR,
+    GET_DOCTOR_FAILED,
+    GET_DOCTOR_SUCCESS
 }
     from '../../../utils/Constant'
 const initalState = {
     doctors : '',
     isLoading: false,
-    error : ''
+    error : '',
+    doctor: ''
 }
 function doctorReducer(state = initalState, action){
     const {type, payload} = action;
@@ -48,6 +52,23 @@ function doctorReducer(state = initalState, action){
                 ...state,
                 isLoading: false,
                 error : payload
+            }
+        case GET_DOCTOR:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case GET_DOCTOR_FAILED:
+            return {
+                ...state,
+                isLoading:false,
+                error : payload
+            }
+        case GET_DOCTOR_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                doctor: payload
             }
         
         default:

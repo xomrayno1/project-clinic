@@ -68,7 +68,7 @@ class Dashboard extends React.Component {
               );
             })}
 
-            <Route  path="/admin/booking/:id" component={BookingNext}/>
+            <Route  path="/admin/booking/:doctorId" component={BookingNext}/>
           </Switch>
           <Footer fluid />
         </div>
