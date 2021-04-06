@@ -67,6 +67,20 @@ public class DoctorController {
 									new Pagination(doctors.getTotalElements(), limit, page));
 		return new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
 	}
+	@GetMapping(value = Constant.API_GET_ALL_DOCTOR)
+	public ResponseEntity<APIResponse> getAllDoctors(){
+		//get value
+		List<Doctor> doctors = doctorService.findAll();
+		//convert entity to response
+		List<DoctorResponse> data = new ArrayList<DoctorResponse>();
+		for(Doctor doctor : doctors) {
+			DoctorResponse doctorResponse = AppUtils.convertDoctorEntityToResponse(doctor);
+			data.add(doctorResponse);
+		}
+		//create api response
+		APIResponse apiResponse = new APIResponse(data,null);
+		return new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
+	}
 	@PostMapping
 	public ResponseEntity<DoctorResponse> createDoctor(@ModelAttribute @Valid DoctorRequest doctorRequest){
 		boolean isExist = doctorService.isExist(doctorRequest.getEmail());	

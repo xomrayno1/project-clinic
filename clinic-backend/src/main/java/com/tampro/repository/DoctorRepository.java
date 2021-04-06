@@ -1,5 +1,7 @@
 package com.tampro.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +26,8 @@ public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Lon
 	Doctor findByName(String name);
 	
 	Doctor findByEmail(String email);
+	
+	List<Doctor> findAll();
 	
 	
 }

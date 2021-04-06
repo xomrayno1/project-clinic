@@ -1,5 +1,7 @@
 package com.tampro.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,5 +20,7 @@ public interface DoctorService {
 	Doctor getOne(Long id);
 	
 	boolean isExist(String email);
+	
+	List<Doctor> findAll();
 	
 }

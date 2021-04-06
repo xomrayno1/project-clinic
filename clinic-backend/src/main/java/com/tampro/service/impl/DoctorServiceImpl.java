@@ -1,5 +1,7 @@
 package com.tampro.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +28,6 @@ public class DoctorServiceImpl implements DoctorService{
 		return doctorRepo.save(doctor);
 	}
  
-
-
 	@Override
 	public void delete(Doctor doctor) {
 		// TODO Auto-generated method stub
@@ -50,6 +50,12 @@ public class DoctorServiceImpl implements DoctorService{
 	public boolean isExist(String email) {
 		// TODO Auto-generated method stub
 		return doctorRepo.findByEmail(email) != null ? true : false;
+	}
+
+	@Override
+	public List<Doctor> findAll() {
+		// TODO Auto-generated method stub
+		return doctorRepo.findAll();
 	}
 	
 

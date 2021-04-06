@@ -4,7 +4,7 @@ INSERT INTO USERS(username, password, email) values ('xomrayno3','12345','xr3@gm
 INSERT INTO USERS(username, password, email) values ('xomrayno4','12345','xr4@gmail.com');
 
 INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER, LEVEL, NAME, PHONE, USER_ID) 
-values('Dong Hoa - HHT', 'PY', 'Mo Ta Mo Ta', 'Y Khoa', ' DH Y Duoc TP HCM', 'xr1@gmail.com', '1', 'Thạc sĩ', 'Le Van A', '03231242', 1);
+values('Dong Hoa - HHT', 'PY', 'Mô tả', 'Phụ khoa', ' DH Y Duoc TP HCM', 'xr1@gmail.com', '1', 'Thạc sĩ', 'Tấn đoan', '03231242', 1);
 INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER, LEVEL, NAME, PHONE, USER_ID) 
 values('Dong Hoa ', 'PY', 'Mo Ta Mo Ta', 'Y Khoa', ' DH Y Duoc Huế', 'xr2@gmail.com', '0', 'Thạc sĩ', 'Tran Van B', '03231242', 2);
 
