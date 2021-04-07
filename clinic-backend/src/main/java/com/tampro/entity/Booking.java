@@ -11,9 +11,9 @@ import javax.persistence.ManyToOne;
 
 import com.tampro.model.Status;
 import com.tampro.model.Type;
-
+// lịch khám bệnh
 @Entity
-public class Schedule  extends BaseEntity{
+public class Booking  extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -26,6 +26,7 @@ public class Schedule  extends BaseEntity{
 	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
 	private Type type;
+	private String reason;
 	
 	public Long getId() {
 		return id;
@@ -62,6 +63,12 @@ public class Schedule  extends BaseEntity{
 	}
 	public void setType(Type type) {
 		this.type = type;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 	
 	

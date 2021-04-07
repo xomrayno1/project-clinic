@@ -1,5 +1,7 @@
 package com.tampro.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.tampro.model.Gender;
 
@@ -31,6 +34,7 @@ public class Doctor extends BaseEntity{
 	private String address;
 	private String city;
 
+	
 	public Long getId() {
 		return id;
 	}
@@ -112,7 +116,7 @@ public class Doctor extends BaseEntity{
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
+
 	
 	
 }

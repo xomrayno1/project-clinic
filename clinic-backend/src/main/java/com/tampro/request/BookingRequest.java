@@ -2,7 +2,7 @@ package com.tampro.request;
 
 import java.util.Date;
 
-public class ScheduleRequest {
+public class BookingRequest {
 	private Long id;
 	private Date time;
 	private String status;

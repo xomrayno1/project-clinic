@@ -2,13 +2,16 @@ package com.tampro.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
+import com.tampro.entity.Users;
 import com.tampro.response.DoctorResponse;
 import com.tampro.response.PatientResponse;
+import com.tampro.response.UserResponse;
 
 public class AppUtils {
 	
@@ -56,4 +59,20 @@ public class AppUtils {
 		}
 		return patientResponse;
 	}
+	
+	public static UserResponse convertUserEntityToResponse(Users users) {
+		UserResponse response = new UserResponse();
+		response.setEmail(users.getEmail());
+		response.setId(users.getId());
+		response.setPassword(users.getPassword());
+		response.setUsername(users.getUsername());
+		String[] roles =  users.getRoles().stream()
+				.map(item -> item.getName()	)
+				.collect(Collectors.toList())
+				.toArray(new String[users.getRoles().size()]);
+				 
+		response.setRoles(roles);
+		return response;
+	}
+	
 }
