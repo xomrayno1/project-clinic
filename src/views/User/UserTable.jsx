@@ -11,6 +11,7 @@ import {
     Table,
     Space,
     Popconfirm,
+    Tag,
 } 
 from 'antd';
 import { useDispatch, useSelector} from 'react-redux'
@@ -49,6 +50,33 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+        },{
+            title : 'Role',
+            dataIndex: 'roles',
+            render: roles => {
+                console.log(roles)
+                return (
+                   roles.map((item,idx) => {
+                       const color = item  === 'ROLE_ADMIN' ? 'volcano' : (item === 'ROLE_DOCTOR' ? 'geekblue' : 'green' )
+                       return  <>
+                            <Space>
+                                <Tag color={color} key={idx}>{item}</Tag>
+                            </Space>
+                        </>
+                   })
+                )
+            }
+        },{
+            title: 'Hoạt động',
+            dataIndex: 'activeFlag',
+            key: 'activeFlag',
+            render : item => {
+                const color = item === 1 ? 'green' : 'volcano'
+                const result = item === 1 ? 'Hoạt động' : 'Dừng hoạt động'
+                return <Tag color={color}  >
+                            {result}
+                        </Tag>
+            }
         },{
             title : '+',
             dataIndex: 'action',

@@ -8,7 +8,11 @@ import {
     UPDATE_USER_FAILED,
     GET_USER,
     GET_USER_FAILED,
-    GET_USER_SUCCESS
+    GET_USER_SUCCESS,
+    DELETE_USER,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAILED,
+    RESTORE_USER
 }
 from '../../utils/Constant'
 import userApi from '../../api/userApi'
@@ -39,9 +43,31 @@ function* findUserById({payload}){
         yield put({type: GET_USER_FAILED, payload: error})
     }
 }
+function* deleteUser({payload}){
+    try {
+        yield call(userApi.delete,payload);
+        const response = yield call(userApi.getAllFilter,defaultFilter);
+        yield put({type: DELETE_USER_SUCCESS, payload: response})
+    } catch (error) {
+        yield put({type: DELETE_USER_FAILED, payload: error})
+    }
+}
+
+function* restoreUser({payload}){
+    // try {
+    //     yield call(userApi.delete,payload);
+    //     const response = yield call(userApi.getAllFilter,defaultFilter);
+    //     yield put({type: DELETE_USER_SUCCESS, payload: response})
+    // } catch (error) {
+    //     yield put({type: DELETE_USER_FAILED, payload: error})
+    // }
+}
 function* userSaga(){
     yield takeLatest(GET_ALL_USER, fetchUser)
     yield takeLatest(UPDATE_USER, updateUser)
     yield takeLatest(GET_USER, findUserById)
+    yield takeLatest(DELETE_USER, deleteUser)
+    yield takeLatest(RESTORE_USER, restoreUser)
+
 }
 export default userSaga;

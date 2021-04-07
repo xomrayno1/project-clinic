@@ -7,18 +7,27 @@ import {
     UPDATE_DOCTOR_FAILED,
     GET_DOCTOR,
     GET_DOCTOR_FAILED,
-    GET_DOCTOR_SUCCESS
+    GET_DOCTOR_SUCCESS,
+    DELETE_DOCTOR,
+    DELETE_DOCTOR_SUCCESS,
+    DELETE_DOCTOR_FAILED,
+    RESTORE_DOCTOR,
+    RESTORE_DOCTOR_SUCCESS,
+    RESTORE_DOCTOR_FAILED,
+    FETCH_DOCTOR_ACTIVE,
+    FETCH_DOCTOR_ACTIVE_FAILED,
+    FETCH_DOCTOR_ACTIVE_SUCCESS
 }
     from '../../../utils/Constant'
 const initalState = {
-    doctors : '',
+    doctors: '',
     isLoading: false,
-    error : '',
+    error: '',
     doctor: ''
 }
-function doctorReducer(state = initalState, action){
-    const {type, payload} = action;
-    switch(type){
+function doctorReducer(state = initalState, action) {
+    const { type, payload } = action;
+    switch (type) {
         case GET_ALL_DOCTOR:
             return {
                 ...state,
@@ -34,24 +43,24 @@ function doctorReducer(state = initalState, action){
             return {
                 ...state,
                 isLoading: false,
-                error : payload
+                error: payload
             }
         case UPDATE_DOCTOR:
-            return{
+            return {
                 ...state,
                 isLoading: true
             }
         case UPDATE_DOCTOR_SUCCESS:
-            return{
+            return {
                 ...state,
                 isLoading: false,
                 doctors: payload
             }
         case UPDATE_DOCTOR_FAILED:
-            return{
+            return {
                 ...state,
                 isLoading: false,
-                error : payload
+                error: payload
             }
         case GET_DOCTOR:
             return {
@@ -61,8 +70,8 @@ function doctorReducer(state = initalState, action){
         case GET_DOCTOR_FAILED:
             return {
                 ...state,
-                isLoading:false,
-                error : payload
+                isLoading: false,
+                error: payload
             }
         case GET_DOCTOR_SUCCESS:
             return {
@@ -70,9 +79,59 @@ function doctorReducer(state = initalState, action){
                 isLoading: false,
                 doctor: payload
             }
-        
+        case DELETE_DOCTOR:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case DELETE_DOCTOR_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                doctors: payload
+            }
+        case DELETE_DOCTOR_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
+        case RESTORE_DOCTOR:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case RESTORE_DOCTOR_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                doctors: payload
+            }
+        case RESTORE_DOCTOR_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
+        case FETCH_DOCTOR_ACTIVE:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case FETCH_DOCTOR_ACTIVE_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                doctors: payload
+            }
+        case FETCH_DOCTOR_ACTIVE_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         default:
             return state;
     }
 }
-export default  doctorReducer;
+export default doctorReducer;

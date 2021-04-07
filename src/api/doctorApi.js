@@ -9,14 +9,22 @@ const doctorApi = {
     update : (params) => {
         const url = "http://localhost:8080/api/v1/doctors";
         return axiosClient.put(url, params)
-    },
-    getAll : () => {
+    }, 
+    getAllActive : (params) => {
         const url = "http://localhost:8080/api/v1/doctors/getAll";
-        return axiosClient.get(url);
+        return axiosClient.get(url, {params})
     },
     findById: (doctorId) => {
         const url = `http://localhost:8080/api/v1/doctors/${doctorId}`;
         return axiosClient.get(url);
+    },
+    delete : (id) => {
+        const url = `http://localhost:8080/api/v1/doctors/${id}`;
+        return axiosClient.delete(url)
+    },
+    restore: (id) => {
+        const url = `http://localhost:8080/api/v1/doctors/restore/${id}`;
+        return axiosClient.get(url) 
     }
 }
 export default doctorApi ;

@@ -8,10 +8,9 @@ import {
     CardImg,
     Row,
     Col,
-   
     CardFooter
 } from "reactstrap";
-import { Image, List, Select, Space, DatePicker, TimePicker, Form, Input ,Button} from 'antd';
+import { Image, List,  message, DatePicker, TimePicker, Form, Input, Button } from 'antd';
 
 import './style.css'
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,21 +19,33 @@ import user from 'user.svg'
 
 
 function BookingNext(props) {
-   
+
     const { doctorId } = useParams();
     const dispatch = useDispatch();
     const { doctor } = useSelector(state => state.doctor)
-    const data = [
-        '',
-    ];
-    console.log(doctor)
+     
+    const [dateTime,setDateTime] = useState('');
+
     useEffect(() => {
         dispatch(getDoctor(doctorId));
     }, [])
-    function onChange() {
-        console.log("log")
-    }
 
+    
+    function onBooking({reason}){
+        if(!dateTime){
+            message.error('Vui lòng chọn thời gian');
+            return false;
+        }
+        const form = {
+            date : dateTime,
+            reason : reason
+        }
+        console.log(form);
+    }
+    function onChange(value, dateString) {
+        setDateTime(dateString);    
+    }
+ 
     return (
         <>
             <div className="content">
@@ -59,7 +70,7 @@ function BookingNext(props) {
                                                 </>
                                             }
                                             footer={<div>Miễn phí đặt lịch</div>}
-                                            dataSource={data}
+                                            dataSource={['']}
                                         />
                                     </Col>
                                 </Row>
@@ -73,7 +84,7 @@ function BookingNext(props) {
                                 </Row>
 
                             </CardBody>
-                             
+
                         </Card>
                     </Col>
                 </Row>
@@ -81,19 +92,20 @@ function BookingNext(props) {
                     <Col md="12">
                         <Card>
                             <CardBody>
-                                <Form>
+                                <Form onFinish={onBooking}>
                                     <Row>
                                         <Col md="12"  >
-                                            <Form.Item >
-                                                Ngày : <DatePicker bordered onChange={onChange} />
-                                                Giờ : <TimePicker bordered onChange={onChange} />
+                                            <Form.Item label="Thời gian khám ">
+                                               <DatePicker showTime onChange={onChange} 
+                                                 placeholder="Chọn thời gian khám"/>
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <Form.Item label="Lý do khám" rules={[{ required: true, message: 'Vui lòng nhập lý do khám!' }]}>
-                                                <Input.TextArea/>
+                                            <Form.Item label="Lý do khám" name="reason"
+                                                rules={[{ required: true, message: 'Vui lòng nhập lý do khám!' }]}>
+                                                <Input.TextArea />
                                             </Form.Item>
                                         </Col>
                                     </Row>

@@ -12,6 +12,10 @@ const userApi  ={
     findById: (userId) => {
         const url = `http://localhost:8080/api/v1/users/${userId}`;
         return axiosClient.get(url);
+    },
+    delete : (id) => {
+        const url = `http://localhost:8080/api/v1/users/${id}`;
+        return axiosClient.delete(url)
     }
 }
 export default userApi;

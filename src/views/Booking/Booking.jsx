@@ -15,18 +15,16 @@ import { useDispatch,useSelector } from 'react-redux';
 import _ from 'lodash'
 import user from 'user.svg'
 
-import {fetchDoctor} from '../../redux/action/doctorAction';
+import {fetchDoctor, fetchDoctorActive} from '../../redux/action/doctorAction';
 
 function Booking(props) {
     const [filter, setFilter] = useState({
-        limit : 1000,
-        page : 1,
         search : ''
     });
     const {data} = useSelector(state => state.doctor.doctors);
     const dispatch = useDispatch();
     useEffect(()=>{
-         dispatch(fetchDoctor(filter));
+         dispatch(fetchDoctorActive(filter));
     },[filter])
 
     function debounceEventHandler(...args) {

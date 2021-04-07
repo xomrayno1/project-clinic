@@ -5,18 +5,20 @@ import {
     UPDATE_USER,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAILED,
-   
+    DELETE_USER,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAILED
 }
     from '../../../utils/Constant'
 const initalState = {
-    users : '',
+    users: '',
     isLoading: false,
-    error : '',
+    error: '',
     user: ''
 }
-function userReducer(state = initalState, action){
-    const {type, payload} = action;
-    switch(type){
+function userReducer(state = initalState, action) {
+    const { type, payload } = action;
+    switch (type) {
         case GET_ALL_USER:
             return {
                 ...state,
@@ -32,28 +34,44 @@ function userReducer(state = initalState, action){
             return {
                 ...state,
                 isLoading: false,
-                error : payload
+                error: payload
             }
         case UPDATE_USER:
-            return{
+            return {
                 ...state,
                 isLoading: true
             }
         case UPDATE_USER_SUCCESS:
-            return{
+            return {
                 ...state,
                 isLoading: false,
                 users: payload
             }
         case UPDATE_USER_FAILED:
-            return{
+            return {
                 ...state,
                 isLoading: false,
-                error : payload
+                error: payload
             }
-       
+        case DELETE_USER:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case DELETE_USER_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                users: payload
+            }
+        case DELETE_USER_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         default:
             return state;
     }
 }
-export default  userReducer;
+export default userReducer;

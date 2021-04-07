@@ -16,7 +16,7 @@ import {
 } 
 from 'antd';
 import { useDispatch, useSelector} from 'react-redux'
-import {fetchPatient,setStateModal} from '../../redux/action/patientAction'
+import {restorePatient,setStateModal,deletePatient} from '../../redux/action/patientAction'
 
 PatientTable.propTypes = {
     pagination: PropTypes.object,
@@ -37,6 +37,7 @@ PatientTable.defaultProps = {
 }
 
 function PatientTable({data, pagination, isLoading, handleChangePage}) {
+    const newPagination = pagination || {limit : 10,totalRows: 1,page : 1}
     const stateModal = useSelector(state => state.statePatientModalReducer);
     const dispatch = useDispatch();
     const columns = [
@@ -69,6 +70,17 @@ function PatientTable({data, pagination, isLoading, handleChangePage}) {
                 gender === 'male' ? 'Nam' : 'Nữ'
             )
         },{
+            title: 'Hoạt động',
+            dataIndex: 'activeFlag',
+            key: 'activeFlag',
+            render : item => {
+                const color = item === 1 ? 'green' : 'volcano'
+                const result = item === 1 ? 'Hoạt động' : 'Dừng hoạt động'
+                return <Tag color={color}  >
+                            {result}
+                        </Tag>
+            }
+        },{
             title : '+',
             dataIndex: 'action',
             align : 'center',
@@ -76,13 +88,25 @@ function PatientTable({data, pagination, isLoading, handleChangePage}) {
                 <Space>
                     <Button key={1} color="primary" onClick={()=> onHandleView(item)} >Xem</Button>
                     <Button  key={2} color="warning" onClick={()=> onHandleEdit(item)}>Sửa</Button>
-                    <Popconfirm title="Sure to delete" onConfirm={()=> console.log("log")}>
+                    {
+                        item.activeFlag === 1 ? (<Popconfirm title="Bạn có chắc muốn xoá" 
+                        onConfirm={ () => onHandleDelete(item)}>
                         <Button key={3} color="danger">Xoá</Button>
-                    </Popconfirm>
+                    </Popconfirm>) : (<Popconfirm title="Bạn có chắc muốn khôi phục" 
+                        onConfirm={ () => onHandleRestore(item)}>
+                        <Button key={3} color="success">Khôi phục</Button>
+                    </Popconfirm>)
+                    }
                 </Space>
             )
         },
     ]
+    function onHandleRestore({id}){
+        dispatch(restorePatient(id));
+    }
+    function onHandleDelete({id}){
+       dispatch(deletePatient(id));
+    }
     function onHandleEdit(item){
         dispatch(setStateModal({
             ...stateModal,

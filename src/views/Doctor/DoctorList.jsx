@@ -39,8 +39,6 @@ function DoctorList(props) {
     })
     
     const {data, pagination} = doctors;
-    console.log(data)
-  
  
     useEffect(()=>{
         dispatch(fetchDoctor(filter))
