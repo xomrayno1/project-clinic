@@ -27,7 +27,7 @@ public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Lon
 	
 	Doctor findByEmail(String email);
 	
-	List<Doctor> findAll();
+	List<Doctor> findByNameIgnoreCaseContainingAndActiveFlag(String name,int activeFlag);
 	
 	
 }

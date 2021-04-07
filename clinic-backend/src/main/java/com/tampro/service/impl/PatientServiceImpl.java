@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.tampro.entity.Patients;
 import com.tampro.repository.PatientRepository;
 import com.tampro.service.PatientService;
+import com.tampro.utils.Constant;
 
 @Service
 public class PatientServiceImpl implements PatientService{
@@ -23,7 +24,8 @@ public class PatientServiceImpl implements PatientService{
 	@Override
 	public void delete(Patients patients) {
 		// TODO Auto-generated method stub
-		patientRepo.delete(patients);
+		patients.setActiveFlag(Constant.NOT_ACTIVE);
+		patientRepo.save(patients);
 	}
 
 	@Override
@@ -48,6 +50,13 @@ public class PatientServiceImpl implements PatientService{
 	public boolean isExist(String email) {
 		// TODO Auto-generated method stub
 		return patientRepo.findByEmail(email) != null ? true : false;
+	}
+
+	@Override
+	public void restore(Patients patients) {
+		// TODO Auto-generated method stub
+		patients.setActiveFlag(Constant.ACTIVE);
+		patientRepo.save(patients);
 	}
 
 }

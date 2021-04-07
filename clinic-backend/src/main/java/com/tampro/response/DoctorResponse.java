@@ -15,6 +15,7 @@ public class DoctorResponse {
 	private String level;
 	private String address;
 	private String city;
+	private int activeFlag;
 	
 	public Long getId() {
 		return id;
@@ -99,6 +100,12 @@ public class DoctorResponse {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public int getActiveFlag() {
+		return activeFlag;
+	}
+	public void setActiveFlag(int activeFlag) {
+		this.activeFlag = activeFlag;
 	}
 	
 	

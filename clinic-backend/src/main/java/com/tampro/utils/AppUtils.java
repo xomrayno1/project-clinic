@@ -36,6 +36,7 @@ public class AppUtils {
 		doctorResponse.setPhone(doctor.getPhone());
 		doctorResponse.setAddress(doctor.getAddress());
 		doctorResponse.setCity(doctor.getCity());
+		doctorResponse.setActiveFlag(doctor.getActiveFlag());
 		if(doctor.getUsers() != null) {
 			doctorResponse.setUserId(doctor.getUsers().getId());
 			doctorResponse.setUsername(doctor.getUsers().getUsername());
@@ -52,7 +53,7 @@ public class AppUtils {
 		patientResponse.setName(patient.getName());
 		patientResponse.setPhone(patient.getPhone());
 		patientResponse.setAddress(patient.getAddress());
-		 
+		patientResponse.setActiveFlag(patient.getActiveFlag());
 		if(patient.getUsers() != null) {
 			patientResponse.setUserId(patient.getUsers().getId());
 			patientResponse.setUsername(patient.getUsers().getUsername());
@@ -66,6 +67,7 @@ public class AppUtils {
 		response.setId(users.getId());
 		response.setPassword(users.getPassword());
 		response.setUsername(users.getUsername());
+		response.setActiveFlag(users.getActiveFlag());
 		String[] roles =  users.getRoles().stream()
 				.map(item -> item.getName()	)
 				.collect(Collectors.toList())

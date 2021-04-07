@@ -10,6 +10,7 @@ import com.tampro.entity.Doctor;
 
 public interface DoctorService {
 	Doctor findById(long id);
+	void restore(Doctor doctor);
 	 
 	void delete(Doctor doctor);
 	
@@ -21,6 +22,6 @@ public interface DoctorService {
 	
 	boolean isExist(String email);
 	
-	List<Doctor> findAll();
+	List<Doctor> findAll(String search);
 	
 }

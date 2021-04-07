@@ -68,9 +68,9 @@ public class DoctorController {
 		return new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
 	}
 	@GetMapping(value = Constant.API_GET_ALL_DOCTOR)
-	public ResponseEntity<APIResponse> getAllDoctors(){
+	public ResponseEntity<APIResponse> getAllDoctors(@RequestParam("search") String search){
 		//get value
-		List<Doctor> doctors = doctorService.findAll();
+		List<Doctor> doctors = doctorService.findAll(search);
 		//convert entity to response
 		List<DoctorResponse> data = new ArrayList<DoctorResponse>();
 		for(Doctor doctor : doctors) {
@@ -177,7 +177,15 @@ public class DoctorController {
 		doctorService.delete(doctor);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
-	
+	@GetMapping("/restore/{id}")
+	public ResponseEntity<Void> restoreDoctor(@PathVariable("id") Long id){
+		Doctor doctor = doctorService.findById(id);
+		if(doctor == null) {
+			throw new ApplicationException("Doctor not found exception with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		doctorService.restore(doctor);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 	@GetMapping("/{id}")
 	public ResponseEntity<DoctorResponse> getDoctor(@PathVariable("id") Long id){
 		Doctor doctor = doctorService.findById(id);

@@ -10,6 +10,8 @@ public interface PatientService {
 	 
 	void delete(Patients patients);
 	
+	void restore(Patients patients);
+	
 	Patients save(Patients patients);
 	
 	Page<Patients> findAllSearchPagination(String search, Pageable pageable);

@@ -68,7 +68,7 @@ public class PatientController {
 		return new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
 	}
 	@PostMapping
-	public ResponseEntity<PatientResponse> createDoctor(
+	public ResponseEntity<PatientResponse> createPatient(
 			@ModelAttribute @Valid PatientRequest patientRequest){
 		boolean isExist = patientService.isExist(patientRequest.getEmail());	
 		if(isExist) {
@@ -107,7 +107,7 @@ public class PatientController {
 		return ResponseEntity.created(uri).body(patientResponse);
 	}
 	@PutMapping
-	public ResponseEntity<PatientResponse> updateDoctor(
+	public ResponseEntity<PatientResponse> updatePatient(
 			@ModelAttribute @Valid PatientRequest patientRequest){
 		
 		Patients patient = patientService.findById(patientRequest.getId());
@@ -153,7 +153,7 @@ public class PatientController {
 		return new ResponseEntity<PatientResponse>(patientResponse,  HttpStatus.OK);
 	}
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteDoctor(@PathVariable("id") Long id){
+	public ResponseEntity<Void> deletePatient(@PathVariable("id") Long id){
 		Patients patient = patientService.findById(id);
 		if(patient == null) {
 			throw new ApplicationException("Patient not found exception with id : " + id, HttpStatus.NOT_FOUND);
@@ -161,9 +161,17 @@ public class PatientController {
 		patientService.delete(patient);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
-	
+	@GetMapping("/restore/{id}")
+	public ResponseEntity<Void> restorePatient(@PathVariable("id") Long id){
+		Patients patient = patientService.findById(id);
+		if(patient == null) {
+			throw new ApplicationException("Patient not found exception with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		patientService.restore(patient);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
 	@GetMapping("/{id}")
-	public ResponseEntity<PatientResponse> getDoctor(@PathVariable("id") Long id){
+	public ResponseEntity<PatientResponse> getPatient(@PathVariable("id") Long id){
 		Patients patient = patientService.findById(id);
 		if(patient == null) {
 			throw new ApplicationException("Patient not found exception with id : " + id, HttpStatus.NOT_FOUND);

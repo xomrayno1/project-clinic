@@ -11,8 +11,15 @@ public class PatientResponse {
 	private Long userId;
 	private String username;
 	private String address;
+	private int activeFlag;
 	
 	
+	public int getActiveFlag() {
+		return activeFlag;
+	}
+	public void setActiveFlag(int activeFlag) {
+		this.activeFlag = activeFlag;
+	}
 	public Long getId() {
 		return id;
 	}

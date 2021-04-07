@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tampro.entity.Doctor;
 import com.tampro.repository.DoctorRepository;
 import com.tampro.service.DoctorService;
+import com.tampro.utils.Constant;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
@@ -31,7 +32,9 @@ public class DoctorServiceImpl implements DoctorService{
 	@Override
 	public void delete(Doctor doctor) {
 		// TODO Auto-generated method stub
-		doctorRepo.delete(doctor);
+		doctor.setActiveFlag(Constant.NOT_ACTIVE);
+		doctorRepo.save(doctor);
+		//doctorRepo.delete(doctor);
 	}
 
 	@Override
@@ -53,9 +56,16 @@ public class DoctorServiceImpl implements DoctorService{
 	}
 
 	@Override
-	public List<Doctor> findAll() {
+	public List<Doctor> findAll(String search) {
 		// TODO Auto-generated method stub
-		return doctorRepo.findAll();
+		return doctorRepo.findByNameIgnoreCaseContainingAndActiveFlag(search,Constant.ACTIVE);
+	}
+
+	@Override
+	public void restore(Doctor doctor) {
+		// TODO Auto-generated method stub
+		doctor.setActiveFlag(Constant.ACTIVE);
+		doctorRepo.save(doctor);
 	}
 	
 

@@ -15,7 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 public class BaseEntity {
 	
-	 
+	private int activeFlag ;
 	@Temporal(TemporalType.DATE)
 	@CreatedDate
 	private Date createDate;
@@ -34,6 +34,12 @@ public class BaseEntity {
 	}
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+	public int getActiveFlag() {
+		return activeFlag;
+	}
+	public void setActiveFlag(int activeFlag) {
+		this.activeFlag = activeFlag;
 	}
 	
 	

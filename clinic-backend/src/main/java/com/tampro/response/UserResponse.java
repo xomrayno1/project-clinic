@@ -6,6 +6,15 @@ public class UserResponse {
 	private String password;
 	private String email;
 	private String[] roles;
+	private int activeFlag;
+	
+	
+	public int getActiveFlag() {
+		return activeFlag;
+	}
+	public void setActiveFlag(int activeFlag) {
+		this.activeFlag = activeFlag;
+	}
 	public Long getId() {
 		return id;
 	}
