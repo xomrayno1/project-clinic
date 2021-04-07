@@ -9,7 +9,7 @@ import UserPage from "views/User.js";
 import UpgradeToPro from "views/Upgrade.js";
 import DoctorList from "views/Doctor/DoctorList";
 import PatientList from "views/Patient/PatientList";
-import ScheduleList from "views/Schedule/ScheduleList";
+ 
 import ResultList from "views/Result/ResultList";
 import UserList from "views/User/UserList";
 import Booking from "views/Booking/Booking";
@@ -48,7 +48,7 @@ var routes = [
     path: "/schedules",
     name: "Lịch khám",
     icon: "nc-icon nc-time-alarm",
-    component: ScheduleList,
+    component: PatientList,
     layout: "/admin",
     
   },{
