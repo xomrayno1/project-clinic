@@ -11,16 +11,8 @@ import {
     Button
   } from "reactstrap";
 
-import {
-    Table,
-    Space,
-    Modal,
-    Form,
-    Input,
-    Popconfirm
-} 
-from 'antd';
-import { Radio } from 'antd';
+ 
+ 
 import { useDispatch, useSelector} from 'react-redux'
 import {fetchDoctor, updateDoctor, setStateModal} from '../../redux/action/doctorAction'
 import DoctorTable from './DoctorTable';
@@ -29,7 +21,7 @@ import ModalDoctor from './ModalDoctor';
  
 
 function DoctorList(props) {
-    
+     
     const dispatch = useDispatch();
     const {doctors,isLoading} = useSelector(state => state.doctor);
     const [filter, setFilter] = useState({
@@ -44,13 +36,7 @@ function DoctorList(props) {
         dispatch(fetchDoctor(filter))
     },[filter])
 
-  
-    // function handleVisible(result){
-    //     setStateModal({
-    //         ...stateModal,
-    //         visible : result
-    //     })
-    // }
+     
     function handleChangePage(page){
         setFilter({
             ...filter,
@@ -77,10 +63,10 @@ function DoctorList(props) {
                 </CardHeader>
                 <CardBody>
                     <Row>
-                        <Col md="6">
-                            {/* <Button color="success" onClick={onHandleAddClick}>Thêm</Button> */}
+                         <Col md="6"    >
+                            
                         </Col>
-                        <Col md="6"  >
+                        <Col md="6"    >
                             <DoctorSearch   handleSearch={handleSearch}/>
                         </Col>
                     </Row>

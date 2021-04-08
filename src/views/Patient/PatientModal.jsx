@@ -35,11 +35,8 @@ function PatientModal(props) {
             form.setFieldsValue({
                 name : item.name,
                 email: item.email,
-               
                 phone : item.phone,
-                
                 address : item.address,
-            
                 description : item.description,
                 username: item.username,
                 gender : item.gender,
@@ -91,7 +88,8 @@ function PatientModal(props) {
             ...stateModal,
             visible : false,
             viewOnly:  false,
-            item: ''
+            item: '',
+            image : ''
         }))
         setImagePreview(null)
     }
@@ -120,7 +118,7 @@ function PatientModal(props) {
                             <CardImg top width="100%" height="150" 
                             src={
                                 imagePreview === null 
-                                ? (stateModal.item.imageUrl === null ? user :  `http://localhost:8080/${stateModal.item.imageUrl}`)
+                                ?  (stateModal.image === null ? user :  `http://localhost:8080/${stateModal.image}`)
                                 :  imagePreview   
                             }
                             alt="Card image cap"/>

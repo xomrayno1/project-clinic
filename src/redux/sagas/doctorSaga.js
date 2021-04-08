@@ -1,4 +1,6 @@
 import {takeLatest, put, call} from 'redux-saga/effects'
+import {message} from 'antd'
+
 import {
     GET_ALL_DOCTOR_FAILED,
     GET_ALL_DOCTOR,
@@ -28,6 +30,8 @@ function* fetchDoctor({payload}){
         const response = yield call(doctorApi.getAllFilter,payload);
         yield put({type: GET_ALL_DOCTOR_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: GET_ALL_DOCTOR_FAILED, payload: error})
     }
 }
@@ -37,6 +41,8 @@ function* updateDoctor({payload}){
         const response = yield call(doctorApi.getAllFilter,defaultFilter);
         yield put({type: UPDATE_DOCTOR_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: UPDATE_DOCTOR_FAILED, payload: error})
     }
 }
@@ -45,6 +51,8 @@ function* findDoctorById({payload}){
         const response = yield call(doctorApi.findById,payload);
         yield put({type: GET_DOCTOR_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: GET_DOCTOR_FAILED, payload: error})
     }
 }
@@ -54,6 +62,8 @@ function* deleteDoctor({payload}){
         const response = yield call(doctorApi.getAllFilter,defaultFilter);
         yield put({type: DELETE_DOCTOR_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: DELETE_DOCTOR_FAILED, payload: error})
     }
 }
@@ -62,6 +72,8 @@ function* fetchDoctorActive({payload}){
         const response = yield call(doctorApi.getAllActive,payload);
         yield put({type: FETCH_DOCTOR_ACTIVE_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: FETCH_DOCTOR_ACTIVE_FAILED, payload: error})
     }
 }
@@ -71,6 +83,8 @@ function* restoreDoctor({payload}){
         const response = yield call(doctorApi.getAllFilter,defaultFilter);
         yield put({type: RESTORE_DOCTOR_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: RESTORE_DOCTOR_FAILED, payload: error})
     }
 }

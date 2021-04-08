@@ -111,7 +111,8 @@ function PatientTable({data, pagination, isLoading, handleChangePage}) {
         dispatch(setStateModal({
             ...stateModal,
             visible : true,
-            item : item
+            item : item,
+            image : item.imageUrl,
         }))
     }
     function onHandleView(item){
@@ -119,7 +120,8 @@ function PatientTable({data, pagination, isLoading, handleChangePage}) {
             ...stateModal,
             visible : true,
             viewOnly: true,
-            item : item
+            item : item,
+            image : item.imageUrl,
         }))
     }
     return (

@@ -16,9 +16,9 @@ import UserTable from './UserTable'
 import UserModal from './UserModal'
 
 
-import { useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector,} from 'react-redux'
 import {
-    fetchUser
+    fetchUser,setStateModal
 } from '../../redux/action/userAction';
 
 function UserList(props) {
@@ -35,7 +35,7 @@ function UserList(props) {
     },[filter])
 
     const {data, pagination} = users 
-
+    const stateUserModal  = useSelector(state => state.stateUserModal);
 
     function handleChangePage(page){
         setFilter({
@@ -50,6 +50,12 @@ function UserList(props) {
             search
         })
     }
+    function onHandleAddClick(){
+        dispatch(setStateModal({
+            ...stateUserModal,
+            visible : true,
+        }))
+    }
     return (
         <>
             <div className="content">
@@ -62,7 +68,7 @@ function UserList(props) {
                             <CardBody>
                                 <Row>
                                     <Col md="6">
-                                        {/* <Button color="success" onClick={onHandleAddClick}>Thêm</Button> */}
+                                        <Button color="success" onClick={onHandleAddClick}>Thêm</Button>
                                     </Col>
                                     <Col md="6"  >
                                         <UserSearch handleSearch={handleSearch} />

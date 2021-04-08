@@ -2,7 +2,8 @@ import {SET_STATE_MODAL_PATIENT} from '../../../utils/Constant';
 const initalState = {
     visible : false,
     viewOnly : false,
-    item : ''
+    item : null,
+    image: null
 }
 export default function stateModalReducer(state = initalState, action){
     const {type, payload} = action;

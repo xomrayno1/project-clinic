@@ -1,4 +1,6 @@
 import {takeLatest, put, call} from 'redux-saga/effects'
+import {message} from 'antd'
+
 import {
     GET_ALL_PATIENT_FAILED,
     GET_ALL_PATIENT,
@@ -21,6 +23,8 @@ function* fetchPatient({payload}){
         const response = yield call(patientApi.getAll,payload);
         yield put({type: GET_ALL_PATIENT_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: GET_ALL_PATIENT_FAILED, payload: error})
     }
 }
@@ -30,6 +34,8 @@ function* updatePatient({payload}){
         const response = yield call(patientApi.getAll,defaultFilter);
         yield put({type: UPDATE_PATIENT_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: UPDATE_PATIENT_FAILED, payload: error})
     }
 }
@@ -39,6 +45,8 @@ function* deletePatient({payload}){
         const response = yield call(patientApi.getAll,defaultFilter);
         yield put({type: DELETE_PATIENT_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: DELETE_PATIENT_FAILED, payload: error})
     }
 }
@@ -48,6 +56,8 @@ function* restorePatient({payload}){
         const response = yield call(patientApi.getAll,defaultFilter);
         yield put({type: GET_ALL_PATIENT_SUCCESS, payload: response})
     } catch (error) {
+        const data = error.response.data
+        message.error(`${data.code} ${data.message}`)
         yield put({type: GET_ALL_PATIENT_FAILED, payload: error})
     }
 }

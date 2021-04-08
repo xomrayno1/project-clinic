@@ -1,64 +1,73 @@
-import React,{useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Card,
-    CardImg,
     Row,
     Col,
     Button
-  } from "reactstrap";
+} from "reactstrap";
 
 import {
-    Table,
-    Space,
     Modal,
     Form,
     Input,
-    Popconfirm
-}  from 'antd';
-import { Radio } from 'antd';
-import {setStateModal, updateUser} from '../../redux/action/userAction'
+    Checkbox
+} from 'antd';
+import { setStateModal, updateUser,createUser } from '../../redux/action/userAction'
 import { useDispatch, useSelector } from 'react-redux';
+
 function UserModal(props) {
     const [form] = Form.useForm();
     const stateModal = useSelector(state => state.stateUserModal);
-    const {item} = stateModal;
-
+    const { item } = stateModal;
+    const [roleCheckBox, setRoleCheckbox] = useState([]);
     const dispatch = useDispatch();
- 
-    useEffect(()=>{
-         if(item != null){
+
+    useEffect(() => {
+        if (item != null) {
             form.setFieldsValue({
                 email: item.email,
                 username: item.username,
-                password : item.password,
-                id : item.id
+                password: item.password,
+                id: item.id
             })
-         }
-    },[item]);
+            setRoleCheckbox(item.roles);
+        }
+    }, [item]);
 
-    function onFinish(data){
-        console.log(data)
-    }
-    function onHandleAddClick(){
-        form.resetFields()
-        setStateModal({
-            ...stateModal,
-            visible : true,
-            
-        })
+    function onFinish(data) {
+        const {id} = stateModal.item || {id: null}
+        const form = {
+            ...data,
+            roles : roleCheckBox
+        }
+        if(id){
+            form.id = id;
+            dispatch(updateUser(form));
+        }else{
+            dispatch(createUser(form));
+        }
+        onCancel();
     }
 
-    function onCancel(){
+    function onCancel() {
         form.resetFields();
         dispatch(setStateModal({
             ...stateModal,
-            visible : false,
-            viewOnly:  false,
+            visible: false,
+            viewOnly: false,
             item: ''
         }))
-       
+        setRoleCheckbox([])
     }
+    const options = [
+        { label: 'ROLE_ADMIN', value: 1 },
+        { label: 'ROLE_DOCTOR', value: 2 },
+        { label: 'ROLE_PATIENT', value: 3 },
+    ];
+    function onHandleCheckBoxRole(checkedValues) {
+        setRoleCheckbox(checkedValues)
+    }
+
     return (
         <Modal
             title="Thông tin tài khoản"
@@ -69,60 +78,71 @@ function UserModal(props) {
             width={500}
             zIndex={10000}
             keyboard={true}
-        >    
+        >
             <Form
                 name="basic"
                 form={form}
                 validateTrigger={true}
                 onFinish={onFinish}
-            
             >
-              
+
                 <Row>
                     <Col md="12">
-                        <Form.Item                
+                        <Form.Item
                             label="Tên tài khoản"
                             name="username"
                         >
-                            <Input  disabled={stateModal.viewOnly}  style={{color: 'black'}}/>
+                            <Input disabled={stateModal.viewOnly} style={{ color: 'black' }} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row>
                     <Col md="12">
-                        <Form.Item                
+                        <Form.Item
                             label="Mật khẩu"
                             name="password"
                         >
-                            <Input type="password" disabled={stateModal.viewOnly}  style={{color: 'black'}}/>
+                            <Input type="password" disabled={stateModal.viewOnly} style={{ color: 'black' }} />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row>
-                    <Col md="12"> 
-                        <Form.Item                
+                    <Col md="12">
+                        <Form.Item
                             label="Email"
                             name="email"
                             rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
                         >
-                            <Input  disabled={stateModal.viewOnly}  style={{color: 'black'}}/>
+                            <Input disabled={stateModal.viewOnly} style={{ color: 'black' }} />
                         </Form.Item>
                     </Col>
                 </Row>
-    
                 <Row>
-                    <Col md="4"/>
+                    <Col md="12">
+                        <Form.Item
+                            label="Roles"
+                        >
+                            <Checkbox.Group options={options}
+                                value={roleCheckBox}
+                                onChange={onHandleCheckBoxRole}
+                                disabled={stateModal.viewOnly} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col md="4" />
                     <Col md="4">
                         <Form.Item className="text-center">
-                            <Button  type="primary" htmlType="submit"    disabled={stateModal.viewOnly}>
+                            <Button type="primary" htmlType="submit" disabled={stateModal.viewOnly}>
                                 Lưu
                             </Button>
                         </Form.Item>
                     </Col>
-                    <Col md="4"/>         
+                    <Col md="4" />
                 </Row>
             </Form>
-    </Modal>
+        </Modal>
     );
 }
 

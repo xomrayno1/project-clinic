@@ -1,5 +1,4 @@
 import axiosClient from './axiosClient'
-
 const userApi  ={
     getAllFilter : (params) => {
         const url = "http://localhost:8080/api/v1/users";
@@ -16,6 +15,14 @@ const userApi  ={
     delete : (id) => {
         const url = `http://localhost:8080/api/v1/users/${id}`;
         return axiosClient.delete(url)
+    },
+    restore : (id) => {
+        const url = `http://localhost:8080/api/v1/users/restore/${id}`;
+        return axiosClient.get(url)
+    },
+    create : (params) => {
+        const url = 'http://localhost:8080/api/v1/users';
+        return axiosClient.post(url, params)
     }
 }
 export default userApi;

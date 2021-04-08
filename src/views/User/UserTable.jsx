@@ -14,8 +14,10 @@ import {
     Tag,
 } 
 from 'antd';
+
 import { useDispatch, useSelector} from 'react-redux'
-import {fetchUser,setStateModal} from '../../redux/action/userAction'
+import {deleteUser, fetchUser,restoreUser,setStateModal} from '../../redux/action/userAction'
+ 
 
 UserTable.propTypes = {
     pagination: PropTypes.object,
@@ -40,7 +42,7 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
         {
             title: 'Id',
             dataIndex: 'id',
-            key: 'id',
+            key: 'id',   
         },
         {
             title: 'Tên tài khoản',
@@ -49,7 +51,7 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
         },{
             title: 'Email',
             dataIndex: 'email',
-            key: 'email',
+            key: 'email',     
         },{
             title : 'Role',
             dataIndex: 'roles',
@@ -57,15 +59,17 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
                 console.log(roles)
                 return (
                    roles.map((item,idx) => {
-                       const color = item  === 'ROLE_ADMIN' ? 'volcano' : (item === 'ROLE_DOCTOR' ? 'geekblue' : 'green' )
+                       const color = item  === 1 ? 'volcano' : (item === 2 ? 'geekblue' : 'green' )
+                       const display = item  === 1 ? 'ROLE_ADMIN' : (item === 2 ? 'ROLE_DOCTOR' : 'ROLE_PATIENT')
                        return  <>
                             <Space>
-                                <Tag color={color} key={idx}>{item}</Tag>
+                                <Tag color={color} key={idx}>{display}</Tag>
                             </Space>
                         </>
                    })
                 )
-            }
+            },
+           
         },{
             title: 'Hoạt động',
             dataIndex: 'activeFlag',
@@ -76,7 +80,8 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
                 return <Tag color={color}  >
                             {result}
                         </Tag>
-            }
+            },
+             
         },{
             title : '+',
             dataIndex: 'action',
@@ -85,13 +90,29 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
                 <Space>
                     <Button key={1} color="primary" onClick={()=> onHandleView(item)} >Xem</Button>
                     <Button  key={2} color="warning" onClick={()=> onHandleEdit(item)}>Sửa</Button>
-                    <Popconfirm title="Sure to delete" onConfirm={()=> console.log("log")}>
+                    {
+                        item.activeFlag === 1 ? (<Popconfirm title="Bạn có chắc muốn xoá" 
+                        onConfirm={ () => onHandleDelete(item)}>
                         <Button key={3} color="danger">Xoá</Button>
-                    </Popconfirm>
+                    </Popconfirm>) : (<Popconfirm title="Bạn có chắc muốn khôi phục" 
+                        onConfirm={ () => onHandleRestore(item)}>
+                        <Button key={3} color="success">Khôi phục</Button>
+                    </Popconfirm>)
+                    }
+                    {/* {
+                        !item.roles.includes('ROLE_ADMIN') && <Button key={4} color="info"  onClick={()=> onHandleInfo(item)} >Hồ sơ</Button>   
+                    } */}
                 </Space>
-            )
+            ),
+       
         },
     ]
+    function onHandleRestore({id}){
+        dispatch(restoreUser(id));
+    }
+    function onHandleDelete({id}){
+       dispatch(deleteUser(id));
+    }
     function onHandleEdit(item){
         dispatch(setStateModal({
             ...stateModal,
@@ -99,6 +120,23 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
             item : item
         }))
     }
+    // function onHandleInfo(item){
+    //    ( item.roles.includes('ROLE_DOCTOR') &&  item.roles.includes('ROLE_PATIENT')) 
+    //     ? (
+    //         dispatch(setStateModalDoctor({visible : true,viewOnly : false}))
+    //     ) 
+    //     : item.roles.map( value => {
+    //         value === 'ROLE_DOCTOR' 
+    //             ? dispatch(setStateModalDoctor({
+    //                 visible : true,
+    //                 viewOnly : false,
+    //                 })) 
+    //             : dispatch(setStateModalPatient({
+    //                 visible : true,
+    //                 viewOnly : false,
+    //                 }))
+    //     });
+    // }
     function onHandleView(item){
         dispatch(setStateModal({
             ...stateModal,
@@ -118,6 +156,8 @@ function UserTable({pagination,data,isLoading,handleChangePage}) {
                 total : pagination.totalRows,
                 onChange: handleChangePage
             }}  />
+            {/* <ModalDoctor/>
+            <PatientModal/> */}
         </>
     );
 }

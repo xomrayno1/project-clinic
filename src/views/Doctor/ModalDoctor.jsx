@@ -81,6 +81,7 @@ function ModalDoctor(props) {
         dispatch(setStateModal({
             ...stateModal,
             visible : true,
+
         }))
     }
     // function onHandleAddClick(){
@@ -135,7 +136,6 @@ function ModalDoctor(props) {
                                 imagePreview === null 
                                 ? (stateModal.image === null ? user :  `http://localhost:8080/${stateModal.image}`)
                                 :  imagePreview
-                                
                             }
                             alt="Card image cap"/>
                         </Card>

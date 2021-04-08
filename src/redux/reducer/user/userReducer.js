@@ -7,7 +7,11 @@ import {
     UPDATE_USER_FAILED,
     DELETE_USER,
     DELETE_USER_SUCCESS,
-    DELETE_USER_FAILED
+    DELETE_USER_FAILED,
+    RESTORE_USER,
+    CREATE_USER,
+    CREATE_USER_SUCCESS,
+    CREATE_USER_FAILED
 }
     from '../../../utils/Constant'
 const initalState = {
@@ -65,6 +69,28 @@ function userReducer(state = initalState, action) {
                 users: payload
             }
         case DELETE_USER_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
+        case RESTORE_USER:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case CREATE_USER:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case CREATE_USER_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                users: payload
+            }
+        case CREATE_USER_FAILED:
             return {
                 ...state,
                 isLoading: false,
