@@ -13,7 +13,7 @@ import com.tampro.model.Status;
 import com.tampro.model.Type;
 // lịch khám bệnh
 @Entity
-public class Booking  extends BaseEntity{
+public class Schedule  extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

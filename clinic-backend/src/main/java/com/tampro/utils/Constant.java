@@ -18,4 +18,8 @@ public class Constant {
 	 
 	public static final int ACTIVE = 1;
 	public static final int NOT_ACTIVE = 2;
+	
+	 
+	public static final int AVAILABLE = 1;
+	public static final int NOT_AVAILABLE = 2;
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tampro.entity.Doctor;
+import com.tampro.entity.Users;
 import com.tampro.repository.DoctorRepository;
 import com.tampro.service.DoctorService;
 import com.tampro.utils.Constant;
@@ -66,6 +67,12 @@ public class DoctorServiceImpl implements DoctorService{
 		// TODO Auto-generated method stub
 		doctor.setActiveFlag(Constant.ACTIVE);
 		doctorRepo.save(doctor);
+	}
+
+	@Override
+	public Doctor findByUsers(Users users) {
+		// TODO Auto-generated method stub
+		return doctorRepo.findByUsers(users);
 	}
 	
 

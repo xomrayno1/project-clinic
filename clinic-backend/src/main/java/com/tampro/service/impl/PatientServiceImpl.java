@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tampro.entity.Patients;
+import com.tampro.entity.Users;
 import com.tampro.repository.PatientRepository;
 import com.tampro.service.PatientService;
 import com.tampro.utils.Constant;
@@ -57,6 +58,12 @@ public class PatientServiceImpl implements PatientService{
 		// TODO Auto-generated method stub
 		patients.setActiveFlag(Constant.ACTIVE);
 		patientRepo.save(patients);
+	}
+
+	@Override
+	public Patients findByUsers(Users users) {
+		// TODO Auto-generated method stub
+		return patientRepo.findByUsers(users);
 	}
 
 }

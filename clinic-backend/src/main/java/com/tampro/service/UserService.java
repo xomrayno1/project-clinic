@@ -18,9 +18,11 @@ public interface UserService {
 	
 	Page<Users> findAllSearchPagination(String search, Pageable pageable);
 	
-	 
+	void restore(Users users);
 	
-	boolean isExist(String email);
+	boolean isExistEmail(String email);
+	
+	boolean isExistUsername(String username);
 	
 	List<Users> findAll();
 }

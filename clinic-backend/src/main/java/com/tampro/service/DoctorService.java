@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.tampro.entity.Doctor;
+import com.tampro.entity.Users;
  
 
 public interface DoctorService {
@@ -23,5 +24,7 @@ public interface DoctorService {
 	boolean isExist(String email);
 	
 	List<Doctor> findAll(String search);
+	
+	Doctor findByUsers(Users users);
 	
 }

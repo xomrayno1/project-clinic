@@ -7,15 +7,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.tampro.entity.Doctor;
+import com.tampro.entity.Patients;
 import com.tampro.entity.Users;
 import com.tampro.repository.UserRepository;
+import com.tampro.service.DoctorService;
+import com.tampro.service.PatientService;
 import com.tampro.service.UserService;
+import com.tampro.utils.Constant;
 
 @Service
 public class UserServiceImpl  implements UserService{
 
 	@Autowired
 	UserRepository userRepo;
+	@Autowired
+	DoctorService doctorService;
+	@Autowired
+	PatientService patientService;
 	
 	@Override
 	public Users getOne(Long id) {
@@ -32,7 +41,19 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public void delete(Users users) {
 		// TODO Auto-generated method stub
-		userRepo.delete(users);
+		Doctor doctor = doctorService.findByUsers(users)  ;
+		Patients patient = patientService.findByUsers(users)  ;
+		if(doctor != null || patient != null) {
+			if(doctor != null) {
+				doctorService.delete(doctor);
+			}else {
+				patientService.delete(patient);
+			}
+			users.setActiveFlag(Constant.NOT_ACTIVE);
+			userRepo.save(users);
+		}else {
+			userRepo.delete(users);
+		}
 	}
 
 	@Override
@@ -42,21 +63,36 @@ public class UserServiceImpl  implements UserService{
 	}
 
 	@Override
-	public Page<Users> findAllSearchPagination(String search, Pageable pageable) {
+	public Page<Users> findAllSearchPagination(String search,Pageable pageable) {
 		// TODO Auto-generated method stub
 		return userRepo.findAllSearch(search, pageable);
 	}
 
-	@Override
-	public boolean isExist(String email) {
-		// TODO Auto-generated method stub
-		return userRepo.findByEmail(email) != null ? true : false;
-	}
+	 
 
 	@Override
 	public List<Users> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void restore(Users users) {
+		// TODO Auto-generated method stub
+		users.setActiveFlag(Constant.ACTIVE);
+		userRepo.save(users);
+	}
+
+	@Override
+	public boolean isExistEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepo.findByEmail(email) != null ? true : false;
+	}
+
+	@Override
+	public boolean isExistUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepo.findByUsername(username) != null ? true : false;
 	}
 
 }

@@ -68,12 +68,13 @@ public class AppUtils {
 		response.setPassword(users.getPassword());
 		response.setUsername(users.getUsername());
 		response.setActiveFlag(users.getActiveFlag());
-		String[] roles =  users.getRoles().stream()
-				.map(item -> item.getName()	)
+		Long[] roles =  users.getRoles().stream()
+				.map(item -> item.getId()	)
 				.collect(Collectors.toList())
-				.toArray(new String[users.getRoles().size()]);
+				.toArray(new Long[users.getRoles().size()]);
 				 
 		response.setRoles(roles);
+		 
 		return response;
 	}
 	

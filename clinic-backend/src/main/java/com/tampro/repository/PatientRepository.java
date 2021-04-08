@@ -7,15 +7,19 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import com.tampro.entity.Patients;
+import com.tampro.entity.Users;
 
 @Repository
 public interface PatientRepository extends PagingAndSortingRepository<Patients, Long>{
 	@Query(value="SELECT DT FROM Patients DT "
 			+ " WHERE UPPER(DT.name) LIKE CONCAT('%',UPPER(?1),'%') "
-		 
+			+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
+			+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
 			,countQuery = "SELECT COUNT(DT) FROM Patients DT   "
 					+ " WHERE UPPER(DT.name) LIKE CONCAT('%',UPPER(?1),'%') "
-					)
+					+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
+					+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
+			)
 	Page<Patients> findAll(String search, Pageable pageable); // 
 	
 	Patients getOne(Long id);
@@ -23,5 +27,7 @@ public interface PatientRepository extends PagingAndSortingRepository<Patients, 
 	Patients findByName(String name);
 	
 	Patients findByEmail(String email);
+	
+	Patients findByUsers(Users users);
 	 
 }

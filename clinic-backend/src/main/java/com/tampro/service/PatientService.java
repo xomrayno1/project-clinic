@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.tampro.entity.Patients;
+import com.tampro.entity.Users;
 
 public interface PatientService {
 	Patients findById(long id);
@@ -19,4 +20,6 @@ public interface PatientService {
 	Patients getOne(Long id);
 	
 	boolean isExist(String email);
+	
+	Patients findByUsers(Users users);
 }

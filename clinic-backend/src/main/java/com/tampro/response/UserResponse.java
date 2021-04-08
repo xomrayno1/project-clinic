@@ -5,8 +5,9 @@ public class UserResponse {
 	private String username;
 	private String password;
 	private String email;
-	private String[] roles;
+	private Long[] roles;
 	private int activeFlag;
+	 
 	
 	
 	public int getActiveFlag() {
@@ -39,13 +40,13 @@ public class UserResponse {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String[] getRoles() {
+	public Long[] getRoles() {
 		return roles;
 	}
-	public void setRoles(String[] roles) {
+	public void setRoles(Long[] roles) {
 		this.roles = roles;
 	}
-	
+	 
 	
 	
 	
