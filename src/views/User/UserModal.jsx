@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
     Row,
@@ -21,6 +21,8 @@ function UserModal(props) {
     const { item } = stateModal;
     const [roleCheckBox, setRoleCheckbox] = useState([]);
     const dispatch = useDispatch();
+    const formRef = useRef();
+    
 
     useEffect(() => {
         if (item != null) {
@@ -35,18 +37,21 @@ function UserModal(props) {
     }, [item]);
 
     function onFinish(data) {
-        const {id} = stateModal.item || {id: null}
-        const form = {
-            ...data,
-            roles : roleCheckBox
-        }
-        if(id){
-            form.id = id;
-            dispatch(updateUser(form));
-        }else{
-            dispatch(createUser(form));
-        }
-        onCancel();
+
+        console.log(formRef)
+        // dispatch theo ref
+        // const {id} = stateModal.item || {id: null}
+        // const form = {
+        //     ...data,
+        //     roles : roleCheckBox
+        // }
+        // if(id){
+        //     form.id = id;
+        //     dispatch(updateUser(form));
+        // }else{
+        //     dispatch(createUser(form));
+        // }
+        // onCancel();
     }
 
     function onCancel() {
@@ -84,6 +89,7 @@ function UserModal(props) {
                 form={form}
                 validateTrigger={true}
                 onFinish={onFinish}
+                ref={formRef}
             >
 
                 <Row>

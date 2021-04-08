@@ -30,18 +30,18 @@ function* fetchUser({payload}){
         yield put({type: GET_ALL_USER_SUCCESS, payload: response})
     } catch (error) {
         const data = error.response.data
-        message.error(`${data.code} ${data.message}`)
+        message.error(`  ${data.message}`)
         yield put({type: GET_ALL_USER_FAILED, payload: error})
     }
 }
 function* updateUser({payload}){
-    try {
+    try { //ref get dataa
         yield call(userApi.update,payload);
         const response = yield call(userApi.getAllFilter,defaultFilter);
         yield put({type: UPDATE_USER_SUCCESS, payload: response})
-    } catch (error) {
+    } catch (error) { //ref set error
         const data = error.response.data
-        message.error(`${data.code} ${data.message}`)
+        message.error(`  ${data.message}`)
         yield put({type: UPDATE_USER_FAILED, payload: error})
     }
 }
@@ -53,14 +53,14 @@ function* findUserById({payload}){
         yield put({type: GET_USER_FAILED, payload: error})
     }
 }
-function* deleteUser({payload}){
+function* deleteUser({payload}){ // ref get data add
     try {
         yield call(userApi.delete,payload);
         const response = yield call(userApi.getAllFilter,defaultFilter);
         yield put({type: DELETE_USER_SUCCESS, payload: response})
-    } catch (error) {
+    } catch (error) { // ref set
         const data = error.response.data
-        message.error(`${data.code} ${data.message}`)
+        message.error(`  ${data.message}`)
         yield put({type: DELETE_USER_FAILED, payload: error})
     }
 }
@@ -72,7 +72,7 @@ function* restoreUser({payload}){
         yield put({type: GET_ALL_USER_SUCCESS, payload: response})
     } catch (error) {
         const data = error.response.data
-        message.error(`${data.code} ${data.message}`)
+        message.error(` ${data.message}`)
         yield put({type: GET_ALL_USER_FAILED, payload: error})
     }
 }
@@ -83,7 +83,7 @@ function* createUser({payload}){
         yield put({type: CREATE_USER_SUCCESS, payload: response})
     } catch (error) {
         const data = error.response.data
-        message.error(`${data.code} ${data.message}`)
+        message.error(`  ${data.message}`)
         yield put({type: CREATE_USER_FAILED, payload: error})
     }
 }

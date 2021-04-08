@@ -20,6 +20,7 @@ const initalState = {
     error: '',
     user: ''
 }
+
 function userReducer(state = initalState, action) {
     const { type, payload } = action;
     switch (type) {

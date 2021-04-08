@@ -10,8 +10,6 @@ DoctorSearch.defaultProps = {
 }
 
 function DoctorSearch({handleSearch}) {
-     
-     
     function handleOnSearch(e){
         if(!handleSearch) return;
         handleSearch(e.target.value)
@@ -23,13 +21,13 @@ function DoctorSearch({handleSearch}) {
           return debounced(e)
         }
     }
-  
+
     return (
         <>
            <div className="text-right">
                 <input  type="text" placeholder="Nhập tìm kiếm..." className="form-control"
                             onChange={debounceEventHandler(handleOnSearch, 500)}  
-                        />
+                />
            </div>
         </>
     );

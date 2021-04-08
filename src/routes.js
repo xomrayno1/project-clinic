@@ -14,6 +14,7 @@ import ResultList from "views/Result/ResultList";
 import UserList from "views/User/UserList";
 import Booking from "views/Booking/Booking";
 import BookingNext from "views/Booking/BookingNext";
+import ScheduleList from "views/Schedule/ScheduleList";
 
 var routes = [
   {
@@ -48,7 +49,7 @@ var routes = [
     path: "/schedules",
     name: "Lịch khám",
     icon: "nc-icon nc-time-alarm",
-    component: PatientList,
+    component: ScheduleList,
     layout: "/admin",
     
   },{

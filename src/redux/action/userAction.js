@@ -32,6 +32,7 @@ export const updateUser = (data) =>{
     return {
         type: UPDATE_USER,
         payload: data
+        // add them ref
     }
 }
 export const createUser = (data) =>{
