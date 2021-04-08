@@ -1,7 +1,8 @@
 package com.tampro.model;
 
 public enum Type {
-	REEXAMINATION(1,"re-examination");
+	FIRSTEXAMINATION(1,"First-examination"),
+	REEXAMINATION(2,"Re-examination");
 	
 	private final int typeCode;
 	private final String typeName;

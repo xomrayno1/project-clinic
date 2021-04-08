@@ -9,8 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
 import com.tampro.entity.Users;
+import com.tampro.model.ScheduleInterface;
 import com.tampro.response.DoctorResponse;
 import com.tampro.response.PatientResponse;
+import com.tampro.response.ScheduleResponse;
 import com.tampro.response.UserResponse;
 
 public class AppUtils {
@@ -21,7 +23,19 @@ public class AppUtils {
 		multipartFile.transferTo(file);
 		return imageUrl;
 	}
-	
+	public static ScheduleResponse convertScheduleEntityToResponse(ScheduleInterface scheduleInterface) {
+		ScheduleResponse infoResponse = new ScheduleResponse();
+		infoResponse.setDoctorId(scheduleInterface.getDoctorId());
+		infoResponse.setDoctorName(scheduleInterface.getDoctorName());
+		infoResponse.setId(scheduleInterface.getId());
+		infoResponse.setPatientId(scheduleInterface.getPatientId());
+		infoResponse.setPatientName(scheduleInterface.getPatientName());
+		infoResponse.setReason(scheduleInterface.getReason());
+		infoResponse.setStatus(scheduleInterface.getStatus());
+		infoResponse.setTime(scheduleInterface.getTime());
+		infoResponse.setType(scheduleInterface.getType());
+		return infoResponse;
+	}
 	public static DoctorResponse convertDoctorEntityToResponse(Doctor doctor) {
 		DoctorResponse doctorResponse = new DoctorResponse();
 		doctorResponse.setDescription(doctor.getDescription());
@@ -74,7 +88,6 @@ public class AppUtils {
 				.toArray(new Long[users.getRoles().size()]);
 				 
 		response.setRoles(roles);
-		 
 		return response;
 	}
 	

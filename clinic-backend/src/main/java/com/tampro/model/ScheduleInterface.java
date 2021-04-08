@@ -4,10 +4,10 @@ public interface ScheduleInterface {
 	String getReason();
 	String getTime();
 	String getType();
-	Integer getDoctorId();
-	Integer getPatientId();
+	Long getDoctorId();
+	Long getPatientId();
 	String getDoctorName();
 	String getPatientName();
-	Integer getId();
+	Long getId();
 	String getStatus();
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -33,11 +34,13 @@ public class ScheduleSpecification implements Specification<Schedule> {
 	public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder criteriaBuilder) {
 		// TODO Auto-generated method stub
 		List<Predicate> predicates = new LinkedList<>();
+		
 		if(searchKey != null && !searchKey.trim().isEmpty()) {
 			String key = '%' + searchKey + '%';
 			Predicate predicate = criteriaBuilder.like(root.get("name"), key);
 			predicates.add(predicate);
 		}
+		 
 		
 		return criteriaBuilder.and(predicates.toArray(new Predicate[] {}));
 	}
