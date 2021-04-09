@@ -1,43 +1,46 @@
  
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
 import logo from "clinic_logo.svg";
+import { useSelector } from "react-redux";
 
 var ps;
 
-class Sidebar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.activeRoute.bind(this);
-    this.sidebar = React.createRef();
-  }
+function Sidebar(props) {
+ 
+
+  const auth = useSelector(state => state.auth);
+  const rolesUser = auth.user.roles;
+  const sidebar = useRef();
   // verifies if routeName is the one active (in browser input)
-  activeRoute(routeName) {
-    return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+  function activeRoute(routeName) {
+    return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   }
-  componentDidMount() {
+ 
+  useEffect(()=>{
     if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.sidebar.current, {
+      ps = new PerfectScrollbar(sidebar.current, {
         suppressScrollX: true,
         suppressScrollY: false,
       });
     }
-  }
-  componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps.destroy();
+    return ()=>{
+      if (navigator.platform.indexOf("Win") > -1) {
+        ps.destroy();
+      }
     }
-  }
-  render() {
+  },[])
+ 
+  
     return (
       <div
         className="sidebar"
-        data-color={this.props.bgColor}
-        data-active-color={this.props.activeColor}
+        data-color={props.bgColor}
+        data-active-color={props.activeColor}
       >
         <div className="logo">
           <a
@@ -55,13 +58,15 @@ class Sidebar extends React.Component {
              Phòng Khám
           </a>
         </div>
-        <div className="sidebar-wrapper" ref={this.sidebar}>
+        <div className="sidebar-wrapper" ref={sidebar}>
           <Nav>
-            {this.props.routes.map((prop, key) => {
-              return   (
+            {props.routes.map((prop, key) => {
+              const {roles} = prop;
+              //update thêm
+              return   roles.includes(rolesUser[0].authority) ?  (
                   <li
                   className={
-                    this.activeRoute(prop.path) +
+                    activeRoute(prop.path) +
                     (prop.pro ? " active-pro" : "")
                   }
                   key={key}
@@ -76,13 +81,13 @@ class Sidebar extends React.Component {
                   </NavLink>
                 </li>
                  
-              )  
-            })}
+              )   : null
+            })}  
           </Nav>
         </div>
       </div>
     );
   }
-}
+ 
 
 export default Sidebar;

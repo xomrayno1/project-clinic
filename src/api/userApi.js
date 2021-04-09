@@ -2,7 +2,13 @@ import axiosClient from './axiosClient'
 const userApi  ={
     getAllFilter : (params) => {
         const url = "http://localhost:8080/api/v1/users";
-        return axiosClient.get(url, {params})
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt} = auth.user;
+        return axiosClient.get(url, {params},{
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            }
+        })
     },
     update : (params) => {
         const url = "http://localhost:8080/api/v1/users";

@@ -6,6 +6,7 @@ import statePatientModalReducer from '../reducer/patient/stateModalReducer'
 import userReducer from '../reducer/user/userReducer'
 import stateUserModalReducer from '../reducer/user/stateModalReducer'
 import scheduleReducer from '../reducer/schedule/scheduleReducer'
+import authReducer from '../reducer/auth/authReducer'
 
 const rootReducer = combineReducers({
     doctor: doctorReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     statePatientModal: statePatientModalReducer,
     user: userReducer,
     stateUserModal : stateUserModalReducer,
-    schedule : scheduleReducer
+    schedule : scheduleReducer,
+    auth : authReducer
 })
 export default rootReducer;

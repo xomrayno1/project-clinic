@@ -1,5 +1,5 @@
  
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   Collapse,
@@ -20,37 +20,43 @@ import {
 } from "reactstrap";
 
 import  {useHistory} from 'react-router-dom'
-import {message} from 'antd'
 
 import routes from "routes.js";
-import { useDispatch ,useSelector } from "react-redux";
-import {logoutAction} from '../../redux/action/authAction'
 
 
-function Header(props){
-  const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [color, setColor] = useState("transparent");
-  const sidebarToggle = useRef();
-  const history = useHistory();
-  //const auth = useSelector(state => state.auth)
-  const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth);
-  const rolesUser = auth.user.roles;
-  
-  function toggle() {
-    if (isOpen) {
-      setColor("transparent")
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false,
+      dropdownOpen: false,
+      color: "transparent",
+    };
+    this.toggle = this.toggle.bind(this);
+    this.dropdownToggle = this.dropdownToggle.bind(this);
+    this.sidebarToggle = React.createRef();
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+  toggle() {
+    if (this.state.isOpen) {
+      this.setState({
+        color: "transparent",
+      });
     } else {
-      setColor("dark")
+      this.setState({
+        color: "dark",
+      });
     }
-    setIsOpen(!isOpen)
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
   }
-  function dropdownToggle(e) {
-    setDropdownOpen(!dropdownOpen)
+  dropdownToggle(e) {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen,
+    });
   }
-  function getBrand() {
-      
+  getBrand() {
     let brandName = "Default Brand";
     routes.map((prop, key) => {
       if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
@@ -60,50 +66,55 @@ function Header(props){
     });
     return brandName;
   }
-  function openSidebar() {
+  openSidebar() {
     document.documentElement.classList.toggle("nav-open");
-    sidebarToggle.current.classList.toggle("toggled");
+    this.sidebarToggle.current.classList.toggle("toggled");
   }
   // function that adds color dark/transparent to the navbar on resize (this is for the collapse)
-  function updateColor() {
-    if (window.innerWidth < 993 && isOpen) {
-      setColor("dark")
+  updateColor() {
+    if (window.innerWidth < 993 && this.state.isOpen) {
+      this.setState({
+        color: "dark",
+      });
     } else {
-      setColor("transparent")
+      this.setState({
+        color: "transparent",
+      });
     }
   }
- 
-   useEffect((e)=>{
+  componentDidMount() {
+    window.addEventListener("resize", this.updateColor.bind(this));
+  }
+  componentDidUpdate(e) {
     if (
       window.innerWidth < 993 &&
-      history.location.pathname !== history.location.pathname &&
+      e.history.location.pathname !== e.location.pathname &&
       document.documentElement.className.indexOf("nav-open") !== -1
     ) {
       document.documentElement.classList.toggle("nav-open");
-      sidebarToggle.current.classList.toggle("toggled");
+      this.sidebarToggle.current.classList.toggle("toggled");
     }
-   })
-  function handleLogout(){
-    localStorage.removeItem("auth");
-    dispatch(logoutAction())
-    message.info("Đăng xuất thành công")
-    history.push("/login");
   }
-  
+  handleLogout(){
+    localStorage.removeItem("auth");
+   
+    
+  }
+  render() {
     return (
       // add or remove classes depending if we are on full-screen-maps page or not
       <Navbar
         color={
-          window.location.pathname.indexOf("full-screen-maps") !== -1
+          this.props.location.pathname.indexOf("full-screen-maps") !== -1
             ? "dark"
-            : color
+            : this.state.color
         }
         expand="lg"
         className={
-          props.location.pathname.indexOf("full-screen-maps") !== -1
+          this.props.location.pathname.indexOf("full-screen-maps") !== -1
             ? "navbar-absolute fixed-top"
             : "navbar-absolute fixed-top " +
-              (color === "transparent" ? "navbar-transparent " : "")
+              (this.state.color === "transparent" ? "navbar-transparent " : "")
         }
       >
         <Container fluid>
@@ -111,24 +122,24 @@ function Header(props){
             <div className="navbar-toggle">
               <button
                 type="button"
-                ref={sidebarToggle}
+                ref={this.sidebarToggle}
                 className="navbar-toggler"
-                onClick={() => openSidebar()}
+                onClick={() => this.openSidebar()}
               >
                 <span className="navbar-toggler-bar bar1" />
                 <span className="navbar-toggler-bar bar2" />
                 <span className="navbar-toggler-bar bar3" />
               </button>
             </div>
-            <NavbarBrand href="/">{getBrand()}</NavbarBrand>
+            <NavbarBrand href="/">{this.getBrand()}</NavbarBrand>
           </div>
-          <NavbarToggler onClick={toggle}>
+          <NavbarToggler onClick={this.toggle}>
             <span className="navbar-toggler-bar navbar-kebab" />
             <span className="navbar-toggler-bar navbar-kebab" />
             <span className="navbar-toggler-bar navbar-kebab" />
           </NavbarToggler>
           <Collapse
-            isOpen={isOpen}
+            isOpen={this.state.isOpen}
             navbar
             className="justify-content-end"
           >
@@ -145,8 +156,8 @@ function Header(props){
             <Nav navbar>
               <Dropdown
                 nav
-                isOpen={dropdownOpen}
-                toggle={(e) => dropdownToggle(e)}
+                isOpen={this.state.dropdownOpen}
+                toggle={(e) => this.dropdownToggle(e)}
               >
                 <DropdownToggle caret nav>
                   <i className="nc-icon nc-circle-10" />
@@ -161,7 +172,7 @@ function Header(props){
                     </DropdownItem>
                   </Link>
                  
-                    <DropdownItem onClick={handleLogout}>
+                    <DropdownItem onClick={this.handleLogout}>
                         Thoát
                     </DropdownItem>
                   
@@ -173,7 +184,7 @@ function Header(props){
         </Container>
       </Navbar>
     );
- 
+  }
 }
 
 export default Header;

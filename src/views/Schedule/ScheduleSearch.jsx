@@ -48,7 +48,7 @@ function ScheduleSearch({handleSearch}) {
                 />
             </Col>
             <Col col="3">
-                <Button onClick={handleSubmitSearch}>Tìm kiếm</Button>
+                <Button type="primary" onClick={handleSubmitSearch}>Tìm kiếm</Button>
             </Col>
         </Row>
      </>

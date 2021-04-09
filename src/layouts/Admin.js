@@ -1,7 +1,7 @@
  
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PerfectScrollbar from "perfect-scrollbar";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Footer from "components/Footer/Footer.js";
@@ -9,66 +9,72 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import BookingNext from '../views/Booking/BookingNext'
 import routes from "routes.js";
+import { useSelector } from "react-redux";
 
 var ps;
 
-class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      backgroundColor: "black",
-      activeColor: "info",
-    };
-    this.mainPanel = React.createRef();
-  }
-  componentDidMount() {
+function Dashboard (props){
+  const [backgroundColor, setBackgroundColor] =  useState('black');
+  const [activeColor, setActiveColor] =  useState('info');
+  const mainPanel = useRef();
+  const history = useHistory();
+  const auth = useSelector(state => state.auth);
+  const rolesUser = auth.user.roles;
+
+  useEffect(()=>{
     if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(this.mainPanel.current);
+      ps = new PerfectScrollbar(mainPanel.current);
       document.body.classList.toggle("perfect-scrollbar-on");
     }
-  }
-  componentWillUnmount() {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps.destroy();
-      document.body.classList.toggle("perfect-scrollbar-on");
+    return ()=>{
+      if (navigator.platform.indexOf("Win") > -1) {
+        ps.destroy();
+        document.body.classList.toggle("perfect-scrollbar-on");
+      }
     }
-  }
-  componentDidUpdate(e) {
-    if (e.history.action === "PUSH") {
-      this.mainPanel.current.scrollTop = 0;
+  },[])
+ 
+  useEffect(()=>{
+    if (history.action === "PUSH") {
+      mainPanel.current.scrollTop = 0;
       document.scrollingElement.scrollTop = 0;
     }
-  }
-  handleActiveClick = (color) => {
-    this.setState({ activeColor: color });
-  };
-  handleBgClick = (color) => {
-    this.setState({ backgroundColor: color });
-  };
-  render() {
+  })
+  // const handleActiveClick = (color) => {
+  //   setActiveColor(color)
+  // };
+  // const handleBgClick = (color) => {
+  //    setBackgroundColor(color);
+  // };
+   
     return (
       <div className="wrapper">
         <Sidebar
-          {...this.props}
+          {...props}
           routes={routes}
-          bgColor={this.state.backgroundColor}
-          activeColor={this.state.activeColor}
+          bgColor={backgroundColor}
+          activeColor={activeColor}
         />
-        <div className="main-panel" ref={this.mainPanel}>
-          <DemoNavbar {...this.props} />
+        <div className="main-panel" ref={mainPanel}>
+          <DemoNavbar {...props} />
           <Switch>
             {routes.map((prop, key) => {
-              return (
+              const {roles} = prop;
+              
+              return    (
                 <Route
                   path={prop.layout + prop.path}
                   component={prop.component}
                   key={key}
+                  
                   exact
                 />
-              );
+              )  
             })}
 
-            <Route  path="/admin/booking/:doctorId" component={BookingNext}/>
+            {
+              rolesUser.includes("ROLE_PATIENT") &&  <Route  path="/admin/booking/:doctorId" component={BookingNext}/>
+            } 
           </Switch>
           <Footer fluid />
         </div>
@@ -81,6 +87,6 @@ class Dashboard extends React.Component {
       </div>
     );
   }
-}
+ 
 
 export default Dashboard;
