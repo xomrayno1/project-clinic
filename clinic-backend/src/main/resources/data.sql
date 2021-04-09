@@ -1,9 +1,12 @@
+<!--ALTER DATABASE clinic CHARACTER SET utf8 COLLATE utf8_general_ci;-->
+<!--ALTER TABLE PATIENTS CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;-->
+
 INSERT INTO USERS(username, password, email,active_Flag) values ('admin','12345','admin@gmail.com',1);
-INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno1','12345','xr1@gmail.com',1);
-INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno2','12345','xr2@gmail.com',1);
-INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno3','12345','xr3@gmail.com',1);
-INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno4','12345','xr4@gmail.com',1);
-INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno5','12345','xr5@gmail.com',1);
+INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno1','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr1@gmail.com',1);
+INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno2','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr2@gmail.com',1);
+INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno3','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr3@gmail.com',1);
+INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno4','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr4@gmail.com',1);
+INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno5','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr5@gmail.com',1);
 
 INSERT INTO ROLES(NAME) VALUES ('ROLE_ADMIN');
 INSERT INTO ROLES(NAME) VALUES ('ROLE_DOCTOR');

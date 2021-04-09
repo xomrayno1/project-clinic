@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tampro.entity.Doctor;
@@ -25,6 +26,8 @@ public class UserServiceImpl  implements UserService{
 	DoctorService doctorService;
 	@Autowired
 	PatientService patientService;
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
 	
 	@Override
 	public Users getOne(Long id) {
@@ -59,6 +62,7 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public Users save(Users users) {
 		// TODO Auto-generated method stub
+		users.setPassword(bcryptEncoder.encode(users.getPassword()));
 		return userRepo.save(users);
 	}
 

@@ -1,11 +1,10 @@
 package com.tampro.repository;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tampro.entity.Schedule;
@@ -27,9 +26,9 @@ public interface ScheduleRepository extends PagingAndSortingRepository<Schedule,
 					+ "	AND UPPER(DT.NAME) LIKE CONCAT('%',UPPER(:name),'%') "
 					+ "	OR    UPPER(PT.NAME) LIKE CONCAT('%',UPPER(:name),'%') ",
 			nativeQuery = true)
-	Page<ScheduleInterface> findAllSchedule(@PathParam("name")String name,
-			@PathParam("dateTo") String dateTo, 
-			@PathParam("dateFrom") String dateFrom,Pageable pageable);
+	Page<ScheduleInterface> findAllSchedule(@Param("name")String name,
+			@Param("dateTo") String dateTo, 
+			@Param("dateFrom") String dateFrom,Pageable pageable);
 	 
 	@Query(value="SELECT SC.REASON, SC.STATUS, SC.TIME, SC.TYPE, SC.DOCTOR_ID as DoctorId, SC.PATIENT_ID as PatientId, DT.NAME AS DoctorName,PT.NAME  AS PatientName , SC.ID "
 			+ " FROM SCHEDULE  AS SC "
@@ -42,7 +41,7 @@ public interface ScheduleRepository extends PagingAndSortingRepository<Schedule,
 					+ "	WHERE UPPER(DT.NAME) LIKE CONCAT('%',UPPER(:name),'%') "
 					+ "	OR    UPPER(PT.NAME) LIKE CONCAT('%',UPPER(:name),'%') ",
 			nativeQuery = true)
-	Page<ScheduleInterface> findAllScheduleSearchName(@PathParam("name")String name,Pageable pageable);
+	Page<ScheduleInterface> findAllScheduleSearchName(@Param("name")String name,Pageable pageable);
 	
 	
 	@Query(value="SELECT SC.REASON, SC.STATUS, SC.TIME, SC.TYPE, SC.DOCTOR_ID as DoctorId, SC.PATIENT_ID as PatientId, DT.NAME AS DoctorName,PT.NAME  AS PatientName , SC.ID "
@@ -55,7 +54,7 @@ public interface ScheduleRepository extends PagingAndSortingRepository<Schedule,
 					+ " WHERE   DATE(SC.TIME) between  :dateTo AND :dateFrom ",
 			nativeQuery = true)
 	Page<ScheduleInterface> findAllScheduleDate( 
-			@PathParam("dateTo") String dateTo, 
-			@PathParam("dateFrom") String dateFrom,Pageable pageable);
+			@Param("dateTo") String dateTo, 
+			@Param("dateFrom") String dateFrom,Pageable pageable);
 	
 }
