@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import com.tampro.model.specification.ScheduleSpecification;
 import com.tampro.repository.ScheduleRepository;
 import com.tampro.service.ScheduleService;
 

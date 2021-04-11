@@ -2,33 +2,41 @@ package com.tampro.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
  
 public class DoctorRequest {
 	private Long id;
-	@NotBlank(message = "Please input your name!")
+	@NotBlank(message = "Vui lòng nhập tên!")
+	@Size(max = 3, min = 16, message = "Tên của bạn từ 3 - 16 kí tự")
 	private String name;
-	@NotBlank(message = "Please input your email!")
-	@Email
+	@NotBlank(message = "Vui lòng nhập email!")
+	@Email(message = "Vui lòng định dạng email")
 	private String email;
-	@NotBlank(message = "Please input your phone!")
+	@NotBlank(message = "Vui lòng nhập số điện thoại!")
+	@Size(max = 8, min = 12, message = "Số điện thoại từ 8 - 12 kí tự")
 	private String phone;
-	@NotBlank(message = "Please input your gender!")
+	@NotBlank(message = "Vui lòng nhập giới tính!")
 	private String gender;
 	private Long userId;
 	private MultipartFile imageUpload;
 	private String description;
-	@NotBlank(message = "Please input your domain!")
+	@NotBlank(message = "Vui lòng nhập chuyên nghành!")
+	@Size(max = 3, min = 20, message = "Chuyên nghành từ 3 - 20 kí tự")
 	private String domain;
-	@NotBlank(message = "Please input your education!")
+	@NotBlank(message = "Vui lòng nhập trường tốt nghiệp!")
+	@Size(max = 3, min = 20, message = "Trường tốt nghiệp từ 3 - 20 kí tự")
 	private String education;
-	@NotBlank(message = "Please input your level!")
+	@NotBlank(message = "Vui lòng nhập trình độ!")
+	@Size(max = 3, min = 20, message = "Trình độ  từ 3 - 20 kí tự")
 	private String level;
-	@NotBlank(message = "Please input your address!")
+	@NotBlank(message = "Vui lòng nhập địa chỉ!")
+	@Size(max = 3, min = 20, message = "Địa chỉ từ 5 - 40 kí tự")
 	private String address;
-	@NotBlank(message = "Please input your city!")
+	@NotBlank(message = "Vui lòng nhập thành phố!")
+	@Size(max = 3, min = 20, message = "Thành phố từ 3 - 20 kí tự")
 	private String city;
 	
 	public Long getId() {
