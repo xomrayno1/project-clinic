@@ -1,19 +1,16 @@
 package com.tampro.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class ScheduleSearchPagination implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class BookingSearchPagination {
 	private String keySearch;
 	private Date dateTo;
 	private Date dateFrom;
 	private int status;
-	private int type;
+	@JsonProperty("patient_id")
+	private long patientId;
 	private Integer page;
 	private Integer limit;
 	
@@ -35,6 +32,12 @@ public class ScheduleSearchPagination implements Serializable{
 	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
 	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	public Integer getPage() {
 		return page;
 	}
@@ -47,24 +50,12 @@ public class ScheduleSearchPagination implements Serializable{
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-	public int getStatus() {
-		return status;
+	public long getPatientId() {
+		return patientId;
 	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
-	@Override
-	public String toString() {
-		return "ScheduleSearchPagination [keySearch=" + keySearch + ", dateTo=" + dateTo + ", dateFrom=" + dateFrom
-				+ ", status=" + status + ", type=" + type + ", page=" + page + ", limit=" + limit + "]";
+	public void setPatientId(long patientId) {
+		this.patientId = patientId;
 	}
 	
 	
-
 }

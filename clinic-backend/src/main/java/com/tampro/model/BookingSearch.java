@@ -1,47 +1,22 @@
 package com.tampro.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class ScheduleSearch implements Serializable{
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class BookingSearch {
 	private String keySearch;
 	private Date dateTo;
 	private Date dateFrom;
-	private int type;
 	private int status;
+	private long patientId;
 	
-	
-	
-	
- 
-	public ScheduleSearch() {
-		 
-	}
-	public ScheduleSearch(String keySearch, Date dateFrom, Date dateTo, int type, int status) {
-		 
+	 
+	public BookingSearch(String keySearch, Date dateTo, Date dateFrom, int status, long patientId) {
+		super();
 		this.keySearch = keySearch;
 		this.dateTo = dateTo;
 		this.dateFrom = dateFrom;
-		this.type = type;
 		this.status = status;
-	}
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
+		this.patientId = patientId;
 	}
 	public String getKeySearch() {
 		return keySearch;
@@ -61,7 +36,18 @@ public class ScheduleSearch implements Serializable{
 	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
 	}
-	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public long getPatientId() {
+		return patientId;
+	}
+	public void setPatientId(long patientId) {
+		this.patientId = patientId;
+	}
 	
 	
 }

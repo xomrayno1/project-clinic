@@ -15,7 +15,8 @@ public class Patients  extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
+	@Column(name = "name")
+	private String patiName;
 	private String email;
 	private String phone;
 	private Gender gender;
@@ -41,11 +42,12 @@ public class Patients  extends BaseEntity{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	 
+	public String getPatiName() {
+		return patiName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setPatiName(String patiName) {
+		this.patiName = patiName;
 	}
 	public String getEmail() {
 		return email;

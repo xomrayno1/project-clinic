@@ -8,9 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.tampro.model.Status;
-import com.tampro.model.Type;
 // lịch khám bệnh
 @Entity
 public class Schedule  extends BaseEntity{
@@ -18,14 +15,16 @@ public class Schedule  extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Date time;
-	private Status status;
+	 
+	private int status;
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private Patients patients;
 	@ManyToOne
 	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
-	private Type type;
+	 
+	private int type;
 	private String reason;
 	
 	public Long getId() {
@@ -37,15 +36,7 @@ public class Schedule  extends BaseEntity{
 	public Date getTime() {
 		return time;
 	}
-	public void setTime(Date time) {
-		this.time = time;
-	}
-	public Status getStatus() {
-		return status;
-	}
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+ 
 	public Patients getPatients() {
 		return patients;
 	}
@@ -58,17 +49,27 @@ public class Schedule  extends BaseEntity{
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
 	}
-	public Type getType() {
-		return type;
-	}
-	public void setType(Type type) {
-		this.type = type;
-	}
+	 
 	public String getReason() {
 		return reason;
 	}
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public void setTime(Date time) {
+		this.time = time;
 	}
 	
 	

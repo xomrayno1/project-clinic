@@ -2,14 +2,15 @@ package com.tampro.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.stream.Collectors;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
+import com.tampro.entity.Schedule;
 import com.tampro.entity.Users;
-import com.tampro.model.ScheduleInterface;
 import com.tampro.response.DoctorResponse;
 import com.tampro.response.PatientResponse;
 import com.tampro.response.ScheduleResponse;
@@ -23,17 +24,18 @@ public class AppUtils {
 		multipartFile.transferTo(file);
 		return imageUrl;
 	}
-	public static ScheduleResponse convertScheduleEntityToResponse(ScheduleInterface scheduleInterface) {
+	public static ScheduleResponse convertScheduleEntityToResponse(Schedule schedule) {
 		ScheduleResponse infoResponse = new ScheduleResponse();
-		infoResponse.setDoctorId(scheduleInterface.getDoctorId());
-		infoResponse.setDoctorName(scheduleInterface.getDoctorName());
-		infoResponse.setId(scheduleInterface.getId());
-		infoResponse.setPatientId(scheduleInterface.getPatientId());
-		infoResponse.setPatientName(scheduleInterface.getPatientName());
-		infoResponse.setReason(scheduleInterface.getReason());
-		infoResponse.setStatus(scheduleInterface.getStatus());
-		infoResponse.setTime(scheduleInterface.getTime());
-		infoResponse.setType(scheduleInterface.getType());
+		infoResponse.setDoctorId(schedule.getDoctor().getId());
+		infoResponse.setDoctorName(schedule.getDoctor().getDocName());
+		infoResponse.setId(schedule.getId());
+		infoResponse.setPatientId(schedule.getPatients().getId());
+		infoResponse.setPatientName(schedule.getPatients().getPatiName());
+		infoResponse.setReason(schedule.getReason());
+		infoResponse.setStatus(schedule.getStatus());
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		infoResponse.setTime(simpleDateFormat.format(schedule.getTime()));
+		infoResponse.setType(schedule.getType());
 		return infoResponse;
 	}
 	public static DoctorResponse convertDoctorEntityToResponse(Doctor doctor) {
@@ -46,7 +48,7 @@ public class AppUtils {
 		doctorResponse.setId(doctor.getId());
 		doctorResponse.setImageUrl(doctor.getImageUrl());
 		doctorResponse.setLevel(doctor.getLevel());
-		doctorResponse.setName(doctor.getName());
+		doctorResponse.setName(doctor.getDocName());
 		doctorResponse.setPhone(doctor.getPhone());
 		doctorResponse.setAddress(doctor.getAddress());
 		doctorResponse.setCity(doctor.getCity());
@@ -64,7 +66,7 @@ public class AppUtils {
 		patientResponse.setGender(patient.getGender().getGenderName());
 		patientResponse.setId(patient.getId());
 		patientResponse.setImageUrl(patient.getImageUrl());
-		patientResponse.setName(patient.getName());
+		patientResponse.setName(patient.getPatiName());
 		patientResponse.setPhone(patient.getPhone());
 		patientResponse.setAddress(patient.getAddress());
 		patientResponse.setActiveFlag(patient.getActiveFlag());

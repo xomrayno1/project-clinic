@@ -18,6 +18,10 @@ public class Constant {
 	public static final String API_SCHEDULE = API_PREFIX + "/schedules";
 	public static final String API_GET_SCHEDULE_FILTER_PAGINATION ="/search_filter_pagination";
 	
+	//booking
+	public static final String API_BOOKING = API_PREFIX + "/booking";
+	public static final String API_GET_BOOKING_FILTER_PAGINATION = API_PREFIX + "/booking/search_filter_pagination";
+	
 	public static final String UPLOAD_IMAGE = "C:\\Users\\Administrator\\git\\project-clinic\\clinic-backend\\src\\main\\resources\\static\\upload\\";
 	 
 	public static final int ACTIVE = 1;
@@ -26,4 +30,11 @@ public class Constant {
 	 
 	public static final int AVAILABLE = 1;
 	public static final int NOT_AVAILABLE = 2;
+	
+	public static final int FIRST_EXAMINATION = 1;
+	public static final int RE_EXAMINATION = 2;
+	
+	public static final int WAITING = 1;
+	public static final int COMPLETE = 2;
+	public static final int CANCEL = 3;
 }

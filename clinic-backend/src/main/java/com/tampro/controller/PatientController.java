@@ -79,7 +79,7 @@ public class PatientController {
 		patient.setDescription(patientRequest.getDescription());	 
 		patient.setEmail(patientRequest.getEmail());
 		patient.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
-		patient.setName(patientRequest.getName());
+		patient.setPatiName(patientRequest.getName());
 		patient.setPhone(patientRequest.getPhone());
 		patient.setAddress(patientRequest.getAddress());
 		patient.setUsers(userService.getOne(patientRequest.getUserId()));
@@ -127,7 +127,7 @@ public class PatientController {
 		patient.setDescription(patientRequest.getDescription());
 		patient.setEmail(patientRequest.getEmail());
 		patient.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
-		patient.setName(patientRequest.getName());
+		patient.setPatiName(patientRequest.getName());
 		patient.setPhone(patientRequest.getPhone());
 		patient.setAddress(patientRequest.getAddress());
 		patient.setUsers(userService.getOne(patientRequest.getUserId()));

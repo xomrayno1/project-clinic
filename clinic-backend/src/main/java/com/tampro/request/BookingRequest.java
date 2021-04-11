@@ -1,31 +1,24 @@
 package com.tampro.request;
 
-import java.util.Date;
-
 public class BookingRequest {
 	private Long id;
-	private Date time;
-	private String status;
+	private String time;
 	private Long patientId;
 	private Long doctorId;
-	private String type;
+	private String type; // tái khám hay không
+	private String reason;
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Date getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(Date time) {
+	public void setTime(String time) {
 		this.time = time;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	public Long getPatientId() {
 		return patientId;
@@ -44,6 +37,12 @@ public class BookingRequest {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 	
 	

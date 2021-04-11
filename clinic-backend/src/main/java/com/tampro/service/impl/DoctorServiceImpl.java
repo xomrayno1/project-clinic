@@ -59,7 +59,7 @@ public class DoctorServiceImpl implements DoctorService{
 	@Override
 	public List<Doctor> findAll(String search) {
 		// TODO Auto-generated method stub
-		return doctorRepo.findByNameIgnoreCaseContainingAndActiveFlag(search,Constant.ACTIVE);
+		return doctorRepo.findByDocNameIgnoreCaseContainingAndActiveFlag(search,Constant.ACTIVE);
 	}
 
 	@Override

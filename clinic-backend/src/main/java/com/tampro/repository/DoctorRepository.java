@@ -15,11 +15,11 @@ import com.tampro.entity.Users;
 public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Long> {
 	
 	@Query(value="SELECT DT FROM Doctor DT "
-			+ " WHERE UPPER(DT.name) LIKE CONCAT('%',UPPER(?1),'%') "
+			+ " WHERE UPPER(DT.docName) LIKE CONCAT('%',UPPER(?1),'%') "
 			+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
 			+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
 			,countQuery = "SELECT COUNT(DT) FROM Doctor DT   "
-					+ " WHERE UPPER(DT.name) LIKE CONCAT('%',UPPER(?1),'%') "
+					+ " WHERE UPPER(DT.docName) LIKE CONCAT('%',UPPER(?1),'%') "
 					+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
 					+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
 					)
@@ -27,13 +27,13 @@ public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Lon
 	
 	Doctor getOne(Long id);
 
-	Doctor findByName(String name);
+	Doctor findByDocName(String name);
 	
 	Doctor findByEmail(String email);
 	
 	Doctor findByUsers(Users users);
 	
-	List<Doctor> findByNameIgnoreCaseContainingAndActiveFlag(String name,int activeFlag);
+	List<Doctor> findByDocNameIgnoreCaseContainingAndActiveFlag(String name,int activeFlag);
 	
 	
 }

@@ -108,7 +108,7 @@ public class DoctorController {
 			}
 		}
 		doctor.setLevel(doctorRequest.getLevel());
-		doctor.setName(doctorRequest.getName());
+		doctor.setDocName(doctorRequest.getName());
 		doctor.setPhone(doctorRequest.getPhone());
 		doctor.setAddress(doctorRequest.getAddress());
 		doctor.setCity(doctorRequest.getCity());
@@ -156,7 +156,7 @@ public class DoctorController {
 			}
 		}
 		doctor.setLevel(doctorRequest.getLevel());
-		doctor.setName(doctorRequest.getName());
+		doctor.setDocName(doctorRequest.getName());
 		doctor.setPhone(doctorRequest.getPhone());
 		doctor.setAddress(doctorRequest.getAddress());
 		doctor.setCity(doctorRequest.getCity());

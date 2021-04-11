@@ -1,7 +1,7 @@
 <!--ALTER DATABASE clinic CHARACTER SET utf8 COLLATE utf8_general_ci;-->
 <!--ALTER TABLE PATIENTS CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;-->
 
-INSERT INTO USERS(username, password, email,active_Flag) values ('admin','12345','admin@gmail.com',1);
+INSERT INTO USERS(username, password, email,active_Flag) values ('admin','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','admin@gmail.com',1);
 INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno1','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr1@gmail.com',1);
 INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno2','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr2@gmail.com',1);
 INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno3','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr3@gmail.com',1);
@@ -20,9 +20,9 @@ INSERT INTO USER_ROLE(user_id,role_id) VALUES (5,3);
 INSERT INTO USER_ROLE(user_id,role_id) VALUES (6,3);
 
  
-INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER, LEVEL, NAME, PHONE, USER_ID,active_Flag) 
+INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER, LEVEL, name, PHONE, USER_ID,active_Flag) 
 values('Dong Hoa - HHT', 'PY', 'Mô tả', 'Phụ khoa', ' DH Y Duoc TP HCM', 'xr1@gmail.com', '1', 'Thạc sĩ', 'Tấn đoan', '03231242', 1,1);
-INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER, LEVEL, NAME, PHONE, USER_ID,active_Flag) 
+INSERT INTO DOCTOR(ADDRESS, CITY, DESCRIPTION, DOMAIN, EDUCATION, EMAIL, GENDER, LEVEL, name, PHONE, USER_ID,active_Flag) 
 values('Dong Hoa ', 'PY', 'Mo Ta Mo Ta', 'Y Khoa', ' DH Y Duoc Huế', 'xr2@gmail.com', '0', 'Thạc sĩ', 'Tran Van B', '03231242', 2,1);
 
 INSERT INTO PATIENTS(ADDRESS, DESCRIPTION, EMAIL, GENDER, NAME, PHONE, USER_ID,active_Flag) 

@@ -1,7 +1,5 @@
 package com.tampro.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import com.tampro.model.Gender;
 
@@ -18,7 +15,8 @@ public class Doctor extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
+	@Column(name = "name")
+	private String docName;
 	private String email;
 	private String phone;
 	private Gender gender;
@@ -41,11 +39,13 @@ public class Doctor extends BaseEntity{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	 
+ 
+	public String getDocName() {
+		return docName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setDocName(String docName) {
+		this.docName = docName;
 	}
 	public String getEmail() {
 		return email;

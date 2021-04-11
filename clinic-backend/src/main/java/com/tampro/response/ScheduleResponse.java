@@ -6,14 +6,14 @@ public class ScheduleResponse {
 	private Long id;
 	@JsonProperty("schedule_time")
 	private String time;
-	private String status;
+	private int status;
 	private Long patientId;
 	@JsonProperty("patient_name")
 	private String patientName;
 	private Long doctorId;
 	@JsonProperty("doctor_name")
 	private String doctorName;
-	private String type;
+	private int type;
 	private String reason;
 	
 	public Long getId() {
@@ -23,12 +23,7 @@ public class ScheduleResponse {
 		this.id = id;
 	}
  
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	 
 	public Long getPatientId() {
 		return patientId;
 	}
@@ -53,10 +48,10 @@ public class ScheduleResponse {
 	public void setDoctorName(String doctorName) {
 		this.doctorName = doctorName;
 	}
-	public String getType() {
+	public int getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 	public String getTime() {
@@ -70,6 +65,12 @@ public class ScheduleResponse {
 	}
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 	
