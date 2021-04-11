@@ -6,7 +6,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   CardTitle,
   FormGroup,
   Label,
@@ -14,9 +13,24 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import {Formik,Form} from 'formik'
+import {Formik,Form,Field,ErrorMessage} from 'formik'
+import * as Yup from 'yup';
+import Textarea from "variables/Textarea";
+
 
 function User(props) {
+
+    const doctorProfileSchema = Yup.object({
+      name : Yup.string().required("Vui lòng nhập tên"),
+      email : Yup.string().required("Vui lòng nhập email"),
+      phone: Yup.string().required("Vui lòng nhập số điện thoại"),
+      gender: Yup.string().required("Vui lòng nhập giới tính"),
+      domain: Yup.string().required("Vui lòng nhập chuyên nghành"),
+      education: Yup.string().required("Vui lòng nhập  trường tốt nghiệp"),
+      level: Yup.string().required("Vui lòng nhập trình độ"),
+      address: Yup.string().required("Vui lòng nhập địa chỉ"),
+      city: Yup.string().required("Vui lòng nhập thành phố"),
+    })
    
     return (
       <>
@@ -56,7 +70,7 @@ function User(props) {
                           name : '',
                           email : '',
                           phone: '',
-                          gender: '',
+                          gender: 'male',
                           description: '',
                           domain: '',
                           education: '',
@@ -65,24 +79,40 @@ function User(props) {
                           city: ''
                       }}
                       onSubmit={(data)=> console.log(data)}
-                      
-                      
+                      validationSchema={doctorProfileSchema}
+                      validateOnBlur={false}
+                      validateOnChange={false}
                   > 
                     <Form>
                       <Row>
                         <Col className="pr-1" md="5">
                           <FormGroup>
                             <label>Tên</label>
-                            <Input
+                            <Field
                               placeholder="Tên"
                               type="text"
+                              name="name"
+                              className="form-control"
                             />
+                            <ErrorMessage 
+                              component="div" 
+                              name="name" 
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                         <Col className="px-1" md="3">
                           <FormGroup>
                             <label>Email</label>
-                            <Input placeholder="Email" type="email" />
+                            <Field 
+                              placeholder="Email" 
+                              type="email"
+                              name="email"
+                              className="form-control"
+                              />
+                            <ErrorMessage 
+                              component="div" 
+                              name="email" 
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                         <Col className="pl-1" md="4">
@@ -90,7 +120,16 @@ function User(props) {
                             <label htmlFor="exampleInputEmail1">
                               Số điện thoại
                             </label>
-                            <Input placeholder="Số điện thoại" type="text" />
+                            <Field 
+                              placeholder="Số điện thoại" 
+                              type="text"
+                              className="form-control"
+                              name="phone"
+                              />
+                            <ErrorMessage 
+                              component="div" 
+                              name="phone" 
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                       </Row>
@@ -98,47 +137,61 @@ function User(props) {
                         <Col className="pr-1" md="6">
                           <FormGroup>
                             <label>Chuyên ngành</label>
-                            <Input
+                            <Field
                               placeholder="Chuyên ngành"
                               type="text"
+                              className="form-control"
+                              name="domain"
                             />
+                            <ErrorMessage 
+                              component="div" 
+                              name="domain" 
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                         <Col className="pl-1" md="6">
                           <FormGroup>
                             <label>Tốt nghiệp</label>
-                            <Input
+                            <Field
                               placeholder="Tốt nghiệp"
                               type="text"
+                              className="form-control"
+                              name="education"
                             />
+                            <ErrorMessage 
+                              component="div" 
+                              name="education" 
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                       </Row>
                       <Row>
-                            {/* position: absolute;
-    top: 35px;
-    left: 100px;
-} */}
                         <Col className="pr-1" md="6">
-                          <FormGroup check className="text-center ">
- 
-                             
-                              <Label check>
-                                  <Input type="radio" /> Nam
+                          <FormGroup check>
+                              <label>Giới tính</label>
+                              <div className="text-center ">
+                                <Label check>
+                                  <Field type="radio" name="gender" value="male" /> Nam
                                 </Label>
                                 <Label check>
-                                  <Input type="radio" /> Nữ
-                                </Label>
-                             
+                                  <Field type="radio"  name="gender" value="female" /> Nữ
+                                </Label>    
+                              </div>  
                           </FormGroup>
                         </Col>
                         <Col md="6">
                           <FormGroup>
                             <label>Trình độ</label>
-                            <Input
+                            <Field
                               placeholder="Trình độ học vấn"
                               type="text"
+                              name="level"
+                              className="form-control"
                             />
+                            <ErrorMessage 
+                              component="div" 
+                              name="level" 
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                       </Row>
@@ -146,28 +199,41 @@ function User(props) {
                         <Col className="pr-1" md="4">
                           <FormGroup>
                             <label>Thành phố</label>
-                            <Input
+                            <Field
                               placeholder="Thành phố"
                               type="text"
+                              className="form-control"
+                              name="city"
                             />
+                            <ErrorMessage 
+                              component="div" 
+                              name="city" 
+                              className="error-text" /> 
                           </FormGroup>
                         </Col>
                         <Col md="8">
                           <FormGroup>
                             <label>Địa chỉ</label>
-                            <Input
+                            <Field
                               placeholder="Địa chỉ"
                               type="text"
+                              className="form-control"
+                              name="address"
                             />
+                            <ErrorMessage 
+                              component="div" 
+                              name="address" 
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                       </Row>
                       <Row>
                         <Col md="12">
                           <FormGroup>
-                            <label>Thông tin thêm</label>
-                            <Input
-                              type="textarea"
+                            <Textarea 
+                              name="description" 
+                              className="form-control"
+                              label="Thông tin chi tiết"
                             />
                           </FormGroup>
                         </Col>
@@ -193,6 +259,5 @@ function User(props) {
       </>
     );
   }
-
 
 export default User;

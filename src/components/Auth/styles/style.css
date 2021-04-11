@@ -61,4 +61,9 @@
     background-color: #3b5998;
   }
   
- 
+.error-text{
+  color: red;
+  text-align: center;
+  margin-top: 5px;
+
+}
