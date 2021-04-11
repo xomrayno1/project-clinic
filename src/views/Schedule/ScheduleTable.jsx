@@ -33,13 +33,11 @@ function ScheduleTable({handleChangePage,isLoading,data,pagination}) {
             title: 'Id',
             dataIndex: 'id',
             key: 'id',
-        },
-        {
+        },{
             title: 'Tên bác sĩ',
             dataIndex: 'doctor_name',
             key: 'doctor_name',
-        }
-        ,{
+        },{
             title: 'Tên bệnh nhân',
             dataIndex: 'patient_name',
             key: 'patient_name',
@@ -47,28 +45,26 @@ function ScheduleTable({handleChangePage,isLoading,data,pagination}) {
             title: 'Thời gian khám',
             dataIndex: 'schedule_time',
             key: 'schedule_time',
-        }
-        ,{
+        },{
             title: 'Loại',
             dataIndex: 'type',
             key: 'type',
             render : item => {
-                const color = item === '1' ? 'green' : 'geekblue';
-                const display = item === '1' ? 'Khám lần đầu' : 'Tái khám' 
+                const color = item === 1 ? 'green' : 'geekblue';
+                const display = item === 1 ? 'Khám lần đầu' : 'Tái khám' 
                 return (
                     <Tag color={color}> 
                         {display}
                     </Tag>
                 )
             }
-        }
-        ,{
+        },{
             title: 'Tình trạng',
             dataIndex: 'status',
             key: 'status',
             render : item => {
-                const color = item === '1' ? 'geekblue' : 'green';
-                const display = item === '1' ? 'Đang đợi' : 'Đã hoàn thành' 
+                const color = item === 1 ? 'geekblue' : 'green';
+                const display = item === 1 ? 'Đang đợi' : 'Đã hoàn thành' 
                 return (
                     <Tag color={color}> 
                         {display}
@@ -104,7 +100,10 @@ function ScheduleTable({handleChangePage,isLoading,data,pagination}) {
                     current: newPagination.page,
                     total : newPagination.totalRows,
                     onChange: handleChangePage
-                }}   />
+                }}
+                bordered={true}      
+            />
+
         </>
     );
 }

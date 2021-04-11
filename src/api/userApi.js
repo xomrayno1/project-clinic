@@ -1,34 +1,66 @@
 import axiosClient from './axiosClient'
+ 
 const userApi  ={
     getAllFilter : (params) => {
-        const url = "http://localhost:8080/api/v1/users";
         const auth =  JSON.parse(localStorage.getItem('auth'));
+        const url = "http://localhost:8080/api/v1/users";
         const {jwt} = auth.user;
-        return axiosClient.get(url, {params},{
+        return axiosClient.get(url,{  
             headers : { 
                 'Authorization': `Bearer ${jwt}`
-            }
+            },
+            params
         })
     },
     update : (params) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
         const url = "http://localhost:8080/api/v1/users";
-        return axiosClient.put(url, params)
+        const {jwt} = auth.user;
+        return axiosClient.put(url,params, {
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        })
     },
     findById: (userId) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt} = auth.user;
         const url = `http://localhost:8080/api/v1/users/${userId}`;
-        return axiosClient.get(url);
+        return axiosClient.get(url,{
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        });
     },
     delete : (id) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
         const url = `http://localhost:8080/api/v1/users/${id}`;
-        return axiosClient.delete(url)
+        const {jwt} = auth.user;
+        return axiosClient.delete(url,{
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        })
     },
     restore : (id) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
         const url = `http://localhost:8080/api/v1/users/restore/${id}`;
-        return axiosClient.get(url)
+        const {jwt} = auth.user;
+        return axiosClient.get(url, {
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        })
     },
     create : (params) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt} = auth.user;
         const url = 'http://localhost:8080/api/v1/users';
-        return axiosClient.post(url, params)
+        return axiosClient.post(url, params,{
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        })
     }
 }
 export default userApi;

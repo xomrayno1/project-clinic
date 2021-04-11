@@ -120,7 +120,8 @@ function Header(props){
                 <span className="navbar-toggler-bar bar3" />
               </button>
             </div>
-            <NavbarBrand href="/">{getBrand()}</NavbarBrand>
+            <NavbarBrand href="/admin/dashboard">{getBrand()}</NavbarBrand>   
+            {/* link branch */}
           </div>
           <NavbarToggler onClick={toggle}>
             <span className="navbar-toggler-bar navbar-kebab" />
@@ -160,20 +161,16 @@ function Header(props){
                       Thông tin cá nhân
                     </DropdownItem>
                   </Link>
-                 
                     <DropdownItem onClick={handleLogout}>
                         Thoát
                     </DropdownItem>
-                  
                 </DropdownMenu>         
               </Dropdown>
-           
             </Nav>
           </Collapse>
         </Container>
       </Navbar>
     );
- 
 }
 
 export default Header;

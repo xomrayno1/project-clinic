@@ -9,6 +9,7 @@ import UserList from "views/User/UserList";
 import Booking from "views/Booking/Booking";
 import BookingNext from "views/Booking/BookingNext";
 import ScheduleList from "views/Schedule/ScheduleList";
+import BookingList from "views/Booking/BookingList";
 
 var routes = [
   {
@@ -62,7 +63,13 @@ var routes = [
     component: Booking,
     layout: "/admin",
     roles : ['ROLE_PATIENT']
-    
+  },{
+    path: "/list-booking",
+    name: "Lịch khám của bạn",
+    icon: "nc-icon nc-basket",
+    component: BookingList,
+    layout: "/admin",
+    roles : ['ROLE_PATIENT']
   },{
     path: "/icons",
     name: "Icons",

@@ -1,6 +1,6 @@
- 
+
 import React from "react";
- 
+
 import {
   Button,
   Card,
@@ -9,14 +9,15 @@ import {
   CardFooter,
   CardTitle,
   FormGroup,
-  Form,
+  Label,
   Input,
   Row,
   Col,
 } from "reactstrap";
+import {Formik,Form} from 'formik'
 
-class User extends React.Component {
-  render() {
+function User(props) {
+   
     return (
       <>
         <div className="content">
@@ -41,38 +42,8 @@ class User extends React.Component {
                     </a>
                     <p className="description">@chetfaker</p>
                   </div>
-                  <p className="description text-center">
-                    "I like the way you work it <br />
-                    No diggity <br />I wanna bag it up"
-                  </p>
                 </CardBody>
-                <CardFooter>
-                  <hr />
-                  <div className="button-container">
-                    <Row>
-                      <Col className="ml-auto" lg="3" md="6" xs="6">
-                        <h5>
-                          12 <br />
-                          <small>Files</small>
-                        </h5>
-                      </Col>
-                      <Col className="ml-auto mr-auto" lg="4" md="6" xs="6">
-                        <h5>
-                          2GB <br />
-                          <small>Used</small>
-                        </h5>
-                      </Col>
-                      <Col className="mr-auto" lg="3">
-                        <h5>
-                          24,6$ <br />
-                          <small>Spent</small>
-                        </h5>
-                      </Col>
-                    </Row>
-                  </div>
-                </CardFooter>
               </Card>
-  
             </Col>
             <Col md="8">
               <Card className="card-user">
@@ -80,123 +51,140 @@ class User extends React.Component {
                   <CardTitle tag="h5">Chỉnh sửa thông tin   </CardTitle>
                 </CardHeader>
                 <CardBody>
-                  <Form>
-                    <Row>
-                      <Col className="pr-1" md="5">
-                        <FormGroup>
-                          <label>Company (disabled)</label>
-                          <Input
-                            defaultValue="Creative Code Inc."
-                            disabled
-                            placeholder="Company"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="px-1" md="3">
-                        <FormGroup>
-                          <label>Username</label>
-                          <Input
-                            defaultValue="michael23"
-                            placeholder="Username"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-1" md="4">
-                        <FormGroup>
-                          <label htmlFor="exampleInputEmail1">
-                            Email address
-                          </label>
-                          <Input placeholder="Email" type="email" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="pr-1" md="6">
-                        <FormGroup>
-                          <label>First Name</label>
-                          <Input
-                            defaultValue="Chet"
-                            placeholder="Company"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-1" md="6">
-                        <FormGroup>
-                          <label>Last Name</label>
-                          <Input
-                            defaultValue="Faker"
-                            placeholder="Last Name"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label>Address</label>
-                          <Input
-                            defaultValue="Melbourne, Australia"
-                            placeholder="Home Address"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="pr-1" md="4">
-                        <FormGroup>
-                          <label>City</label>
-                          <Input
-                            defaultValue="Melbourne"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="px-1" md="4">
-                        <FormGroup>
-                          <label>Country</label>
-                          <Input
-                            defaultValue="Australia"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-1" md="4">
-                        <FormGroup>
-                          <label>Postal Code</label>
-                          <Input placeholder="ZIP Code" type="number" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label>About Me</label>
-                          <Input
-                            type="textarea"
-                            defaultValue="Oh so, your weak rhyme You doubt I'll bother, reading into it"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <div className="update ml-auto mr-auto">
-                        <Button
-                          className="btn-round"
-                          color="primary"
-                          type="submit"
-                        >
-                          Cập nhật thông tin
-                        </Button>
-                      </div>
-                    </Row>
-                  </Form>
+                  <Formik 
+                      initialValues={{
+                          name : '',
+                          email : '',
+                          phone: '',
+                          gender: '',
+                          description: '',
+                          domain: '',
+                          education: '',
+                          level: '',
+                          address: '',
+                          city: ''
+                      }}
+                      onSubmit={(data)=> console.log(data)}
+                      
+                      
+                  > 
+                    <Form>
+                      <Row>
+                        <Col className="pr-1" md="5">
+                          <FormGroup>
+                            <label>Tên</label>
+                            <Input
+                              placeholder="Tên"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col className="px-1" md="3">
+                          <FormGroup>
+                            <label>Email</label>
+                            <Input placeholder="Email" type="email" />
+                          </FormGroup>
+                        </Col>
+                        <Col className="pl-1" md="4">
+                          <FormGroup>
+                            <label htmlFor="exampleInputEmail1">
+                              Số điện thoại
+                            </label>
+                            <Input placeholder="Số điện thoại" type="text" />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col className="pr-1" md="6">
+                          <FormGroup>
+                            <label>Chuyên ngành</label>
+                            <Input
+                              placeholder="Chuyên ngành"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col className="pl-1" md="6">
+                          <FormGroup>
+                            <label>Tốt nghiệp</label>
+                            <Input
+                              placeholder="Tốt nghiệp"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                            {/* position: absolute;
+    top: 35px;
+    left: 100px;
+} */}
+                        <Col className="pr-1" md="6">
+                          <FormGroup check className="text-center ">
+ 
+                             
+                              <Label check>
+                                  <Input type="radio" /> Nam
+                                </Label>
+                                <Label check>
+                                  <Input type="radio" /> Nữ
+                                </Label>
+                             
+                          </FormGroup>
+                        </Col>
+                        <Col md="6">
+                          <FormGroup>
+                            <label>Trình độ</label>
+                            <Input
+                              placeholder="Trình độ học vấn"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col className="pr-1" md="4">
+                          <FormGroup>
+                            <label>Thành phố</label>
+                            <Input
+                              placeholder="Thành phố"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md="8">
+                          <FormGroup>
+                            <label>Địa chỉ</label>
+                            <Input
+                              placeholder="Địa chỉ"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md="12">
+                          <FormGroup>
+                            <label>Thông tin thêm</label>
+                            <Input
+                              type="textarea"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <div className="update ml-auto mr-auto">
+                          <Button
+                            className="btn-round"
+                            color="primary"
+                            type="submit"
+                          >
+                            Cập nhật thông tin
+                          </Button>
+                        </div>
+                      </Row>
+                    </Form>
+                  </Formik>
                 </CardBody>
               </Card>
             </Col>
@@ -205,6 +193,6 @@ class User extends React.Component {
       </>
     );
   }
-}
+
 
 export default User;

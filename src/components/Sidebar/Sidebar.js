@@ -63,7 +63,8 @@ function Sidebar(props) {
             {props.routes.map((prop, key) => {
               const {roles} = prop;
               //update thêm
-              return   roles.includes(rolesUser[0].authority) ?  (
+              const authority =  rolesUser[0].authority || 'ROLE_PATIENT';
+              return   roles.includes(authority) ?  (
                   <li
                   className={
                     activeRoute(prop.path) +

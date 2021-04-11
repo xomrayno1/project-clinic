@@ -40,22 +40,9 @@ function* deleteSchedule({payload}){ // ref get data add
         yield put({type: DELETE_SCHEDULE_FAILED, payload: error})
     }
 }
-
  
-function* createSchedule({payload}){
-    try {
-        yield call(scheduleApi.create,payload);
-        const response = yield call(scheduleApi.getAllFilterPagination,defaultScheduleFilter);
-        yield put({type: CREATE_SCHEDULE_SUCCESS, payload: response})
-    } catch (error) {
-        const data = error.response.data
-        message.error(`  ${data.message}`)
-        yield put({type: CREATE_SCHEDULE_FAILED, payload: error})
-    }
-}
 function* scheduleSaga(){
     yield takeLatest(GET_ALL_SCHEDULE, fetchSchedule)
     yield takeLatest(DELETE_SCHEDULE, deleteSchedule)
-    yield takeLatest(CREATE_SCHEDULE, createSchedule)
 }
 export default scheduleSaga;

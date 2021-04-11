@@ -39,19 +39,19 @@ function UserModal(props) {
     function onFinish(data) {
 
         console.log(formRef)
-        // dispatch theo ref
-        // const {id} = stateModal.item || {id: null}
-        // const form = {
-        //     ...data,
-        //     roles : roleCheckBox
-        // }
-        // if(id){
-        //     form.id = id;
-        //     dispatch(updateUser(form));
-        // }else{
-        //     dispatch(createUser(form));
-        // }
-        // onCancel();
+        //dispatch theo ref
+        const {id} = stateModal.item || {id: null}
+        const form = {
+            ...data,
+            roles : roleCheckBox
+        }
+        if(id){
+            form.id = id;
+            dispatch(updateUser(form));
+        }else{
+            dispatch(createUser(form));
+        }
+        onCancel();
     }
 
     function onCancel() {

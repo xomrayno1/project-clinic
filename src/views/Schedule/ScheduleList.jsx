@@ -56,7 +56,6 @@ function ScheduleList(props) {
                         </CardHeader>
                         <CardBody>
                             <Row>
-                              
                                 <Col md="12"    >
                                     <ScheduleSearch handleSearch={handleSearch} />
                                 </Col>

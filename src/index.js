@@ -9,24 +9,16 @@ import "assets/scss/paper-dashboard.scss?v=1.2.0";
 import "assets/demo/demo.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import 'antd/dist/antd.css';
-import AdminLayout from "layouts/Admin.js";
-import Login from "components/Auth/Login";
-import Register from 'components/Auth/Register'
-import {Provider} from 'react-redux'
+import App from 'App'
+import {Provider, useSelector} from 'react-redux'
 import store from './redux/store'
 
 const hist = createBrowserHistory();
-
+ 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={hist}>
-      <Switch>
-        <Route  path="/login"  render={() => <Login/> }/>
-        <Route  path="/register" render={() => <Register/> } />
-        <Route  path="/admin" render={(props) => <AdminLayout {...props} />} />
-        {/* <Redirect to="/admin/dashboard" /> */}
-        <Redirect to="/login" from="/logout"/>
-      </Switch>
+        <App/>
     </Router>
   </Provider>,
   document.getElementById("root")
