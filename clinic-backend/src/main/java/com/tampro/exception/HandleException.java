@@ -37,7 +37,6 @@ public class HandleException extends ResponseEntityExceptionHandler{
 			 });
 			 errorDetails.setFieldErrors(field);
 		 }
-		  System.out.println("dda vao");
 		return new ResponseEntity<Object>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
 	@Override
@@ -65,7 +64,7 @@ public class HandleException extends ResponseEntityExceptionHandler{
 	private ResponseEntity<ErrorDetails> handleApplicationException(ApplicationException ae,
 			WebRequest request){
 		ErrorDetails errorDetails = 
-				new ErrorDetails(ae.getMsg(), new Date(), ae.getStatus().value(),request.getDescription(false) );
+				new ErrorDetails(ae.getMsg().toString(), new Date(), ae.getStatus().value(),request.getDescription(false) );
 		return new ResponseEntity<ErrorDetails>(errorDetails,ae.getStatus());
 	}
 	

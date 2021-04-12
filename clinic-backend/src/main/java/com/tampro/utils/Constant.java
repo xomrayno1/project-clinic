@@ -42,4 +42,9 @@ public class Constant {
 	public static final int ROLE_ADMIN = 1;
 	public static final int ROLE_DOCTOR = 2;
 	public static final int ROLE_PATIENT = 3;
+	
+	//Gender
+	
+	public static final int GENDER_MALE = 0;
+	public static final int GENDER_FEMALE = 1;
 }

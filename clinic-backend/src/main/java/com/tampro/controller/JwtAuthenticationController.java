@@ -86,10 +86,14 @@ public class JwtAuthenticationController {
 
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
-
+        
+        Users users = userService.findByUsername(userDetails.getUsername());
+        
         final String token = jwtTokenUtil.generateToken(userDetails);
  
-        return ResponseEntity.ok(new JwtResponse(token
+        return ResponseEntity.ok(new JwtResponse(
+        		users.getId()
+        		,token
         		,userDetails.getUsername()
         		,userDetails.getAuthorities().toArray()
         		));

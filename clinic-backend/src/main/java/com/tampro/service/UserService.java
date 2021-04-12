@@ -24,5 +24,7 @@ public interface UserService {
 	
 	boolean isExistUsername(String username);
 	
+	Users findByUsername(String username);
+	
 	List<Users> findAll();
 }

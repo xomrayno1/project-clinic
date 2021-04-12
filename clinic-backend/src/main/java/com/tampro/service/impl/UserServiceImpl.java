@@ -99,4 +99,10 @@ public class UserServiceImpl  implements UserService{
 		return userRepo.findByUsername(username) != null ? true : false;
 	}
 
+	@Override
+	public Users findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepo.findByUsername(username);
+	}
+
 }

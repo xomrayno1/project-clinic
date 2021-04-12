@@ -1,8 +1,11 @@
 package com.tampro.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +26,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tampro.entity.Doctor;
+import com.tampro.entity.Patients;
 import com.tampro.entity.Roles;
 import com.tampro.entity.Users;
 import com.tampro.exception.ApplicationException;
+import com.tampro.model.Gender;
 import com.tampro.model.Pagination;
+import com.tampro.request.DoctorRequest;
 import com.tampro.request.UserRequest;
 import com.tampro.response.APIResponse;
+import com.tampro.response.DoctorResponse;
+import com.tampro.response.PatientResponse;
 import com.tampro.response.UserResponse;
+import com.tampro.service.DoctorService;
+import com.tampro.service.PatientService;
 import com.tampro.service.UserService;
+import com.tampro.utils.ApiStatus;
 import com.tampro.utils.AppUtils;
 import com.tampro.utils.Constant;
 
@@ -37,8 +50,12 @@ import com.tampro.utils.Constant;
 @RequestMapping(Constant.API_USER)
 @CrossOrigin(Constant.CROSS_ORIGIN)
 public class UserController {
-	@Autowired
+	@Autowired 
 	UserService userService;
+	@Autowired
+	DoctorService doctorService;
+	@Autowired
+	PatientService patientService;
 
 	@GetMapping
 	public ResponseEntity<APIResponse> getAllSearchPagination(@RequestParam("search") String search,
@@ -81,7 +98,6 @@ public class UserController {
 		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
 	@GetMapping("/restore/{id}")
 	public ResponseEntity<Void> restoreUser(@PathVariable("id") long id) {
 		Users users = userService.findById(id);
@@ -95,7 +111,6 @@ public class UserController {
 		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
 	@PostMapping
 	public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
 		boolean flag = userService.isExistEmail(userRequest.getEmail());
@@ -163,6 +178,80 @@ public class UserController {
 			// TODO: handle exception
 			throw new ApplicationException("Update failed", HttpStatus.CONFLICT);
 		}
+	}
+	@GetMapping("/{username}/doctor")
+	public ResponseEntity<Object> findDoctorByUser(@PathVariable("username") String username) {
+		Users users = userService.findByUsername(username);
+		if (users == null) {
+			throw new ApplicationException("users not found exception with username : " + username, HttpStatus.NOT_FOUND);
+		}
+		Doctor doctor = doctorService.findByUsers(users);
+		if(doctor == null) {
+			return new ResponseEntity<Object>(null, HttpStatus.OK);
+		}
+		DoctorResponse doctorResponse = AppUtils.convertDoctorEntityToResponse(doctor);
+		return new ResponseEntity<Object>(doctorResponse, HttpStatus.OK);
+	}
 
+	
+	@PutMapping("/doctor")
+	public ResponseEntity<Object> updateDoctor(@RequestBody @Validated DoctorRequest doctorRequest){	 
+		Doctor doctor = doctorService.findById(doctorRequest.getId());
+		if(doctor == null) {
+			doctor = new Doctor();
+		}
+		boolean isExist = doctorService.isExist(doctorRequest.getEmail());
+		if(isExist) {
+			if(!doctor.getEmail().equals(doctorRequest.getEmail())) {
+				Map<String, Object> data = new HashMap<>();
+				data.put("code", ApiStatus.EMAIL_IS_EXIST.getCode());
+				data.put("message", ApiStatus.EMAIL_IS_EXIST.getMessage());
+				return new ResponseEntity<Object>(data,HttpStatus.CONFLICT);
+			}
+		}
+		//convert request to entity
+		doctor.setDescription(doctorRequest.getDescription());
+		doctor.setDomain(doctorRequest.getDomain());
+		doctor.setEducation(doctorRequest.getEducation());
+		doctor.setEmail(doctorRequest.getEmail());
+		doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
+		if(doctorRequest.getImageUpload() != null) {
+			try {
+				String image = AppUtils.uploadFile(doctorRequest.getImageUpload());
+				doctor.setImageUrl("upload/"+image);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		doctor.setLevel(doctorRequest.getLevel());
+		doctor.setDocName(doctorRequest.getName());
+		doctor.setPhone(doctorRequest.getPhone());
+		doctor.setAddress(doctorRequest.getAddress());
+		doctor.setCity(doctorRequest.getCity());
+		doctor.setUsers(userService.getOne(doctorRequest.getUserId()));
+		// save to database
+		doctor = doctorService.save(doctor);  
+		//convert entity to doctorResponse
+		DoctorResponse doctorResponse =  AppUtils.convertDoctorEntityToResponse(doctor);
+		//get Uri
+		return new ResponseEntity<Object>(doctorResponse,  HttpStatus.OK);
+	}
+	 
+	@GetMapping("/{username}/patients")
+	public ResponseEntity<Object> findPatientByUser(@PathVariable("username") String username) {
+		Users users = userService.findByUsername(username);
+		if (users == null) {
+			throw new ApplicationException("users not found exception with username : " + username, HttpStatus.NOT_FOUND);
+		}
+		Patients patient = patientService.findByUsers(users);
+		if(patient == null) {
+			return new ResponseEntity<Object>(null, HttpStatus.OK);
+		}
+		PatientResponse patientResponse = AppUtils.convertPatientEntityToResponse(patient);
+		return new ResponseEntity<Object>(patient, HttpStatus.OK);
 	}
 }
