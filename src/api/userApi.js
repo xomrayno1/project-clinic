@@ -27,7 +27,6 @@ const userApi  ={
         const url = "http://localhost:8080/api/v1/users/doctor";
         const {jwt,id} = auth.user;
         params.userId = id;
-        console.log(params)
         return axiosClient.put(url,params, {
             headers : { 
                 'Authorization': `Bearer ${jwt}`
@@ -37,7 +36,8 @@ const userApi  ={
     updateProfilePatient: (params) => {
         const auth =  JSON.parse(localStorage.getItem('auth'));
         const url = "http://localhost:8080/api/v1/users/patients";
-        const {jwt} = auth.user;
+        const {jwt,id} = auth.user;
+        params.userId = id;
         return axiosClient.put(url,params, {
             headers : { 
                 'Authorization': `Bearer ${jwt}`
@@ -53,25 +53,28 @@ const userApi  ={
                 'Authorization': `Bearer ${jwt}`
             },
         });
-    },findDoctorByUser: (param) => {
+    },
+    findDoctorByUser: (param) => {
         const auth =  JSON.parse(localStorage.getItem('auth'));
-        const {jwt,username} = auth.user;
-        const url = `http://localhost:8080/api/v1/users/${username}/doctor`;
+        const {jwt,id} = auth.user;
+        const url = `http://localhost:8080/api/v1/users/${id}/doctor`;
         return axiosClient.get(url,{
             headers : { 
                 'Authorization': `Bearer ${jwt}`
             },
         });
-    },findPatientByUser: (param) => {
+    },
+    findPatientByUser: () => {
         const auth =  JSON.parse(localStorage.getItem('auth'));
-        const {jwt,username} = auth.user;
-        const url = `http://localhost:8080/api/v1/users/${username}/patient`;
+        const {jwt,id} = auth.user;
+        const url = `http://localhost:8080/api/v1/users/${id}/patients`;
         return axiosClient.get(url,{
             headers : { 
                 'Authorization': `Bearer ${jwt}`
             },
         });
-    },delete : (id) => {
+    },
+    delete : (id) => {
         const auth =  JSON.parse(localStorage.getItem('auth'));
         const url = `http://localhost:8080/api/v1/users/${id}`;
         const {jwt} = auth.user;

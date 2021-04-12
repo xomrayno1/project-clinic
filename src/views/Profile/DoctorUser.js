@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import user from 'user.svg'
 import {
   Button,
@@ -12,13 +12,17 @@ import {
   Input,
   Row,
   Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "reactstrap";
 import {Formik,Form,Field,ErrorMessage} from 'formik'
 import * as Yup from 'yup';
 import Textarea from "variables/Textarea";
 import CardFooter from "reactstrap/lib/CardFooter";
 import { useDispatch } from "react-redux";
-import {getDoctorByUser, updateProfileDoctor} from '../../redux/action/userAction'
+import {getDoctorByUser, updateProfileDoctor,  setModalInfo, updateUserInfo } from '../../redux/action/userAction'
 import { useSelector } from "react-redux";
 
 import {Spin} from 'antd'
@@ -41,6 +45,20 @@ function User(props) {
     const {username} = auth.user || {username:''};
     const {profile,isLoading} = auth || {profile: '', isLoading : false}
     
+    const infoModalSchema = Yup.object({
+      email: Yup.string().required("Vui lòng nhập email"),
+      password: Yup.string().required("Vui lòng nhập mật khẩu"),
+    })
+    const modalRef = useRef();
+    const formInfoRef = useRef();
+    const [modal, setModal] = useState(false);
+    function handleClickUpdateInfo() {
+      dispatch(setModalInfo(auth.user.id || 0, formInfoRef)); 
+      setModal(!modal);
+    }
+    function onHandleUpdateUserInfo() {
+      dispatch(updateUserInfo(formInfoRef, setModal))
+    }
     
     useEffect(()=>{
       dispatch(getDoctorByUser(username,doctorProfileRef));
@@ -78,7 +96,7 @@ function User(props) {
                   </div>
                 </CardBody>
                 <CardFooter className="text-center">
-                  <Button className="btn btn-round btn-success">Đổi mật khẩu</Button>
+                  <Button onClick={handleClickUpdateInfo} className="btn btn-round btn-success">Đổi mật khẩu</Button>
                 </CardFooter>
               </Card>
             </Col>
@@ -280,6 +298,76 @@ function User(props) {
             </Col>
           </Row>
         </Spin>
+        <Modal 
+          isOpen={modal}
+          innerRef={modalRef}
+
+        >
+        <Formik
+              initialValues={{
+                username: '',
+                password: '',
+                email: '',
+                id: '',
+                roles : ''
+              }}
+              validateOnBlur={false}
+              validateOnChange={false}
+              validationSchema={infoModalSchema}
+              innerRef={formInfoRef}
+              onSubmit={onHandleUpdateUserInfo}
+            >
+              <Form id="formUpdateUser">
+          <ModalHeader>
+            Cập nhật tài khoản
+          </ModalHeader>
+          <ModalBody>
+             
+                <FormGroup>
+                  <label>Tên tài khoản</label>
+                  <Field
+                    placeholder="Tên tài khoản"
+                    type="text"
+                    name="username"
+                    className="form-control"
+                    disabled
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <label>Mật khẩu</label>
+                  <Field
+                    placeholder="Mật khẩu"
+                    type="password"
+                    name="password"
+                    className="form-control"
+                  />
+                  <ErrorMessage
+                    component="div"
+                    name="password"
+                    className="error-text" />
+                </FormGroup>
+                <FormGroup>
+                  <label>Email </label>
+                  <Field
+                    placeholder="Email"
+                    type="email"
+                    name="email"
+                    className="form-control"
+                  />
+                  <ErrorMessage
+                    component="div"
+                    name="email"
+                    className="error-text" />
+                </FormGroup>
+              
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary"  type="submit">Cập nhật</Button>{' '}
+            <Button color="secondary" onClick={() => setModal(!modal)}>Cancel</Button>
+          </ModalFooter>
+          </Form>
+          </Formik>
+        </Modal>
         </div>
       </>
     );

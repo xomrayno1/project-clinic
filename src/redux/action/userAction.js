@@ -7,7 +7,10 @@ import {
     CREATE_USER,
     GET_DOCTOR_BY_USER,
     GET_PATIENT_BY_USER,
-    UPDATE_PROFILE_DOCTOR
+    UPDATE_PROFILE_DOCTOR,
+    UPDATE_PROFILE_PATIENT,
+    SET_MODAL_INFO_USER,
+    UPDATE_USER_INFO
 }
     from '../../utils/Constant'
 
@@ -24,10 +27,15 @@ export const updateProfileDoctor = (doctorProfileRef) => {
         doctorRef: doctorProfileRef
     }
 }
-export const getPatientByUser = (data,patientProfileRef) => {
+export const getPatientByUser = (patientProfileRef) => {
     return {
         type: GET_PATIENT_BY_USER,
-        payload: data,
+        patientRef: patientProfileRef
+    }
+}
+export const updateProfilePatient = (patientProfileRef) => {
+    return {
+        type: UPDATE_PROFILE_PATIENT,
         patientRef: patientProfileRef
     }
 }
@@ -68,5 +76,20 @@ export const setStateModal = (data) => {
     return {
         type: SET_STATE_MODAL_USER,
         payload: data
+    }
+}
+
+export const setModalInfo= (data,formInfoRef) => {
+    return {
+        type: SET_MODAL_INFO_USER,
+        payload : data,
+        formInfoRef: formInfoRef
+    }
+}
+export const updateUserInfo= (formInfoRef, setModal) => {
+    return {
+        type: UPDATE_USER_INFO,
+        formInfoRef : formInfoRef,
+        setModal: setModal
     }
 }

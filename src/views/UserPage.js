@@ -8,7 +8,7 @@ function UserPage(props) {
     
     const {roles} = useSelector(state => state.auth.user) ;
     console.log(roles) ///fix chô nay
-    if(roles.includes({"authority": 'ROLE_DOCTOR'})){
+    if(roles[0].authority === 'ROLE_DOCTOR'){
         console.log("ROLE_DOCTOR")
         return (
             <DoctorUser/>
