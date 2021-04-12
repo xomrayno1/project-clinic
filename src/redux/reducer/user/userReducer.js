@@ -11,14 +11,19 @@ import {
     RESTORE_USER,
     CREATE_USER,
     CREATE_USER_SUCCESS,
-    CREATE_USER_FAILED
+    CREATE_USER_FAILED,
+
+    
+
+ 
 }
     from '../../../utils/Constant'
 const initalState = {
     users: '',
     isLoading: false,
     error: '',
-    user: ''
+    user: '',
+    
 }
 
 function userReducer(state = initalState, action) {

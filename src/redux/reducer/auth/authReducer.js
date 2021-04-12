@@ -5,25 +5,39 @@ import {
     AUTH_REGISTER,
     AUTH_REGISTER_SUCCESS,
     AUTH_REGISTER_FAILED,
-    AUTH_LOGOUT
+    AUTH_LOGOUT,
+
+    //profile
+    GET_DOCTOR_BY_USER,
+    GET_DOCTOR_BY_USER_SUCCESS,
+    GET_DOCTOR_BY_USER_FAILED,
+    GET_PATIENT_BY_USER,
+    GET_PATIENT_BY_USER_SUCCESS,
+    GET_PATIENT_BY_USER_FAILED,
+
+    UPDATE_PROFILE_DOCTOR,
+    UPDATE_PROFILE_DOCTOR_SUCCESS,
+    UPDATE_PROFILE_DOCTOR_FAILED
 } from '../../../utils/Constant'
 
 const initalState = {
-    isLoading : false,
-    isLogin : false,
-    user : {
-        username : '',
-        roles : [],
+    isLoading: false,
+    isLogin: false,
+    user: {
+        username: '',
+        roles: [],
+        id: ''
     },
-    error : ''
+    profile: '',
+    error: ''
 }
-const  getAuthState = () => {
-    console.log("authh");
+const getAuthState = () => {
+
     const auth = localStorage.getItem("auth");
     try {
         const authObject = JSON.parse(auth);
-         
-        if(authObject){
+
+        if (authObject) {
             // const {isLogin,username,roles} = authObject;
             // return {
             //     isLoading : false,
@@ -42,7 +56,7 @@ const  getAuthState = () => {
     }
 }
 const newsState = getAuthState();
- 
+
 function authReducer(state = newsState, action) {
     const { type, payload } = action;
     switch (type) {
@@ -57,10 +71,11 @@ function authReducer(state = newsState, action) {
                 isLoading: false,
                 user: {
                     username: payload.username,
-                    roles : payload.roles,
+                    roles: payload.roles,
+                    id: payload.id
                 },
-                isLogin : true
-                
+                isLogin: true
+
             }
         case AUTH_LOGIN_FAILED:
             return {
@@ -78,7 +93,7 @@ function authReducer(state = newsState, action) {
                 ...state,
                 isLoading: false,
             }
-        case AUTH_REGISTER_FAILED: 
+        case AUTH_REGISTER_FAILED:
             return {
                 ...state,
                 isLoading: false,
@@ -86,14 +101,66 @@ function authReducer(state = newsState, action) {
             }
         case AUTH_LOGOUT:
             return {
-                isLoading : false,
-                isLogin : false,
-                user : {
-                    username : '',
-                    roles : [],
-                    jwt : '',
+                isLoading: false,
+                isLogin: false,
+                user: {
+                    username: '',
+                    roles: [],
+                    jwt: '',
+                    id: ''
                 },
-                error : ''
+                error: ''
+            }
+        case GET_DOCTOR_BY_USER:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case GET_DOCTOR_BY_USER_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                profile: payload
+            }
+        case GET_DOCTOR_BY_USER_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
+        case GET_PATIENT_BY_USER:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case GET_PATIENT_BY_USER_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                profile: payload
+            }
+        case GET_PATIENT_BY_USER_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
+        case UPDATE_PROFILE_DOCTOR:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case UPDATE_PROFILE_DOCTOR_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                profile: payload
+            }
+        case UPDATE_PROFILE_DOCTOR_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
             }
         default:
             return state;

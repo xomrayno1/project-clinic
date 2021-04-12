@@ -1,7 +1,7 @@
  
 import Dashboard from "views/Dashboard.js";
 import Icons from "views/Icons.js"; 
-import UserPage from "views/User.js";
+ 
 import DoctorList from "views/Doctor/DoctorList";
 import PatientList from "views/Patient/PatientList";
 import ResultList from "views/Result/ResultList";
@@ -10,6 +10,7 @@ import Booking from "views/Booking/Booking";
 import BookingNext from "views/Booking/BookingNext";
 import ScheduleList from "views/Schedule/ScheduleList";
 import BookingList from "views/Booking/BookingList";
+import UserPage from "views/UserPage";
 
 var routes = [
   {
@@ -77,14 +78,13 @@ var routes = [
     component: Icons,
     layout: "/admin",
     roles : ['ROLE_ADMIN','ROLE_DOCTOR','ROLE_PATIENT']
-     
   },{
     path: "/user-page",
     name: "Thông tin cá nhân",
     icon: "nc-icon nc-single-02",
     component: UserPage,
     layout: "/admin",
-    roles : ['ROLE_ADMIN','ROLE_DOCTOR','ROLE_PATIENT']
+    roles : ['ROLE_DOCTOR','ROLE_PATIENT']
   } 
 ];
 export default routes;

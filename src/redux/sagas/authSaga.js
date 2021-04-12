@@ -21,6 +21,7 @@ function* login({payload}){
                 username: response.username,
                 roles : response.roles,
                 jwt : response.token,
+                id: response.id
             }
         }
         localStorage.setItem('auth',JSON.stringify(auth));

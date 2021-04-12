@@ -27,7 +27,7 @@ export default function Register(props) {
     const registerRef = useRef();
   
     function handleOnSubmit(){
-        dispatch(registerAction(registerRef))
+        dispatch(registerAction(registerRef)) // add promise
     }
     
  

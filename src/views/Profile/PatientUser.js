@@ -1,6 +1,6 @@
 
-import React from "react";
-
+import React, { useEffect, useRef } from "react";
+import user from 'user.svg'
 import {
   Button,
   Card,
@@ -16,10 +16,14 @@ import {
 import {Formik,Form,Field,ErrorMessage} from 'formik'
 import * as Yup from 'yup';
 import Textarea from "variables/Textarea";
+import CardFooter from "reactstrap/lib/CardFooter";
+import { useDispatch } from "react-redux";
+import {getDoctorByUser, updateProfileDoctor} from '../../redux/action/userAction'
+import { useSelector } from "react-redux";
 
+import {Spin} from 'antd'
 
-function User(props) {
-
+function PatientUser(props) {
     const doctorProfileSchema = Yup.object({
       name : Yup.string().required("Vui lòng nhập tên"),
       email : Yup.string().required("Vui lòng nhập email"),
@@ -31,17 +35,33 @@ function User(props) {
       address: Yup.string().required("Vui lòng nhập địa chỉ"),
       city: Yup.string().required("Vui lòng nhập thành phố"),
     })
-   
+    const doctorProfileRef= useRef();
+    const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth);
+    const {username} = auth.user || {username:''};
+    const {profile,isLoading} = auth || {profile: '', isLoading : false}
+    
+    
+    useEffect(()=>{
+      dispatch(getDoctorByUser(username,doctorProfileRef));
+    },[]);
+
+    function handleOnSubmit(){
+      dispatch(updateProfileDoctor(doctorProfileRef));
+    }
+
     return (
       <>
+      
         <div className="content">
+        <Spin spinning={isLoading}> 
           <Row>
             <Col md="4">
               <Card className="card-user">
                 <div className="image">
                   <img
                     alt="..."
-                    src={require("assets/img/damir-bosnjak.jpg")}
+                    src={require("background-avatar.jpg")}
                   />
                 </div>
                 <CardBody>
@@ -50,42 +70,46 @@ function User(props) {
                       <img
                         alt="..."
                         className="avatar border-gray"
-                        src={require("assets/img/mike.jpg")}
+                        src={profile && profile.imageUrl && `http://localhost:8080/${profile.imageUrl }` || user}
                       />
-                      <h5 className="title">Chet Faker</h5>
+                      <h5 className="title">{profile && profile.name || ''}</h5>
                     </a>
-                    <p className="description">@chetfaker</p>
+                    <p className="description">{profile && profile.email || ''}</p>
                   </div>
                 </CardBody>
+                <CardFooter className="text-center">
+                  <Button className="btn btn-round btn-success">Đổi mật khẩu</Button>
+                </CardFooter>
               </Card>
             </Col>
             <Col md="8">
               <Card className="card-user">
                 <CardHeader>
-                  <CardTitle tag="h5">Chỉnh sửa thông tin   </CardTitle>
+                  <CardTitle tag="h5">Chỉnh sửa thông tin  </CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Formik 
                       initialValues={{
-                          name : '',
-                          email : '',
+                          name:   '', 
+                          email :'', 
                           phone: '',
                           gender: 'male',
-                          description: '',
+                          description:  '',
                           domain: '',
                           education: '',
-                          level: '',
-                          address: '',
-                          city: ''
+                          level:  '',
+                          address:  '',
+                          city:  '',
                       }}
-                      onSubmit={(data)=> console.log(data)}
+                      innerRef={doctorProfileRef}
+                      onSubmit={handleOnSubmit}
                       validationSchema={doctorProfileSchema}
                       validateOnBlur={false}
                       validateOnChange={false}
                   > 
                     <Form>
                       <Row>
-                        <Col className="pr-1" md="5">
+                        <Col className="pr-1" md="4">
                           <FormGroup>
                             <label>Tên</label>
                             <Field
@@ -100,7 +124,7 @@ function User(props) {
                               className="error-text" />
                           </FormGroup>
                         </Col>
-                        <Col className="px-1" md="3">
+                        <Col className="px-1" md="4">
                           <FormGroup>
                             <label>Email</label>
                             <Field 
@@ -133,38 +157,7 @@ function User(props) {
                           </FormGroup>
                         </Col>
                       </Row>
-                      <Row>
-                        <Col className="pr-1" md="6">
-                          <FormGroup>
-                            <label>Chuyên ngành</label>
-                            <Field
-                              placeholder="Chuyên ngành"
-                              type="text"
-                              className="form-control"
-                              name="domain"
-                            />
-                            <ErrorMessage 
-                              component="div" 
-                              name="domain" 
-                              className="error-text" />
-                          </FormGroup>
-                        </Col>
-                        <Col className="pl-1" md="6">
-                          <FormGroup>
-                            <label>Tốt nghiệp</label>
-                            <Field
-                              placeholder="Tốt nghiệp"
-                              type="text"
-                              className="form-control"
-                              name="education"
-                            />
-                            <ErrorMessage 
-                              component="div" 
-                              name="education" 
-                              className="error-text" />
-                          </FormGroup>
-                        </Col>
-                      </Row>
+                      
                       <Row>
                         <Col className="pr-1" md="6">
                           <FormGroup check>
@@ -179,21 +172,7 @@ function User(props) {
                               </div>  
                           </FormGroup>
                         </Col>
-                        <Col md="6">
-                          <FormGroup>
-                            <label>Trình độ</label>
-                            <Field
-                              placeholder="Trình độ học vấn"
-                              type="text"
-                              name="level"
-                              className="form-control"
-                            />
-                            <ErrorMessage 
-                              component="div" 
-                              name="level" 
-                              className="error-text" />
-                          </FormGroup>
-                        </Col>
+                     
                       </Row>
                       <Row>
                         <Col className="pr-1" md="4">
@@ -255,9 +234,10 @@ function User(props) {
               </Card>
             </Col>
           </Row>
+        </Spin>
         </div>
       </>
     );
   }
 
-export default User;
+export default PatientUser;
