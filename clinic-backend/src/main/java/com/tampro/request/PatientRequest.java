@@ -7,15 +7,15 @@ import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 public class PatientRequest {
-	private Long id;
+	private long id;
 	@NotBlank(message = "Vui lòng nhập tên!")
-	@Size(max = 3, min = 16, message = "Tên của bạn từ 3 - 16 kí tự")
+	@Size(max = 16, min = 3, message = "Tên của bạn từ 3 - 16 kí tự")
 	private String name;
 	@NotBlank(message = "Vui lòng nhập email!")
 	@Email(message = "Vui lòng định dạng email")
 	private String email;
 	@NotBlank(message = "Vui lòng nhập số điện thoại!")
-	@Size(max = 8, min = 12, message = "Số điện thoại từ 8 - 12 kí tự")
+	@Size(max = 12, min = 8, message = "Số điện thoại từ 8 - 12 kí tự")
 	private String phone;
 	@NotBlank(message = "Vui lòng nhập giới tính!")
 	private String gender;
@@ -23,7 +23,7 @@ public class PatientRequest {
 	private String description;
 	private Long userId;
 	@NotBlank(message = "Vui lòng nhập địa chỉ!")
-	@Size(max = 3, min = 20, message = "Địa chỉ từ 5 - 40 kí tự")
+	@Size(max = 40, min = 5, message = "Địa chỉ từ 5 - 40 kí tự")
 	private String address;
 	public Long getId() {
 		return id;

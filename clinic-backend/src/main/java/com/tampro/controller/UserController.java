@@ -1,6 +1,5 @@
 package com.tampro.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +33,7 @@ import com.tampro.exception.ApplicationException;
 import com.tampro.model.Gender;
 import com.tampro.model.Pagination;
 import com.tampro.request.DoctorRequest;
+import com.tampro.request.PatientRequest;
 import com.tampro.request.UserRequest;
 import com.tampro.response.APIResponse;
 import com.tampro.response.DoctorResponse;
@@ -143,7 +143,7 @@ public class UserController {
 
 	}
 	@PutMapping
-	public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest userRequest) {
+	public ResponseEntity<Object> updateUser(@RequestBody UserRequest userRequest) {
 		Users users = userService.findById(userRequest.getId());
 		if(users == null) {
 			throw new ApplicationException("user not found with id : "+ userRequest.getId(), HttpStatus.NOT_FOUND);
@@ -151,18 +151,26 @@ public class UserController {
 		boolean flag = userService.isExistEmail(userRequest.getEmail());
 		if (flag) {
 			if(!users.getEmail().equals(userRequest.getEmail())) {
-				throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+				Map<String, Object> data = new HashMap<>();
+				data.put("code", ApiStatus.EMAIL_IS_EXIST.getCode());
+				data.put("message", ApiStatus.EMAIL_IS_EXIST.getMessage());
+				return new ResponseEntity<Object>(data, HttpStatus.CONFLICT);
 			} 
 		}
 		flag = userService.isExistUsername(userRequest.getUsername());
 		if (flag) {
 			if(!users.getUsername().equals(userRequest.getUsername())) {
-				throw new ApplicationException("Username is exist", HttpStatus.CONFLICT);
+				Map<String, Object> data = new HashMap<>();
+				data.put("code", ApiStatus.USERNAME_IS_EXIST.getCode());
+				data.put("message", ApiStatus.USERNAME_IS_EXIST.getMessage());
+				return new ResponseEntity<Object>(data, HttpStatus.CONFLICT);
 			} 
 		}
 		try {
+			 
 			users.setEmail(userRequest.getEmail());
 			users.setPassword(userRequest.getPassword());
+		 
 			Set<Roles> roles = new HashSet<>();
 			for (Long id : userRequest.getRoles()) {
 				Roles role = new Roles(id);
@@ -173,25 +181,13 @@ public class UserController {
 			users.setUsername(userRequest.getUsername());
 			users = userService.save(users);
 			UserResponse userResponse = AppUtils.convertUserEntityToResponse(users);
-			return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+			return new ResponseEntity<Object>(userResponse, HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new ApplicationException("Update failed", HttpStatus.CONFLICT);
+			throw new ApplicationException("Update failed", HttpStatus.BAD_REQUEST);
 		}
 	}
-	@GetMapping("/{username}/doctor")
-	public ResponseEntity<Object> findDoctorByUser(@PathVariable("username") String username) {
-		Users users = userService.findByUsername(username);
-		if (users == null) {
-			throw new ApplicationException("users not found exception with username : " + username, HttpStatus.NOT_FOUND);
-		}
-		Doctor doctor = doctorService.findByUsers(users);
-		if(doctor == null) {
-			return new ResponseEntity<Object>(null, HttpStatus.OK);
-		}
-		DoctorResponse doctorResponse = AppUtils.convertDoctorEntityToResponse(doctor);
-		return new ResponseEntity<Object>(doctorResponse, HttpStatus.OK);
-	}
+ 
 
 	
 	@PutMapping("/doctor")
@@ -215,18 +211,7 @@ public class UserController {
 		doctor.setEducation(doctorRequest.getEducation());
 		doctor.setEmail(doctorRequest.getEmail());
 		doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
-		if(doctorRequest.getImageUpload() != null) {
-			try {
-				String image = AppUtils.uploadFile(doctorRequest.getImageUpload());
-				doctor.setImageUrl("upload/"+image);
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+ 
 		doctor.setLevel(doctorRequest.getLevel());
 		doctor.setDocName(doctorRequest.getName());
 		doctor.setPhone(doctorRequest.getPhone());
@@ -240,18 +225,60 @@ public class UserController {
 		//get Uri
 		return new ResponseEntity<Object>(doctorResponse,  HttpStatus.OK);
 	}
-	 
-	@GetMapping("/{username}/patients")
-	public ResponseEntity<Object> findPatientByUser(@PathVariable("username") String username) {
-		Users users = userService.findByUsername(username);
+	@PutMapping("/patients")
+	public ResponseEntity<Object> updateProfilePatient(@RequestBody @Validated PatientRequest patientRequest){	 
+		Patients patients = patientService.findById(patientRequest.getId());
+		if(patients == null) {
+			patients = new Patients();
+		}
+		boolean isExist = doctorService.isExist(patientRequest.getEmail());
+		if(isExist) {
+			if(!patients.getEmail().equals(patientRequest.getEmail())) {
+				Map<String, Object> data = new HashMap<>();
+				data.put("code", ApiStatus.EMAIL_IS_EXIST.getCode());
+				data.put("message", ApiStatus.EMAIL_IS_EXIST.getMessage());
+				return new ResponseEntity<Object>(data,HttpStatus.CONFLICT);
+			}
+		}
+		//convert request to entity
+		patients.setDescription(patientRequest.getDescription());
+		patients.setEmail(patientRequest.getEmail());
+		patients.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
+		patients.setPatiName(patientRequest.getName());
+		patients.setPhone(patientRequest.getPhone());
+		patients.setAddress(patientRequest.getAddress());
+		patients.setUsers(userService.getOne(patientRequest.getUserId()));
+		// save to database
+		patients = patientService.save(patients);  
+		//convert entity to doctorResponse
+		PatientResponse patientResponse =  AppUtils.convertPatientEntityToResponse(patients);
+		//get Uri
+		return new ResponseEntity<Object>(patientResponse,  HttpStatus.OK);
+	}
+	@GetMapping("/{id}/doctor")
+	public ResponseEntity<Object> findDoctorByUser(@PathVariable("id") long id) {
+		Users users = userService.findById(id);
 		if (users == null) {
-			throw new ApplicationException("users not found exception with username : " + username, HttpStatus.NOT_FOUND);
+			throw new ApplicationException("users not found exception with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		Doctor doctor = doctorService.findByUsers(users);
+		if(doctor == null) {
+			return new ResponseEntity<Object>(null, HttpStatus.OK);
+		}
+		DoctorResponse doctorResponse = AppUtils.convertDoctorEntityToResponse(doctor);
+		return new ResponseEntity<Object>(doctorResponse, HttpStatus.OK);
+	}
+	@GetMapping("/{id}/patients")
+	public ResponseEntity<Object> findPatientByUser(@PathVariable("id") long id) {
+		Users users = userService.findById(id);
+		if (users == null) {
+			throw new ApplicationException("users not found exception with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		Patients patient = patientService.findByUsers(users);
 		if(patient == null) {
 			return new ResponseEntity<Object>(null, HttpStatus.OK);
 		}
 		PatientResponse patientResponse = AppUtils.convertPatientEntityToResponse(patient);
-		return new ResponseEntity<Object>(patient, HttpStatus.OK);
+		return new ResponseEntity<Object>(patientResponse, HttpStatus.OK);
 	}
 }
