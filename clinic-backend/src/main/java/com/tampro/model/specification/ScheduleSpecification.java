@@ -11,11 +11,16 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
 import com.tampro.entity.Schedule;
+import com.tampro.repository.PatientRepository;
+import com.tampro.service.PatientService;
+import com.tampro.service.impl.PatientServiceImpl;
  
 public class ScheduleSpecification implements Specification<Schedule> {
 	/**
@@ -27,16 +32,34 @@ public class ScheduleSpecification implements Specification<Schedule> {
 	private final Date dateFrom;
 	private final int type;
 	private final int status;
+	private final String key; //doctor  , patient  
+	private final long keyId; //doctorId patient id
 	
-	public ScheduleSpecification(String searchKey, Date dateTo, Date dateFrom, int type, int status) {
+	 
+	
+	public ScheduleSpecification(String searchKey, Date dateFrom, Date dateTo, int type, int status, String key,
+			long keyId) {
+		super();
 		this.searchKey = searchKey;
 		this.dateTo = dateTo;
 		this.dateFrom = dateFrom;
 		this.type = type;
 		this.status = status;
+		this.key = key;
+		this.keyId = keyId;
+	}
+
+
+	public ScheduleSpecification(String searchKey, Date dateFrom, Date dateTo, int type, int status) {
+		this.searchKey = searchKey;
+		this.dateTo = dateTo;
+		this.dateFrom = dateFrom;
+		this.type = type;
+		this.status = status;
+		this.key = "";
+		this.keyId = 0;
 	}
 	 
-	
 	@Override
 	public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder criteriaBuilder) {
 		// TODO Auto-generated method stub
@@ -64,8 +87,7 @@ public class ScheduleSpecification implements Specification<Schedule> {
 		//where name is the name of the SQL function, type is the expected return type and args is a variable list of arguments (if any).
 		//Here is an example how to use it in a Criteria query:
 		//link : https://stackoverflow.com/questions/40007354/jpa-criteria-api-how-to-retrieve-date-in-mm-dd-yyyy-format
-		
-		
+ 
 		if(type != 0) {
 			Predicate preType = criteriaBuilder.equal(root.get("type"), type);
 			predicates.add(preType);
@@ -74,6 +96,18 @@ public class ScheduleSpecification implements Specification<Schedule> {
 			Predicate preStatus = criteriaBuilder.equal(root.get("status"), status);
 			predicates.add(preStatus);
 		}
+		if(key != null && !key.trim().isEmpty() && keyId != 0) {
+			Predicate predicate;
+			 if(key.equals("doctor")){ //user id
+				 predicate = criteriaBuilder.equal(doctor.get("users"), keyId);
+				 predicates.add(predicate);
+			 }else if(key.equals("patient")){
+				 predicate = criteriaBuilder.equal(patient.get("users"),  keyId);
+				 predicates.add(predicate);
+			 }	  
+		}
+		 
+		query.orderBy(criteriaBuilder.asc(root.get("status")));		
 		Predicate preActive = criteriaBuilder.equal(root.get("activeFlag"),  1);
 		predicates.add(preActive);
 		

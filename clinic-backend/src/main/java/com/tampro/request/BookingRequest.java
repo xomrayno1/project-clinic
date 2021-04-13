@@ -1,17 +1,18 @@
 package com.tampro.request;
 
 public class BookingRequest {
-	private Long id;
+	private long id;
 	private String time;
-	private Long patientId;
-	private Long doctorId;
+	private long userId;// userId 
+	private long doctorId;
 	private String type; // tái khám hay không
 	private String reason;
 	
-	public Long getId() {
+	
+	public long getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getTime() {
@@ -20,16 +21,11 @@ public class BookingRequest {
 	public void setTime(String time) {
 		this.time = time;
 	}
-	public Long getPatientId() {
-		return patientId;
-	}
-	public void setPatientId(Long patientId) {
-		this.patientId = patientId;
-	}
-	public Long getDoctorId() {
+	 
+	public long getDoctorId() {
 		return doctorId;
 	}
-	public void setDoctorId(Long doctorId) {
+	public void setDoctorId(long doctorId) {
 		this.doctorId = doctorId;
 	}
 	public String getType() {
@@ -43,6 +39,12 @@ public class BookingRequest {
 	}
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 	
 	

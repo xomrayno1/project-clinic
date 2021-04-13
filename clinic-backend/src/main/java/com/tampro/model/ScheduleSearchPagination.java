@@ -16,6 +16,8 @@ public class ScheduleSearchPagination implements Serializable{
 	private int type;
 	private Integer page;
 	private Integer limit;
+	private String key;
+	private int keyId;
 	
 	public String getKeySearch() {
 		return keySearch;
@@ -59,10 +61,21 @@ public class ScheduleSearchPagination implements Serializable{
 	public void setType(int type) {
 		this.type = type;
 	}
-	@Override
-	public String toString() {
-		return "ScheduleSearchPagination [keySearch=" + keySearch + ", dateTo=" + dateTo + ", dateFrom=" + dateFrom
-				+ ", status=" + status + ", type=" + type + ", page=" + page + ", limit=" + limit + "]";
+	 
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public int getKeyId() {
+		return keyId;
+	}
+	public void setKeyId(int keyId) {
+		this.keyId = keyId;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	

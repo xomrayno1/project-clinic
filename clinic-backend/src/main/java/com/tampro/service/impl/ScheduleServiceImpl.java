@@ -10,9 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tampro.entity.Schedule;
-import com.tampro.model.BookingSearch;
-import com.tampro.model.ScheduleSearch;
-import com.tampro.model.specification.BookingSpecification;
+import com.tampro.model.search.ScheduleSearch;
 import com.tampro.model.specification.ScheduleSpecification;
 import com.tampro.repository.ScheduleRepository;
 import com.tampro.service.ScheduleService;
@@ -29,10 +27,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return  scheduleRepo.findAll(
 				 new ScheduleSpecification(
 						 	scheduleSearch.getKeySearch(),					 	 
-						 	scheduleSearch.getDateTo(),
 						 	scheduleSearch.getDateFrom(),
+						 	scheduleSearch.getDateTo(),
 						 	scheduleSearch.getType(),
-						 	scheduleSearch.getStatus()
+						 	scheduleSearch.getStatus(),
+						 	scheduleSearch.getKey(),
+						 	scheduleSearch.getKeyId()
 						 ),	pageable
 				 );
 	}
@@ -67,20 +67,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return scheduleRepo.findById(id).orElse(null);
 	}
 
-	@Override
-	public Page<Schedule> findAllSchedulePaginationFilterAndPatientId(BookingSearch bookingSearch, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return  scheduleRepo.findAll(
-				 new BookingSpecification(
-						 bookingSearch.getKeySearch(),					 	 
-						 bookingSearch.getDateTo(),
-						 bookingSearch.getDateFrom(),
-						 bookingSearch.getPatientId(),
-						 bookingSearch.getStatus()
-						 ),	pageable
-				 );
-	}
-
+ 
 	@Override
 	public void delete(Schedule schedule) {
 		// TODO Auto-generated method stub

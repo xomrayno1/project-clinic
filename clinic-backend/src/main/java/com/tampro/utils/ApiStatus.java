@@ -3,7 +3,8 @@ package com.tampro.utils;
 public enum ApiStatus {
 	
 	EMAIL_IS_EXIST(303, "Email is exist"),
-	USERNAME_IS_EXIST(304, "Username is exist");
+	USERNAME_IS_EXIST(304, "Username is exist"),
+	UNREGISTED_INFO(350, "Bệnh nhân chưa đăng ký thông tin");
 
 	private int code;
 	private String message;

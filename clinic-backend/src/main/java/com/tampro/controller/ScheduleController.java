@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tampro.entity.Schedule;
 import com.tampro.exception.ApplicationException;
 import com.tampro.model.Pagination;
-import com.tampro.model.ScheduleSearch;
 import com.tampro.model.ScheduleSearchPagination;
+import com.tampro.model.search.ScheduleSearch;
 import com.tampro.response.APIResponse;
 import com.tampro.response.ScheduleResponse;
 import com.tampro.service.ScheduleService;
@@ -43,10 +43,11 @@ public class ScheduleController {
 	public ResponseEntity<APIResponse> findAllSearchFilterPagination(
 			@RequestBody ScheduleSearchPagination ssp
 			){
- 
 		Pageable pageable =	PageRequest.of(ssp.getPage() - 1, ssp.getLimit());
 		Page<Schedule> pageData = scheduleService.findAllSchedulePaginationFilter(
-				new ScheduleSearch(ssp.getKeySearch(),ssp.getDateFrom()  ,ssp.getDateTo() , ssp.getType(), ssp.getStatus())
+				new ScheduleSearch(ssp.getKeySearch(),ssp.getDateFrom() 
+						,ssp.getDateTo() , ssp.getType(), ssp.getStatus()
+						,ssp.getKeyId(),ssp.getKey())
 				, pageable);
 		List<ScheduleResponse> data = new ArrayList<ScheduleResponse>();
 		for(Schedule schedule  : pageData.getContent()) {

@@ -22,6 +22,9 @@ public class Constant {
 	public static final String API_BOOKING = API_PREFIX + "/booking";
 	public static final String API_GET_BOOKING_FILTER_PAGINATION = API_PREFIX + "/booking/search_filter_pagination";
 	
+	public static final String API_GET_SCHEDULE_PATIENT_FILTER_PAGINATION = API_PREFIX + "/schedules/search_patient_filter_pagination";
+	public static final String API_GET_SCHEDULE_DOCTOR_FILTER_PAGINATION = API_PREFIX + "/schedules/search_doctor_filter_pagination";
+	
 	public static final String UPLOAD_IMAGE = "C:\\Users\\Administrator\\git\\project-clinic\\clinic-backend\\src\\main\\resources\\static\\upload\\";
 	 
 	public static final int ACTIVE = 1;

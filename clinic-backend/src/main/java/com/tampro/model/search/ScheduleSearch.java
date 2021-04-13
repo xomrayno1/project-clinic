@@ -1,4 +1,4 @@
-package com.tampro.model;
+package com.tampro.model.search;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +15,8 @@ public class ScheduleSearch implements Serializable{
 	private Date dateFrom;
 	private int type;
 	private int status;
-	
+	private int keyId;
+	private String key;
 	
 	
 	
@@ -23,14 +24,27 @@ public class ScheduleSearch implements Serializable{
 	public ScheduleSearch() {
 		 
 	}
+	 
 	public ScheduleSearch(String keySearch, Date dateFrom, Date dateTo, int type, int status) {
-		 
+	 
 		this.keySearch = keySearch;
 		this.dateTo = dateTo;
 		this.dateFrom = dateFrom;
 		this.type = type;
 		this.status = status;
 	}
+
+	public ScheduleSearch(String keySearch, Date dateFrom, Date dateTo, int type, int status, int keyId, String key) {
+	 
+		this.keySearch = keySearch;
+		this.dateTo = dateTo;
+		this.dateFrom = dateFrom;
+		this.type = type;
+		this.status = status;
+		this.keyId = keyId;
+		this.key = key;
+	}
+
 	public int getType() {
 		return type;
 	}
@@ -60,6 +74,21 @@ public class ScheduleSearch implements Serializable{
 	}
 	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
+	}
+	public int getKeyId() {
+		return keyId;
+	}
+	public void setKeyId(int keyId) {
+		this.keyId = keyId;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	

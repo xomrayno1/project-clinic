@@ -26,10 +26,10 @@ public class AppUtils {
 	}
 	public static ScheduleResponse convertScheduleEntityToResponse(Schedule schedule) {
 		ScheduleResponse infoResponse = new ScheduleResponse();
-		infoResponse.setDoctorId(schedule.getDoctor().getId());
+		infoResponse.setDoctorId(schedule.getDoctor().getDocId());
 		infoResponse.setDoctorName(schedule.getDoctor().getDocName());
 		infoResponse.setId(schedule.getId());
-		infoResponse.setPatientId(schedule.getPatients().getId());
+		infoResponse.setPatientId(schedule.getPatients().getPatiId());
 		infoResponse.setPatientName(schedule.getPatients().getPatiName());
 		infoResponse.setReason(schedule.getReason());
 		infoResponse.setStatus(schedule.getStatus());
@@ -45,7 +45,7 @@ public class AppUtils {
 		doctorResponse.setEducation(doctor.getEducation());
 		doctorResponse.setEmail(doctor.getEmail());
 		doctorResponse.setGender(doctor.getGender().getGenderName());
-		doctorResponse.setId(doctor.getId());
+		doctorResponse.setId(doctor.getDocId());
 		doctorResponse.setImageUrl(doctor.getImageUrl());
 		doctorResponse.setLevel(doctor.getLevel());
 		doctorResponse.setName(doctor.getDocName());
@@ -64,7 +64,7 @@ public class AppUtils {
 		patientResponse.setDescription(patient.getDescription());	 
 		patientResponse.setEmail(patient.getEmail());
 		patientResponse.setGender(patient.getGender().getGenderName());
-		patientResponse.setId(patient.getId());
+		patientResponse.setId(patient.getPatiId());
 		patientResponse.setImageUrl(patient.getImageUrl());
 		patientResponse.setName(patient.getPatiName());
 		patientResponse.setPhone(patient.getPhone());

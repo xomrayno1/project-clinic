@@ -27,6 +27,16 @@ public class Users  extends BaseEntity{
 			)	
 	private Set<Roles> roles ;
 	
+	
+	
+	
+	public Users(Long id) {
+		super();
+		this.id = id;
+	}
+	public Users() {
+		super();
+	}
 	public Long getId() {
 		return id;
 	}

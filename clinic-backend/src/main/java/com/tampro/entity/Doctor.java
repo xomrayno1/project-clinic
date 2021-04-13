@@ -14,7 +14,8 @@ import com.tampro.model.Gender;
 public class Doctor extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name="id")
+	private Long docId;
 	@Column(name = "name")
 	private String docName;
 	private String email;
@@ -33,14 +34,14 @@ public class Doctor extends BaseEntity{
 	private String city;
 
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	 
  
+	public Long getDocId() {
+		return docId;
+	}
+	public void setDocId(Long docId) {
+		this.docId = docId;
+	}
 	public String getDocName() {
 		return docName;
 	}
