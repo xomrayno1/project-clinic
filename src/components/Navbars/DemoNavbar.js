@@ -37,7 +37,7 @@ function Header(props){
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
   const rolesUser = auth.user.roles;
-  
+  console.log(rolesUser)
   function toggle() {
     if (isOpen) {
       setColor("transparent")
@@ -156,11 +156,15 @@ function Header(props){
                   </p>
                 </DropdownToggle>
                 <DropdownMenu right >
-                  <Link to="/admin/user-page">
-                    <DropdownItem    >
-                      Thông tin cá nhân
-                    </DropdownItem>
-                  </Link>
+                    {
+                      rolesUser[0].authority.includes('ROLE_ADMIN') ? null : (
+                        <Link to="/admin/user-page">
+                        <DropdownItem    >
+                          Thông tin cá nhân
+                        </DropdownItem>
+                      </Link>
+                      )
+                    }
                     <DropdownItem onClick={handleLogout}>
                         Thoát
                     </DropdownItem>

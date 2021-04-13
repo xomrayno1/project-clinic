@@ -5,6 +5,12 @@ import {
     CREATE_BOOKING,
     CREATE_BOOKING_FAILED,
     CREATE_BOOKING_SUCCESS,
+
+
+    FETCH_BOOKING,
+    FETCH_BOOKING_SUCCESS,
+    FETCH_BOOKING_FAILED,
+ 
 } from '../../../utils/Constant'
 
 const initalState = {
@@ -12,9 +18,26 @@ const initalState = {
     error: '',
     schedules : ''
 }
-function scheduleReducer(state = initalState, action) {
+function bookingReducer(state = initalState, action) {
     const { type, payload } = action;
     switch (type) {
+        case FETCH_BOOKING:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case FETCH_BOOKING_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                schedules : payload
+            }
+        case FETCH_BOOKING_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         case CANCEL_BOOKING:
             return {
                 ...state,
@@ -41,7 +64,6 @@ function scheduleReducer(state = initalState, action) {
             return {
                 ...state,
                 isLoading: false,
-                schedules : payload
             }
         case CREATE_BOOKING_FAILED:
             return {
@@ -53,4 +75,4 @@ function scheduleReducer(state = initalState, action) {
             return state;
     }
 }
-export default  scheduleReducer;
+export default  bookingReducer;

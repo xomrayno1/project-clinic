@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient'
 
 const bookingApi  = {
-    bookingSchedule : (params) => {
+    createBooking : (params) => {
         const auth =  JSON.parse(localStorage.getItem('auth'));
         const {jwt} = auth.user;
         const url = "http://localhost:8080/api/v1/booking";

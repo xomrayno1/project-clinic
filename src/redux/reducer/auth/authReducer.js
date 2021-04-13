@@ -17,7 +17,10 @@ import {
 
     UPDATE_PROFILE_DOCTOR,
     UPDATE_PROFILE_DOCTOR_SUCCESS,
-    UPDATE_PROFILE_DOCTOR_FAILED
+    UPDATE_PROFILE_DOCTOR_FAILED,
+    UPDATE_PROFILE_PATIENT_SUCCESS,
+    UPDATE_PROFILE_PATIENT_FAILED,
+    UPDATE_PROFILE_PATIENT
 } from '../../../utils/Constant'
 
 const initalState = {
@@ -157,6 +160,23 @@ function authReducer(state = newsState, action) {
                 profile: payload
             }
         case UPDATE_PROFILE_DOCTOR_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
+        case UPDATE_PROFILE_PATIENT:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case UPDATE_PROFILE_PATIENT_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                profile: payload
+            }
+        case UPDATE_PROFILE_PATIENT_FAILED:
             return {
                 ...state,
                 isLoading: false,

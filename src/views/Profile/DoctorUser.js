@@ -96,7 +96,7 @@ function User(props) {
                   </div>
                 </CardBody>
                 <CardFooter className="text-center">
-                  <Button onClick={handleClickUpdateInfo} className="btn btn-round btn-success">Đổi mật khẩu</Button>
+                  <Button onClick={handleClickUpdateInfo} className="btn btn-round btn-success">Cập nhật tài khoản</Button>
                 </CardFooter>
               </Card>
             </Col>
@@ -301,7 +301,6 @@ function User(props) {
         <Modal 
           isOpen={modal}
           innerRef={modalRef}
-
         >
         <Formik
               initialValues={{

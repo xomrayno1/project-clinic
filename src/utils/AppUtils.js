@@ -10,5 +10,5 @@ export const defaultScheduleFilter = {
     dateTo : '',
     dateFrom: '',
     page : 1,
-    limit: 10
+    limit: 5
 }

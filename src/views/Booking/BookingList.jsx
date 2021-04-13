@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Card,
     CardHeader,
@@ -6,7 +6,8 @@ import {
     Row,
     Col,
     CardTitle,
-     
+    Input,
+    FormGroup
 } from "reactstrap";
 import {
     Table,
@@ -15,36 +16,49 @@ import {
     Tag,
     DatePicker,
     Select,
-    Button
-} 
-from 'antd';
+    Button,
+    Modal,
+    Form,
+
+}
+    from 'antd';
+import { fetchBooking, cancelBooking } from '../../redux/action/bookingAction'
 import { useDispatch, useSelector } from 'react-redux';
+import {useHistory}  from 'react-router-dom'
 function BookingList(props) {
     const { RangePicker } = DatePicker;
-    const {Option} = Select;
+    const { Option } = Select;
     const dispatch = useDispatch();
-    //const state  = useSelector(state => state.);
-    const [date, setDate]  = useState({
-        dateTo : '',
-        dateFrom : ''
+    const auth = useSelector(state => state.auth);
+    const schedules = useSelector(state => state.booking.schedules)
+    const [date, setDate] = useState({
+        dateTo: '',
+        dateFrom: ''
     })
+    console.log(schedules)
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState(0);
     const [filter, setFilter] = useState({
-        page : 1, 
+        page: 1,
         limit: 5,
         search: '',
         status: 0,
         dateTo: '',
-        dateFrom: ''
+        dateFrom: '',
+        key: 'patient',
+        keyId: auth && auth.user && auth.user.id || 0
     });
 
-    function onChange(date,dateString){
+    const [modalView, setModalView] = useState({
+        visible: false,
+        item: ''
+    });
+
+
+    function onChange(date, dateString) {
         dateString && setDate({
-            // dateTo: `${dateString[0]} 00:00:00`,
-            // dateFrom: `${dateString[1]} 23:59:00`,
-            dateTo : dateString[0],
-            dateFrom : dateString[1],
+            dateTo: dateString[1],
+            dateFrom: dateString[0],
         })
     }
     const columns = [
@@ -58,142 +72,204 @@ function BookingList(props) {
             dataIndex: 'doctor_name',
             key: 'doctor_name',
         }
-        ,{
+        , {
             title: 'Tên bệnh nhân',
             dataIndex: 'patient_name',
             key: 'patient_name',
-        },{
+        }, {
             title: 'Thời gian khám',
             dataIndex: 'schedule_time',
             key: 'schedule_time',
         }
-        ,{
+        , {
             title: 'Loại',
             dataIndex: 'type',
             key: 'type',
-            render : item => {
-                const color = item === '1' ? 'green' : 'geekblue';
-                const display = item === '1' ? 'Khám lần đầu' : 'Tái khám' 
+            render: item => {
+                const color = item === 1 ? 'geekblue' : 'green';
+                const display = item === 1 ? 'Khám lần đầu' : 'Tái khám'
                 return (
-                    <Tag color={color}> 
+                    <Tag color={color}>
                         {display}
                     </Tag>
                 )
             }
         }
-        ,{
+        , {
             title: 'Tình trạng',
             dataIndex: 'status',
             key: 'status',
-            render : item => {
-                const color = item === '1' ? 'geekblue' : 'green';
-                const display = item === '1' ? 'Đang đợi' : 'Đã hoàn thành' 
+            render: item => {
+                const color = item === 1 ? 'geekblue'   : item === 2 ? 'green' : 'volcano';
+                const display = item === 1 ? 'Đang đợi' : item === 2 ? 'Đã hoàn thành' : "Đã hủy"
                 return (
-                    <Tag color={color}> 
+                    <Tag color={color}>
                         {display}
                     </Tag>
                 )
             }
-        },{
-            title : '+',
+        }, {
+            title: '+',
             dataIndex: 'action',
-            align : 'center',
-            render: (_,item)=>(
+            align: 'center',
+            render: (_, item) => (
                 <Space>
-                    <Button key={1} color="primary" onClick={()=> onHandleView(item)} >Xem</Button>
-                     
-                    <Popconfirm title="Bạn có chắc muốn huỷ lịch" 
-                        onConfirm={ () => onHandleCancel(item)}>
-                        <Button key={3} color="danger">Huỷ lịch</Button> 
-                    </Popconfirm>
+                    <Button key={1} type="primary" onClick={() => onHandleView(item)} >Xem</Button>
+                    {item.status == 1 ? <Popconfirm title="Bạn có chắc muốn huỷ lịch"
+                        onConfirm={() => onHandleCancel(item)}>
+                        <Button key={3} type="danger">Huỷ lịch</Button>
+                    </Popconfirm> : null
+                    }
                 </Space>
             )
         },
     ]
-    useEffect(()=>{
-         
-    },[filter])
+    useEffect(() => {
+        dispatch(fetchBooking(filter));
+    }, [filter])
 
-    function onChangeStatus(value){
+    function onChangeStatus(value) {
         setStatus(value)
     }
-    function onHandleCancel(item){
-
+    function onHandleCancel(item) {
+        dispatch(cancelBooking(item.id));
     }
-    function onHandleView(item){
-
+    function onHandleView(item) {
+        setModalView({
+            ...modalView,
+            visible: true,
+            item
+        })
     }
-    function handleSubmitSearch(){
+    function handleSubmitSearch() {
         setFilter({
             ...filter,
             ...date,
-            searchKey : search,
+            searchKey: search,
             status,
         })
-        const form = {
-            ...date,
-            searchKey : search,
-            status,
-        }
-        console.log(form);
+        // const form = {
+        //     ...date,
+        //     searchKey : search,
+        //     status,
+        // }
+        // console.log(form);
     }
 
     return (
         <>
-             <div className="content">
+            <div className="content">
                 <Row>
                     <Col md="12">
                         <Card>
                             <CardHeader>
-                            <CardTitle tag="h4">Lịch khám của bạn</CardTitle>
+                                <CardTitle tag="h4">Lịch khám của bạn</CardTitle>
                             </CardHeader>
                             <CardBody>
                                 <Row>
-                                <Col col="4">
-                                    <RangePicker 
-                                        onChange={onChange} 
-                                        style={{
-                                            width: '250px'
-                                        }}
-                                    />
-                                </Col>
-                                <Col col="2" >
-                                    <Select placeholder="Tình trạng"
-                                        onChange={onChangeStatus}
-                                        style={{
-                                            width: '150px',
-                                            textAlign : 'center'
-                                        }}>
-                                        <Option value="0">Tất cả</Option>
-                                        <Option value="1">Đang đợi</Option>
-                                        <Option value="2">Đã hoàn thành</Option>
-                                        <Option value="3">Đã huỷ</Option>
-                                    </Select>
-                                </Col>
-                                <Col col="2">
-                                    <input  type="text" 
-                                        placeholder="Nhập tìm kiếm..." 
-                                        className="form-control"
-                                        value={search}
-                                        onChange={e => setSearch(e.target.value)}
-                                    />
-                                </Col>
-                                <Col col="2">
-                                    <Button type="primary" onClick={handleSubmitSearch}>Tìm kiếm</Button>
-                                </Col>
+                                    <Col col="4">
+                                        <RangePicker
+                                            onChange={onChange}
+                                            style={{
+                                                width: '250px'
+                                            }}
+                                        />
+                                    </Col>
+                                    <Col col="2" >
+                                        <Select placeholder="Tình trạng"
+                                            onChange={onChangeStatus}
+                                            style={{
+                                                width: '150px',
+                                                textAlign: 'center'
+                                            }}>
+                                            <Option value="0">Tất cả</Option>
+                                            <Option value="1">Đang đợi</Option>
+                                            <Option value="2">Đã hoàn thành</Option>
+                                            <Option value="3">Đã huỷ</Option>
+                                        </Select>
+                                    </Col>
+                                    <Col col="2">
+                                        <input type="text"
+                                            placeholder="Nhập tìm kiếm..."
+                                            className="form-control"
+                                            value={search}
+                                            onChange={e => setSearch(e.target.value)}
+                                        />
+                                    </Col>
+                                    <Col col="2">
+                                        <Button type="primary" onClick={handleSubmitSearch}>Tìm kiếm</Button>
+                                    </Col>
                                 </Row>
                                 <Row>
                                     <Col md="12"    >
-                                        <Table  
+                                        <Table
+                                            dataSource={schedules.data}
                                             bordered={true}
-                                            columns={columns}/>
+                                            columns={columns} />
                                     </Col>
-                                </Row>                               
+                                </Row>
                             </CardBody>
                         </Card>
                     </Col>
                 </Row>
             </div>
+            <Modal
+                title="Chi tiết "
+                centered
+                visible={modalView.visible}
+                footer={null}
+                keyboard={true}
+                onCancel={() => setModalView({
+                    ...modalView,
+                    visible: false
+                })}
+                zIndex={10000}
+            >
+                <Row>
+                    <Col md="6">
+                        <FormGroup>
+                            <label>Tên bác sĩ</label>
+                            <Input type="text" disabled value={modalView.item.doctor_name} />
+                        </FormGroup>
+                    </Col>
+                    <Col md="6">
+                        <FormGroup>
+                            <label>Tên bệnh nhân</label>
+                            <Input type="text" disabled value={modalView.item.patient_name} />
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md="12">
+                        <FormGroup>
+                            <label>Thời gian</label>
+                            <Input type="text" disabled value={modalView.item.schedule_time} />
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row>
+                   <Col md="6">
+                        <FormGroup>
+                            <label>Loại khám</label>
+                            <Input type="text" disabled value={modalView.item.type === 1 ? 'Khám lần đầu' : 'Tái khám'} />
+                        </FormGroup>
+                   </Col>
+                    <Col md="6">
+                        <FormGroup>
+                            <label>Tình trạng</label>
+                            <Input type="text" disabled value={modalView.item.status === 1 ? 'Đang đợi' : modalView.item.status === 2 ? 'Hoàn thành' : 'Đã hủy'} />
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md="12">
+                        <FormGroup>
+                            <label>Nguyên nhân </label>
+                            <Input type="textarea" disabled value={modalView.item.reason} />
+                        </FormGroup>
+                    </Col>
+                </Row>
+            </Modal>
         </>
     );
 }

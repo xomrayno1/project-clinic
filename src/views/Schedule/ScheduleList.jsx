@@ -19,12 +19,15 @@ import {fetchSchedule} from '../../redux/action/scheduleAction'
 function ScheduleList(props) {
     const dispatch = useDispatch();
     const { schedules, isLoading } = useSelector(state => state.schedule);
+    const auth = useSelector(state => state.auth);
     const [filter, setFilter] = useState({
         keySearch: '',
         limit: 5,
         page: 1,
         dateTo: '',
-        dateFrom: ''
+        dateFrom: '',
+        key: auth && auth.user && auth.user.roles[0].authority === 'ROLE_DOCTOR' ? 'doctor' : 'admin' || 'admin' ,
+        keyId: auth && auth.user && auth.user.id || 0
     })
  
     const { data, pagination } = schedules;

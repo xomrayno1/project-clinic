@@ -95,6 +95,7 @@ function* updateProfilePatient({patientRef}){
     console.log(current.values)
     try { //ref get dataa
         const response = yield call(userApi.updateProfilePatient,current.values);
+        console.log(response)
         yield put({type: UPDATE_PROFILE_PATIENT_SUCCESS, payload: response})
         message.success(` Cập nhật thành công`)
     } catch (error) { //ref set error
