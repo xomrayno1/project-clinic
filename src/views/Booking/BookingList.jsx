@@ -35,7 +35,7 @@ function BookingList(props) {
         dateTo: '',
         dateFrom: ''
     })
-    console.log(schedules)
+    const {totalRows, limit, page} = schedules.pagination || {totalRows:0, limit: 0, page :0, }
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState(0);
     const [filter, setFilter] = useState({
@@ -115,6 +115,7 @@ function BookingList(props) {
             render: (_, item) => (
                 <Space>
                     <Button key={1} type="primary" onClick={() => onHandleView(item)} >Xem</Button>
+                   
                     {item.status == 1 ? <Popconfirm title="Bạn có chắc muốn huỷ lịch"
                         onConfirm={() => onHandleCancel(item)}>
                         <Button key={3} type="danger">Huỷ lịch</Button>
@@ -155,7 +156,12 @@ function BookingList(props) {
         // }
         // console.log(form);
     }
-
+    function handleChangePage(page){
+        setFilter({
+            ...filter,
+            page
+        })
+    }
     return (
         <>
             <div className="content">
@@ -201,11 +207,18 @@ function BookingList(props) {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col md="12"    >
+                                    <Col md="12">
                                         <Table
                                             dataSource={schedules.data}
                                             bordered={true}
-                                            columns={columns} />
+                                            columns={columns}
+                                            pagination={{
+                                                pageSize: limit,
+                                                current: page,
+                                                total : totalRows,
+                                                onChange: handleChangePage
+                                            }}
+                                        />    
                                     </Col>
                                 </Row>
                             </CardBody>
