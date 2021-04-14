@@ -81,7 +81,7 @@ public class BookingController {
 			schedule.setReason(bookingRequest.getReason());
 			scheduleService.save(schedule);
 			Map<String,String> data = new HashMap<String, String>();
-			data.put("data", "Đặt thành công");
+			data.put("message", "Đặt thành công");
 			return new ResponseEntity<Object>(data,HttpStatus.OK);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

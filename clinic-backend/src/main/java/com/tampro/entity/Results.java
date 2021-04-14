@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Results  extends BaseEntity{
@@ -24,6 +25,10 @@ public class Results  extends BaseEntity{
 	private String reasonDescribe; //nguyên nhân khám chi tiết
 	private String diagnose; //chẩn đoán của bác sĩ
 	private String bloodPressure; // huyết áp
+	
+	@OneToOne
+	@JoinColumn(name = "schedule_id")
+	private Schedule schedule;
 	
 	private Integer height; // chiều cao 
 	private Integer weight; // câng nặng
@@ -93,6 +98,12 @@ public class Results  extends BaseEntity{
 	}
 	public void setWeight(Integer weight) {
 		this.weight = weight;
+	}
+	public Schedule getSchedule() {
+		return schedule;
+	}
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
 	}
 	
 	

@@ -79,4 +79,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}		 
 	}
 
+	@Override
+	public Schedule getOne(long id) {
+		// TODO Auto-generated method stub
+		return scheduleRepo.getOne(id);
+	}
+
 }

@@ -72,7 +72,7 @@ public class ScheduleController {
 		try {
 			scheduleService.delete(schedule);
 			Map<String, String> data = new HashMap();
-			data.put("data", "delete success");
+			data.put("message", "delete success");
 			return new ResponseEntity<Object>(data, HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			throw new ApplicationException("Delete failed", HttpStatus.INTERNAL_SERVER_ERROR);

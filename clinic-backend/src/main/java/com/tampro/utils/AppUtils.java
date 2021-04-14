@@ -9,10 +9,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
+import com.tampro.entity.Results;
 import com.tampro.entity.Schedule;
 import com.tampro.entity.Users;
 import com.tampro.response.DoctorResponse;
 import com.tampro.response.PatientResponse;
+import com.tampro.response.ResultResponse;
 import com.tampro.response.ScheduleResponse;
 import com.tampro.response.UserResponse;
 
@@ -92,5 +94,29 @@ public class AppUtils {
 		response.setRoles(roles);
 		return response;
 	}
-	
+
+	public static ResultResponse convertResultEntityToResponse(Results results) {
+		ResultResponse resultResponse = new ResultResponse();
+		resultResponse.setBloodPressure(results.getBloodPressure());
+		resultResponse.setDiagnose(results.getDiagnose());
+		if(results.getDoctor() != null) {
+			resultResponse.setDoctorId(results.getDoctor().getDocId());
+			resultResponse.setDoctorName(results.getDoctor().getDocName());
+		}
+		resultResponse.setHeight(results.getHeight());
+		resultResponse.setId(results.getId());
+		resultResponse.setImageUrl(results.getImageUrl());
+		resultResponse.setNote(results.getNote());
+		if(results.getPatients() != null) {
+			resultResponse.setPatientId(results.getPatients().getPatiId());
+			resultResponse.setPatientName(results.getPatients().getPatiName());
+		}
+		resultResponse.setReason(results.getReason());
+		resultResponse.setReasonDescribe(results.getReasonDescribe());
+		resultResponse.setWeight(results.getWeight());
+		if(results.getSchedule() != null) {
+			resultResponse.setCheduleId(results.getSchedule().getId());
+		}
+		return resultResponse;
+	}
 }

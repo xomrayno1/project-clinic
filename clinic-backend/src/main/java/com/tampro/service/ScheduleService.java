@@ -22,4 +22,6 @@ public interface ScheduleService {
 	Schedule findById(long id);
 	
 	void delete(Schedule schedule);
+	
+	Schedule getOne(long id);
 }
