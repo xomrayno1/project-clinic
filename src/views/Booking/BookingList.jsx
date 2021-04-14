@@ -66,13 +66,11 @@ function BookingList(props) {
             title: 'Id',
             dataIndex: 'id',
             key: 'id',
-        },
-        {
+        },{
             title: 'Tên bác sĩ',
             dataIndex: 'doctor_name',
             key: 'doctor_name',
-        }
-        , {
+        }, {
             title: 'Tên bệnh nhân',
             dataIndex: 'patient_name',
             key: 'patient_name',
@@ -80,8 +78,7 @@ function BookingList(props) {
             title: 'Thời gian khám',
             dataIndex: 'schedule_time',
             key: 'schedule_time',
-        }
-        , {
+        }, {
             title: 'Loại',
             dataIndex: 'type',
             key: 'type',
@@ -94,8 +91,7 @@ function BookingList(props) {
                     </Tag>
                 )
             }
-        }
-        , {
+        }, {
             title: 'Tình trạng',
             dataIndex: 'status',
             key: 'status',

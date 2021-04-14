@@ -5,6 +5,7 @@ import userSaga from '../sagas/userSaga'
 import scheduleSaga from './scheduleSaga'
 import authSaga from './authSaga'
 import bookingSaga from './bookingSaga'
+import resultSaga from './resultSaga'
 
 export default function* rootSaga(){
    yield all([
@@ -13,6 +14,7 @@ export default function* rootSaga(){
         userSaga(),
         scheduleSaga(),
         authSaga(),
-        bookingSaga()
+        bookingSaga(),
+        resultSaga()
    ]) 
 }
