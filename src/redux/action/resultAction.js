@@ -1,16 +1,18 @@
 import {
-    CREATE_RESULT,
+    SAVE_RESULT,
     FETCH_RESULT,
     UPDATE_RESULT,
     GET_RESULT_BY_SCHEDULE,
     SET_MODAL_RESULT
 } from '../../utils/Constant'
 
-export const addResult = (data, addRef)=>{
+export const addResult = (data, addRef,setModalResult)=>{
     return {
-        type : CREATE_RESULT,
+        type : SAVE_RESULT,
         payload : data,
-        addRef
+        addRef,
+        setModalResult,
+    
     }
 }
 export const fetchResult = (data)=>{
@@ -38,7 +40,8 @@ export const setDataModalResult = (data, addRef) => {
     return {
         type : SET_MODAL_RESULT,
         payload : data,
-        addRef
+        addRef,
+       
     }
 }
 

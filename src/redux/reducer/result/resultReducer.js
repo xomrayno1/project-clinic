@@ -1,7 +1,7 @@
 import {
-    CREATE_RESULT,
-    CREATE_RESULT_SUCCESS,
-    CREATE_RESULT_FAILED,
+    SAVE_RESULT,
+    SAVE_RESULT_SUCCESS,
+    SAVE_RESULT_FAILED,
 
     UPDATE_RESULT,
     UPDATE_RESULT_SUCCESS,
@@ -13,7 +13,11 @@ import {
 
     GET_RESULT_BY_SCHEDULE,
     GET_RESULT_BY_SCHEDULE_SUCCESS,
-    GET_RESULT_BY_SCHEDULE_FAILED
+    GET_RESULT_BY_SCHEDULE_FAILED,
+
+    SET_MODAL_RESULT,
+    SET_MODAL_RESULT_SUCCESS,
+    SET_MODAL_RESULT_FAILED
 } from '../../../utils/Constant'
 
 const initalState = {
@@ -78,23 +82,41 @@ function resultReducer(state = initalState, action) {
                 error: payload
             }
 
-        case CREATE_RESULT:
+        case SAVE_RESULT:
             return {
                 ...state,
                 isLoading: true
             }
-        case CREATE_RESULT_SUCCESS:
+        case SAVE_RESULT_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 results: payload
             }
-        case CREATE_RESULT_FAILED:
+        case SAVE_RESULT_FAILED:
             return {
                 ...state,
                 isLoading: false,
                 error: payload
             }
+        case SET_MODAL_RESULT:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case SET_MODAL_RESULT_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                result: payload
+            }
+        case SET_MODAL_RESULT_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
+
         default:
             return state;
     }

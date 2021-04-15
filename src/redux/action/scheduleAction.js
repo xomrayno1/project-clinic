@@ -3,6 +3,7 @@ import {
      
     DELETE_SCHEDULE,
  
+    UPDATE_STATUS_SCHEDULE
 }
     from '../../utils/Constant'
 
@@ -20,4 +21,10 @@ export const deleteSchedule = (data)=>{
     }
 }
  
+export const updateStatusSshedule = (data)=>{
+    return {
+        type : UPDATE_STATUS_SCHEDULE,
+        payload : data
+    }
+}
  

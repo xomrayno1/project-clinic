@@ -20,6 +20,16 @@ const scheduleApi  = {
                 'Authorization': `Bearer ${jwt}`
             },
         })
+    },
+    updateStatus: (params) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt} = auth.user;
+        const url = "http://localhost:8080/api/v1/schedules/status/update";
+        return axiosClient.put(url, params, {
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        })
     }
      
 }

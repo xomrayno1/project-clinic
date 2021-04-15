@@ -29,9 +29,9 @@ import {
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 
 
-import { useDispatch, useSelector } from 'react-redux' 
-import { createSchedule, deleteSchedule, fetchSchedule } from '../../redux/action/scheduleAction'
-import {addResult,getResultBySchedule, setDataModalResult} from '../../redux/action/resultAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { createSchedule, deleteSchedule, fetchSchedule, updateStatusSshedule } from '../../redux/action/scheduleAction'
+import { addResult, getResultBySchedule, setDataModalResult } from '../../redux/action/resultAction'
 import Textarea from 'variables/Textarea';
 import * as Yup from 'yup'
 
@@ -47,8 +47,8 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
     const dispatch = useDispatch();
     const { Option } = Select;
     const auth = useSelector(state => state.auth);
-    const {result} = useSelector(state => state.result) || '';
-    
+    const { result } = useSelector(state => state.result) || '';
+
     const [modalUpdate, setModalUpdate] = useState({
         visible: false,
         status: '',
@@ -63,40 +63,43 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
         visible: false,
         item: ''
     });
-
+     
     const [preview, setPreview] = useState({
         previewVisible: false,
         previewTitle: '',
         previewImage: ''
     })
 
+    const [fileImg, setFileImg] = useState(null);
     const formResultRef = useRef();
 
-    function handleOnClickResult(item){
+    function handleOnClickResult(item) {
         setModalResult({
             visible: true,
             item
         })
-        dispatch(setDataModalResult(item.id,formResultRef));
+        dispatch(setDataModalResult(item.id, formResultRef));
     }
-    function handleOnSubmitResult(data){
+    function handleOnSubmitResult(data) {
         console.log(data)
         //create form data 
-    //     var formData = new FormData();
-    //     formData.append('schedule_id',data.id);
-    //     formData.append('doctor_id',data.doctor_id);
-    //     formData.append('pati_id',data.pati_id);
-    //     formData.append('image_upload',data.image_upload);
-    //     formData.append('reson_describe',data.reason_describe);
-    //     formData.append('diagnose',data.diagnose);
-    //     formData.append('note',data.note);
-    //     formData.append('reason',data.reason);
-    //     formData.append('blood_pressure',data.blood_pressure);
-    //     formData.append('height',data.height);
-    //     formData.append('weight',data.weight);
-    //     ///dispatch 
-    //     dispatch(addResult(formData,formResultRef)); 
-     }
+        var formData = new FormData();
+        formData.append('scheduleId', modalResult.item.id);
+        formData.append('doctorId',  modalResult.item.doctorId);
+        formData.append('patientId',  modalResult.item.patientId);
+        fileImg && formData.append('imageUpload', fileImg || null);
+        formData.append('reasonDescribe', data.reasonDescribe);
+        formData.append('diagnose', data.diagnose);
+        formData.append('note', data.note);
+        formData.append('reason', data.reason);
+        formData.append('bloodPressure', data.bloodPressure);
+        formData.append('height', data.height);
+        formData.append('weight', data.weight);
+        data.id && formData.append('id', data.id);
+        ///dispatch 
+        dispatch(addResult(formData, formResultRef, setModalResult, uploadRef));
+    }
+    const uploadRef = useRef();
 
     const columns = [
         {
@@ -171,7 +174,7 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                                 </Popconfirm>
                             </Menu.Item>
                             <Menu.Item key="4"
-                                onClick={()=>handleOnClickResult(item)}
+                                onClick={() => handleOnClickResult(item)}
                             >
                                 Kết quả khám
                             </Menu.Item>
@@ -193,13 +196,17 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
             ...modalUpdate,
             visible: false
         })
-        console.log(modalUpdate)
+        const data = {
+            status: modalUpdate.status,
+            scheduleId: modalUpdate.scheduleId
+        }
+        dispatch(updateStatusSshedule(data));
     }
     const resultSchema = Yup.object({
 
         reason: Yup.string().required("Vui lòng không được để trống !"),
-        reason_describe: Yup.string().required("Vui lòng không được để trống !"),
-        blood_pressure: Yup.string().required("Vui lòng không được để trống !"),
+        reasonDescribe: Yup.string().required("Vui lòng không được để trống !"),
+        bloodPressure: Yup.string().required("Vui lòng không được để trống !"),
         height: Yup.string().required("Vui lòng không được để trống !"),
         weight: Yup.string().required("Vui lòng không được để trống !"),
         diagnose: Yup.string().required("Vui lòng không được để trống !"),
@@ -312,7 +319,7 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                     </Col>
                 </Row>
             </Modal>
-           
+
 
             <Modal
                 title="Chi tiết "
@@ -333,29 +340,27 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                     validateOnBlur={false}
                     initialValues={{
                         doc_name: modalResult.item && modalResult.item.doctor_name || '',
-                        pati_name:  modalResult.item && modalResult.item.patient_name || '',
+                        pati_name: modalResult.item && modalResult.item.patient_name || '',
                         reason: '',
-                        reason_describe: '',
-                        blood_pressure: '',
+                        reasonDescribe: '',
+                        bloodPressure: '',
                         height: '',
-                        weight:  '',
-                        diagnose:  '',
+                        weight: '',
+                        diagnose: '',
                         note: '',
-                        image_upload: '',
-                        pati_id:  modalResult.item && modalResult.item.pati_id || '',
-                        doctor_id: modalResult.item && modalResult.item.doctor_id || '',
-                        schedule_id: modalResult.item && modalResult.item.id || '',
+                         
+                        id: ''
                     }}
                     validationSchema={resultSchema}
                     innerRef={formResultRef}
-                    
+
                 >
                     <Form>
                         <Row>
                             <Col md="6">
                                 <FormGroup>
                                     <Label >Tên bác sĩ</Label>
-                                    <Field className="form-control" name="doc_name" disabled/>
+                                    <Field className="form-control" name="doc_name" disabled />
                                 </FormGroup>
                             </Col>
                             <Col md="6">
@@ -375,8 +380,8 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                             </Col>
                             <Col md="6">
                                 <FormGroup>
-                                    <Textarea name="reason_describe" className="form-control" label="Nguyên nhân khám chi tiết" />
-                                    <ErrorMessage className="error-text" name="reason_describe" component="div" />
+                                    <Textarea name="reasonDescribe" className="form-control" label="Nguyên nhân khám chi tiết" />
+                                    <ErrorMessage className="error-text" name="reasonDescribe" component="div" />
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -384,20 +389,20 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                             <Col md="4">
                                 <FormGroup>
                                     <Label >Huyết áp</Label>
-                                    <Field className="form-control" name="blood_pressure" />
-                                    <ErrorMessage className="error-text" name="blood_pressure" component="div" />
+                                    <Field className="form-control" name="bloodPressure" />
+                                    <ErrorMessage className="error-text" name="bloodPressure" component="div" />
                                 </FormGroup>
                             </Col>
                             <Col md="4">
                                 <FormGroup>
-                                    <Label >Chiều cao</Label>
+                                    <Label >Chiều cao (cm)</Label>
                                     <Field className="form-control" name="height" />
                                     <ErrorMessage className="error-text" name="height" component="div" />
                                 </FormGroup>
                             </Col>
                             <Col md="4">
                                 <FormGroup>
-                                    <Label >Cân nặng</Label>
+                                    <Label >Cân nặng (kg)</Label>
                                     <Field className="form-control" name="weight" />
                                     <ErrorMessage className="error-text" name="weight" component="div" />
                                 </FormGroup>
@@ -428,6 +433,10 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                                         className="form-control"
                                         type="file"
                                         name="image_upload"
+                                        onChange={(e) => {
+                                            setFileImg(e.target.files[0])
+                                        }}
+                                        ref={uploadRef}
                                     />
                                 </FormGroup>
                             </Col>
@@ -436,7 +445,11 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                                     <CardBody className="text-center">
                                         <img onClick={() => setPreview({
                                             previewVisible: true
-                                        })} src={user} width="250" height="200px" />
+                                        })}
+                                            src={
+                                                result.image_upload && `http://localhost:8080/${result.image_upload}` || user
+                                            }
+                                            width="250" height="200px" />
                                     </CardBody>
                                 </Card>
                             </Col>
@@ -458,7 +471,11 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                 })}
                 zIndex={12000}
             >
-                <img alt="example" style={{ width: '100%' }} src={preview.previewImage || user} />
+                <img alt="example" style={{ width: '100%' }} src={
+                    preview.previewImage && `http://localhost:8080/${preview.previewImage}`
+                    || result.image_upload && `http://localhost:8080/${result.image_upload}`
+                    || user
+                } />
             </Modal>
         </>
     );

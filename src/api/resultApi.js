@@ -22,7 +22,7 @@ const resultApi = {
             },
         })
     },
-    create : (params) => {
+    save : (params) => {
         const auth =  JSON.parse(localStorage.getItem('auth'));
         const {jwt} = auth.user;
         const url = "http://localhost:8080/api/v1/results";
@@ -36,11 +36,12 @@ const resultApi = {
         const auth =  JSON.parse(localStorage.getItem('auth'));
         const {jwt} = auth.user;
         const url = "http://localhost:8080/api/v1/results";
-        return axiosClient.post(url, params, {
+        return axiosClient.put(url, params, {
             headers : { 
                 'Authorization': `Bearer ${jwt}`
             },
         })
     },
+   
 }
 export default resultApi ;
