@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ import com.tampro.exception.ApplicationException;
 import com.tampro.model.Pagination;
 import com.tampro.model.ScheduleSearchPagination;
 import com.tampro.model.search.ScheduleSearch;
+import com.tampro.request.UpdateStatusScheduleRequest;
 import com.tampro.response.APIResponse;
 import com.tampro.response.ScheduleResponse;
 import com.tampro.service.ScheduleService;
@@ -66,16 +68,35 @@ public class ScheduleController {
 		//kiểm tra xem có tồn tại không
 		Schedule schedule = scheduleService.findById(id);
 		if(schedule == null ) {
-			throw new ApplicationException("Schedule not found exception with id: "+ id, HttpStatus.NOT_FOUND);
+			throw new ApplicationException("Không tìm thấy lịch với id là : "+ id, HttpStatus.NOT_FOUND);
 		}
 		// check xem status có hoàn thành chưa
 		try {
 			scheduleService.delete(schedule);
 			Map<String, String> data = new HashMap();
-			data.put("message", "delete success");
+			data.put("message", "Xóa thành công");
 			return new ResponseEntity<Object>(data, HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
-			throw new ApplicationException("Delete failed", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new ApplicationException("Xóa thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/status/update")
+	public ResponseEntity<Object> updateStatusSchedule(@RequestBody UpdateStatusScheduleRequest updateStatusScheduleRequest){
+		 
+		try {
+			Schedule schedule = scheduleService.findById(updateStatusScheduleRequest.getScheduleId());
+			Map<String, Object> data = new HashMap();
+			if(schedule == null) {
+				throw new ApplicationException("Không tìm thấy lịch",HttpStatus.NOT_FOUND);
+			}
+			schedule.setStatus(updateStatusScheduleRequest.getStatus());
+			scheduleService.save(schedule);
+			//scheduleService.updateStatusSchedule(updateStatusScheduleRequest);
+			data.put("message", "Cập nhật thành công");
+			return new ResponseEntity(data,HttpStatus.OK);
+		}catch(Exception e) {
+			throw new ApplicationException("Cập nhật thất bại",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
  

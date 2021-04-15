@@ -26,6 +26,8 @@ public class ResultResponse {
 	private Integer height; // chiều cao 
 	private Integer weight; // câng nặng
 	
+	private String time;
+	
 	public long getId() {
 		return id;
 	}
@@ -109,6 +111,12 @@ public class ResultResponse {
 	}
 	public void setCheduleId(long cheduleId) {
 		this.cheduleId = cheduleId;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
 	

@@ -1,5 +1,6 @@
 <!--ALTER DATABASE clinic CHARACTER SET utf8 COLLATE utf8_general_ci;-->
 <!--ALTER TABLE PATIENTS CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;-->
+<!--ALTER TABLE logtest CHANGE title title VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;-->
 
 INSERT INTO USERS(username, password, email,active_Flag) values ('admin','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','admin@gmail.com',1);
 INSERT INTO USERS(username, password, email,active_Flag) values ('xomrayno1','$2a$10$1HPIA/uJcAyAaJfcFcudG.cnOqmaMuKIMlVpeDvTKh3UoprGbJamG','xr1@gmail.com',1);

@@ -1,28 +1,40 @@
 package com.tampro.request;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class ResultRequest {
-	private long id;
-	@JsonProperty(value = "doctor_id")
+	private long id;	
+//	@JsonProperty(value = "doctor_id")
 	private long doctorId;
-	@JsonProperty(value = "pati_id")
+//	@JsonProperty(value = "pati_id")
 	private long patientId;
+	@NotBlank(message = "Vui lòng nhập note!")
 	private String note;
-	@JsonProperty(value = "image_upload")
-	private MultipartFile imageUpload;
+//	@JsonProperty(value = "image_upload")
+	@NotBlank(message = "Vui lòng nhập nguyên nhân!")
+	@Size(min = 4, max = 100, message = "Nguyên nhân phải từ 4 - 100 kí tự  ")
 	private String reason; //nguyên nhân khám
-	@JsonProperty(value = "reason_describe")
+//	@JsonProperty(value = "reason_describe")
+	@NotBlank(message = "Vui lòng nhập chi tiết nguyên nhân!")
 	private String reasonDescribe; //nguyên nhân khám chi tiết
+	@NotBlank(message = "Vui lòng nhập chẩn đoán!")
+	@Size(min = 4,max = 100, message = "Chẩn đoán phải từ 4 - 100 kí tự ")
 	private String diagnose; //chẩn đoán của bác sĩ
-	@JsonProperty(value = "blood_pressure")
+//	@JsonProperty(value = "blood_pressure")
+	@NotBlank(message = "Vui lòng nhập huyết áp!")
 	private String bloodPressure; // huyết áp
 	private Integer height; // chiều cao 
+
 	private Integer weight; // câng nặng
-	@JsonProperty(value = "schedule_id")
+//	@JsonProperty(value = "schedule_id")
 	private long scheduleId;
+	
+	private MultipartFile imageUpload;
+	
+	
 	
 	public long getId() {
 		return id;
@@ -98,6 +110,14 @@ public class ResultRequest {
 
 	public void setScheduleId(long scheduleId) {
 		this.scheduleId = scheduleId;
+	}
+
+	@Override
+	public String toString() {
+		return "ResultRequest [id=" + id + ", doctorId=" + doctorId + ", patientId=" + patientId + ", note=" + note
+				+ ", imageUpload=" + imageUpload + ", reason=" + reason + ", reasonDescribe=" + reasonDescribe
+				+ ", diagnose=" + diagnose + ", bloodPressure=" + bloodPressure + ", height=" + height + ", weight="
+				+ weight + ", scheduleId=" + scheduleId + "]";
 	}
  
 	

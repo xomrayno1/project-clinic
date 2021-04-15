@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.tampro.entity.Schedule;
 import com.tampro.model.search.ScheduleSearch;
+import com.tampro.request.UpdateStatusScheduleRequest;
 
 public interface ScheduleService {
 
@@ -24,4 +25,6 @@ public interface ScheduleService {
 	void delete(Schedule schedule);
 	
 	Schedule getOne(long id);
+	
+	Schedule updateStatusSchedule(UpdateStatusScheduleRequest	updateStatusScheduleRequest);
 }

@@ -19,7 +19,7 @@ import com.tampro.response.ScheduleResponse;
 import com.tampro.response.UserResponse;
 
 public class AppUtils {
-	
+	 
 	public static String uploadFile(MultipartFile multipartFile) throws IllegalStateException, IOException {
 		String imageUrl = System.currentTimeMillis()+"_"+multipartFile.getOriginalFilename();
 		File file = new File(Constant.UPLOAD_IMAGE + imageUrl);
@@ -96,6 +96,7 @@ public class AppUtils {
 	}
 
 	public static ResultResponse convertResultEntityToResponse(Results results) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		ResultResponse resultResponse = new ResultResponse();
 		resultResponse.setBloodPressure(results.getBloodPressure());
 		resultResponse.setDiagnose(results.getDiagnose());
@@ -116,6 +117,7 @@ public class AppUtils {
 		resultResponse.setWeight(results.getWeight());
 		if(results.getSchedule() != null) {
 			resultResponse.setCheduleId(results.getSchedule().getId());
+			resultResponse.setTime(simpleDateFormat.format(results.getSchedule().getTime()));
 		}
 		return resultResponse;
 	}

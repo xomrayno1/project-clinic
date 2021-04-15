@@ -13,6 +13,7 @@ import com.tampro.entity.Schedule;
 import com.tampro.model.search.ScheduleSearch;
 import com.tampro.model.specification.ScheduleSpecification;
 import com.tampro.repository.ScheduleRepository;
+import com.tampro.request.UpdateStatusScheduleRequest;
 import com.tampro.service.ScheduleService;
 import com.tampro.utils.Constant;
 
@@ -83,6 +84,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public Schedule getOne(long id) {
 		// TODO Auto-generated method stub
 		return scheduleRepo.getOne(id);
+	}
+
+	@Override
+	public Schedule updateStatusSchedule(UpdateStatusScheduleRequest updateStatusScheduleRequest) {
+		// TODO Auto-generated method stub
+		return scheduleRepo.updateStatusSchedule(updateStatusScheduleRequest.getStatus(), updateStatusScheduleRequest.getScheduleId());
 	}
 
 }

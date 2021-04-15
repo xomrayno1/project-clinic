@@ -24,6 +24,7 @@ public class Constant {
  
 	//result
 	public static final String API_RESULTS = API_PREFIX + "/results";
+	 
 	
 	public static final String UPLOAD_IMAGE = "C:\\Users\\Administrator\\git\\project-clinic\\clinic-backend\\src\\main\\resources\\static\\upload\\";
 	 

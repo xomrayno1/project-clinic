@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSp
 	//@Query(value = "SELECT * FROM Schedule SC WHERE SC.time BETWEEN :dateFrom and :dateTo", nativeQuery = true)
 	List<Schedule> findByTime(@Param("dateFrom") Date dateFrom,@Param("dateTo") Date dateTo);
 	
-	 
+	@Modifying
+	@Query(value="UPDATE Schedule sc set sc.status = ?1 where sc.id = ?2 ")
+	Schedule updateStatusSchedule(int status, int id); ///sai cmnr
 }
  
 	

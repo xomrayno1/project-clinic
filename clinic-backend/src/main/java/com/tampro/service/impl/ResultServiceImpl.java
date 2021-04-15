@@ -22,7 +22,7 @@ public class ResultServiceImpl implements ResultService{
 	@Override
 	public Page<Results> findAllSchedulePaginationFilter(ResultSearch resultSearch, Pageable pageable) {
 		// TODO Auto-generated method stub
-		return resultRepo.findAll(new ResultSpecification(),pageable);
+		return resultRepo.findAll(new ResultSpecification(resultSearch.getSearchKey(), resultSearch.getDateFrom(), resultSearch.getDateTo()),pageable);
 	}
 
 	@Override

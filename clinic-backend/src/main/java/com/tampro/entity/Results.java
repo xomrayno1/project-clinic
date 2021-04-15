@@ -18,6 +18,7 @@ public class Results  extends BaseEntity{
 	private Doctor doctor;
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
+	
 	private Patients patients;
 	private String note;
 	private String imageUrl;
