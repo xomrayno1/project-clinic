@@ -82,6 +82,7 @@ public class PatientController {
 		patient.setPatiName(patientRequest.getName());
 		patient.setPhone(patientRequest.getPhone());
 		patient.setAddress(patientRequest.getAddress());
+		patient.setActiveFlag(Constant.ACTIVE);
 		patient.setUsers(userService.getOne(patientRequest.getUserId()));
 		if(patientRequest.getImageUpload() != null) {
 			try {

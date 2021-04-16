@@ -183,7 +183,11 @@ public class DoctorController {
 		if(doctor == null) {
 			throw new ApplicationException("Doctor not found exception with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		doctorService.restore(doctor);
+		try {
+			doctorService.restore(doctor);
+		} catch (Exception e) {
+			throw new ApplicationException("Restore failed", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	@GetMapping("/{id}")

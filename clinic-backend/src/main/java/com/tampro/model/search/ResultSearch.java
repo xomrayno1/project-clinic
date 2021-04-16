@@ -6,11 +6,13 @@ public class ResultSearch {
 	private  String searchKey;
 	private  Date dateFrom;
 	private  Date dateTo;
-	public ResultSearch(String searchKey, Date dateFrom, Date dateTo) {
-		super();
-		this.searchKey = searchKey;
-		this.dateFrom = dateFrom;
-		this.dateTo = dateTo;
+	private  long userId;
+	 
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 	public String getSearchKey() {
 		return searchKey;
@@ -29,6 +31,13 @@ public class ResultSearch {
 	}
 	public void setDateTo(Date dateTo) {
 		this.dateTo = dateTo;
+	}
+	public ResultSearch(String searchKey, Date dateFrom, Date dateTo, long userId) {
+		super();
+		this.searchKey = searchKey;
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+		this.userId = userId;
 	}
 	
 

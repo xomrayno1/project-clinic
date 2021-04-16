@@ -8,18 +8,20 @@ public class ResultSearchPagination {
 	private Date dateTo;
 	private int limit;
 	private int page;
+	private long userId;
 	
 	
 	public ResultSearchPagination() {
 		super();
 	}
-	public ResultSearchPagination(String searchKey, Date dateFrom, Date dateTo, int limit, int page) {
+	public ResultSearchPagination(String searchKey, Date dateFrom, Date dateTo, int limit, int page,long userId) {
 		super();
 		this.searchKey = searchKey;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 		this.limit = limit;
 		this.page = page;
+		this.userId = userId;
 	}
 	public String getSearchKey() {
 		return searchKey;
@@ -50,6 +52,12 @@ public class ResultSearchPagination {
 	}
 	public void setPage(int page) {
 		this.page = page;
+	}
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 	
 	

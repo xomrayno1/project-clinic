@@ -3,6 +3,7 @@ package com.tampro.model.specification;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,6 +13,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
@@ -22,13 +25,15 @@ public class ResultSpecification implements Specification<Results>{
 	private final String searchKey;
 	private final Date dateFrom;
 	private final Date dateTo;
+	private final long userId;
 
 	
-	public ResultSpecification(String searchKey, Date dateFrom, Date dateTo) {
+	public ResultSpecification(String searchKey, Date dateFrom, Date dateTo,long userId) {
 		super();
 		this.searchKey = searchKey;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
+		this.userId = userId;
 
 	}
 
@@ -60,8 +65,23 @@ public class ResultSpecification implements Specification<Results>{
 		//Here is an example how to use it in a Criteria query:
 		//link : https://stackoverflow.com/questions/40007354/jpa-criteria-api-how-to-retrieve-date-in-mm-dd-yyyy-format
  	
+		Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
+		List<Object> lists = authentication
+			.getAuthorities()
+			.stream()
+			.filter(item -> item.getAuthority()
+								.equals("ROLE_ADMIN"))
+			.collect(Collectors.toList());
+		if(lists.isEmpty()) {
+			Predicate preDoc = criteriaBuilder.equal(doctor.get("users"), userId);
+			predicates.add(preDoc);
+		}
+ 
+		 
 		Predicate preActive = criteriaBuilder.equal(root.get("activeFlag"),  1);
 		predicates.add(preActive);
+		
+		
 		
 		return criteriaBuilder.and(predicates.toArray(new Predicate[] {}));
 	}
@@ -79,6 +99,11 @@ public class ResultSpecification implements Specification<Results>{
 
 	public Date getDateTo() {
 		return dateTo;
+	}
+
+
+	public long getUserId() {
+		return userId;
 	}
 
 

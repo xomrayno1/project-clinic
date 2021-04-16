@@ -68,7 +68,15 @@ public class BookingController {
 			return new ResponseEntity<Object>(data,HttpStatus.NOT_FOUND);
 		}
 		try {
-			List<Schedule> list = 	scheduleService.findByTime(date.parse(bookingRequest.getTime()));
+			if(date.parse(bookingRequest.getTime()).before(new Date())) {
+				throw new ApplicationException("Ngày đặt đã qua, Vui lòng chọn ngày khác", HttpStatus.BAD_REQUEST);
+			}
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			List<Schedule> list = 	scheduleService.findByTime(date.parse(bookingRequest.getTime()), bookingRequest.getDoctorId());
 			if(!list.isEmpty()) {
 				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
 			}
@@ -85,7 +93,7 @@ public class BookingController {
 			return new ResponseEntity<Object>(data,HttpStatus.OK);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			throw new ApplicationException("Booking failed", HttpStatus.BAD_REQUEST);
+			throw new ApplicationException("Đặt thất bại", HttpStatus.BAD_REQUEST);
 		}
 	}
 	 
@@ -101,9 +109,9 @@ public class BookingController {
 			data.put("message" ,"Lịch đã hoàn thành");	
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		if(schedule.getTime().before(new Date())) {
-			throw new ApplicationException("Cancel failed", HttpStatus.BAD_REQUEST);
-		}
+//		if(schedule.getTime().before(new Date())) {
+//			throw new ApplicationException("Lịch đã quá hạn", HttpStatus.BAD_REQUEST);
+//		}
 		scheduleService.cancel(schedule);
 		Map<String,String> data = new HashMap<String, String>();
 		data.put("message", "Cancel success");

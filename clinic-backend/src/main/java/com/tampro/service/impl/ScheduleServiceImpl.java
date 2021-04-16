@@ -1,5 +1,6 @@
 package com.tampro.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,9 @@ import com.tampro.entity.Schedule;
 import com.tampro.model.search.ScheduleSearch;
 import com.tampro.model.specification.ScheduleSpecification;
 import com.tampro.repository.ScheduleRepository;
+import com.tampro.request.NotificationRequest;
 import com.tampro.request.UpdateStatusScheduleRequest;
+import com.tampro.service.NotificationService;
 import com.tampro.service.ScheduleService;
 import com.tampro.utils.Constant;
 
@@ -21,7 +24,11 @@ import com.tampro.utils.Constant;
 public class ScheduleServiceImpl implements ScheduleService {
 	@Autowired
 	ScheduleRepository scheduleRepo;
+	@Autowired
+	NotificationService notifiService;
 
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	
 	@Override
 	public Page<Schedule> findAllSchedulePaginationFilter(ScheduleSearch scheduleSearch, Pageable pageable) {
 		// TODO Auto-generated method stub
@@ -39,13 +46,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public List<Schedule> findByTime(Date dateTime) {
+	public List<Schedule> findByTime(Date dateTime,long doctorId) {
 		// TODO Auto-generated method stub
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dateTime);
 		calendar.add(Calendar.HOUR,  1);
 		Date dateTo = calendar.getTime();
-		return scheduleRepo.findByTime(dateTime,dateTo);
+		return scheduleRepo.findByTime(dateTime,dateTo,doctorId);
 	}
 
 	@Override
@@ -59,7 +66,26 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public void save(Schedule schedule) {
 		// TODO Auto-generated method stub
 		schedule.setActiveFlag(Constant.ACTIVE);
-		scheduleRepo.save(schedule);
+		schedule = scheduleRepo.save(schedule);
+		// send notification
+		StringBuilder messageBuilder = new StringBuilder();
+		messageBuilder.append(" Bạn nhận được một lịch khám vào ngày : ")
+						.append(sdf.format(schedule.getTime()))
+						.append(". Từ ")
+						.append(schedule.getPatients().getPatiName())
+						.append("<br>")
+						.append(" với nội dung : ")
+						.append(schedule.getReason());
+		
+		NotificationRequest notificationRequest = new NotificationRequest();
+		notificationRequest.setMessage(messageBuilder.toString());
+		notificationRequest.setSeen(Constant.SEEN_FALSE);
+		notificationRequest.setSender("Hệ thống");
+		notificationRequest.setTitle("Đặt lịch khám");
+		notificationRequest.setType(Constant.TYPE_BOOKING);
+		notificationRequest.setUserId(schedule.getDoctor().getUsers().getId());
+		notifiService.saveNotification(notificationRequest);
+		
 	}
 
 	@Override

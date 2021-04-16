@@ -11,21 +11,14 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.StringUtils;
 
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
 import com.tampro.entity.Schedule;
-import com.tampro.repository.PatientRepository;
-import com.tampro.service.PatientService;
-import com.tampro.service.impl.PatientServiceImpl;
  
 public class ScheduleSpecification implements Specification<Schedule> {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private final String searchKey;
 	private final Date dateTo;
@@ -106,8 +99,9 @@ public class ScheduleSpecification implements Specification<Schedule> {
 				 predicates.add(predicate);
 			 }	  
 		}
-		 
-		query.orderBy(criteriaBuilder.asc(root.get("status")));		
+		
+		query.orderBy(criteriaBuilder.asc(root.get("status")),criteriaBuilder.desc(root.get("id")));
+		
 		Predicate preActive = criteriaBuilder.equal(root.get("activeFlag"),  1);
 		predicates.add(preActive);
 		

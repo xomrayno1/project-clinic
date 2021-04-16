@@ -14,7 +14,7 @@ public interface ScheduleService {
 
 	Page<Schedule> findAllSchedulePaginationFilter(ScheduleSearch scheduleSearch,Pageable pageable);
 
-	List<Schedule> findByTime(Date dateTime);
+	List<Schedule> findByTime(Date dateTime, long doctorId);
 	
 	void cancel(Schedule schedule);
 

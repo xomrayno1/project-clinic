@@ -16,9 +16,11 @@ import com.tampro.entity.Schedule;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSpecificationExecutor<Schedule>{
 	
  
-	@Query(value = "SELECT SC FROM Schedule SC WHERE SC.time BETWEEN :dateFrom and :dateTo" )
-	//@Query(value = "SELECT * FROM Schedule SC WHERE SC.time BETWEEN :dateFrom and :dateTo", nativeQuery = true)
-	List<Schedule> findByTime(@Param("dateFrom") Date dateFrom,@Param("dateTo") Date dateTo);
+	@Query(value = "SELECT SC FROM Schedule SC WHERE SC.time BETWEEN :dateFrom and :dateTo and doctor.id = :doctorId" )
+	List<Schedule> findByTime(
+			@Param("dateFrom") Date dateFrom,
+			@Param("dateTo") Date dateTo,
+			@Param("doctorId") long doctorId);
 	
 	@Modifying
 	@Query(value="UPDATE Schedule sc set sc.status = ?1 where sc.id = ?2 ")

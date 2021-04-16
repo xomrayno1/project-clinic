@@ -125,7 +125,8 @@ public class ResultController {
 			@RequestBody ResultSearchPagination resultSearchPagination){
 		Page<Results> pageResult = 
 				resultService.findAllSchedulePaginationFilter(new ResultSearch(resultSearchPagination.getSearchKey(), 
-									resultSearchPagination.getDateFrom(), resultSearchPagination.getDateTo()), 
+									resultSearchPagination.getDateFrom(), resultSearchPagination.getDateTo(),
+									resultSearchPagination.getUserId()), 
 						PageRequest.of(resultSearchPagination.getPage() - 1, resultSearchPagination.getLimit()));
 
 		List<ResultResponse> data = new ArrayList<>();

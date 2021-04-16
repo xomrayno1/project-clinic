@@ -7,12 +7,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,7 +62,13 @@ public class UserController {
 	DoctorService doctorService;
 	@Autowired
 	PatientService patientService;
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
 
+	
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
+	
 	@GetMapping
 	public ResponseEntity<APIResponse> getAllSearchPagination(@RequestParam("search") String search,
 			@RequestParam("limit") int limit, @RequestParam("page") int page
@@ -79,7 +91,8 @@ public class UserController {
 	public ResponseEntity<UserResponse> getById(@PathVariable("id") long id) {
 		Users users = userService.findById(id);
 		if (users == null) {
-			throw new ApplicationException("users not found exception with id : " + id, HttpStatus.NOT_FOUND);
+			log.error("users not found exception with id : " + id);
+			throw new ApplicationException("Không tìm thấy user", HttpStatus.NOT_FOUND);
 		}
 		UserResponse userResponse = AppUtils.convertUserEntityToResponse(users);
 		return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
@@ -87,14 +100,23 @@ public class UserController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
-		Users users = userService.findById(id);
+		Users users = userService.findById(id); 
 		if (users == null) {
-			throw new ApplicationException("users not found exception with id : " + id, HttpStatus.NOT_FOUND);
+			log.error("users not found exception with id : " + id);
+			throw new ApplicationException("Không tìm thấy user", HttpStatus.NOT_FOUND);
+		}
+		 
+		 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(authentication.getName());
+		if(users.getUsername().equals(authentication.getName())) {
+			throw new ApplicationException("Không thể xoá chính bạn", HttpStatus.NOT_FOUND);
 		}
 		try {
 			userService.delete(users);
 		} catch (Exception e) {
-			throw new ApplicationException("Delete failed", HttpStatus.BAD_REQUEST);
+			log.error("Delete failed ");
+			throw new ApplicationException("Xoá thất bại", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -102,7 +124,8 @@ public class UserController {
 	public ResponseEntity<Void> restoreUser(@PathVariable("id") long id) {
 		Users users = userService.findById(id);
 		if (users == null) {
-			throw new ApplicationException("users not found exception with id : " + id, HttpStatus.NOT_FOUND);
+			log.error("users not found exception with id : " + id);
+			throw new ApplicationException("Không tìm thấy user", HttpStatus.NOT_FOUND);
 		}
 		try {
 			userService.restore(users);
@@ -125,7 +148,7 @@ public class UserController {
 		try {
 			Users users = new Users();
 			users.setEmail(userRequest.getEmail());
-			users.setPassword(userRequest.getPassword());
+			users.setPassword(bcryptEncoder.encode(users.getPassword()));
 			Set<Roles> roles = new HashSet<>();
 			for (Long id : userRequest.getRoles()) {
 				Roles role = new Roles(id);
@@ -169,8 +192,10 @@ public class UserController {
 		try {
 			 
 			users.setEmail(userRequest.getEmail());
-			users.setPassword(userRequest.getPassword());
-		 
+			if(!userRequest.getPassword().equals(users.getPassword())) {
+				users.setPassword(bcryptEncoder.encode(userRequest.getPassword()));
+				 
+			}
 			Set<Roles> roles = new HashSet<>();
 			for (Long id : userRequest.getRoles()) {
 				Roles role = new Roles(id);

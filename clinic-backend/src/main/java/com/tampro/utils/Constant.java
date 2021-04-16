@@ -24,6 +24,8 @@ public class Constant {
  
 	//result
 	public static final String API_RESULTS = API_PREFIX + "/results";
+	//notification
+	public static final String API_NOTIFICATION = API_PREFIX + "/notifications";
 	 
 	
 	public static final String UPLOAD_IMAGE = "C:\\Users\\Administrator\\git\\project-clinic\\clinic-backend\\src\\main\\resources\\static\\upload\\";
@@ -48,7 +50,13 @@ public class Constant {
 	public static final int ROLE_PATIENT = 3;
 	
 	//Gender
-	
 	public static final int GENDER_MALE = 0;
 	public static final int GENDER_FEMALE = 1;
+	
+	public static final int SEEN_TRUE = 1; // da xem
+	public static final int SEEN_FALSE = 2; // chua xem
+	
+	public static final int TYPE_BOOKING = 1; // thư đặt khám
+	public static final int TYPE_RE = 2; // thư hẹn khám Re-examination
+	
 }

@@ -62,7 +62,7 @@ public class UserServiceImpl  implements UserService{
 	@Override
 	public Users save(Users users) {
 		// TODO Auto-generated method stub
-		users.setPassword(bcryptEncoder.encode(users.getPassword()));
+		 
 		return userRepo.save(users);
 	}
 

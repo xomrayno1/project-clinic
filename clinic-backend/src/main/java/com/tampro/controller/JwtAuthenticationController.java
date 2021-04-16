@@ -13,6 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +50,9 @@ public class JwtAuthenticationController {
     @Autowired
     RoleSevice roleService;
     
+    @Autowired
+	private PasswordEncoder bcryptEncoder;
+
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Object> saveUser(@RequestBody UserRequest userRequest) throws Exception {
@@ -69,7 +73,7 @@ public class JwtAuthenticationController {
     	Users user = new Users();
     	user.setEmail(userRequest.getEmail());
     	user.setActiveFlag(Constant.ACTIVE);
-    	user.setPassword(userRequest.getPassword());
+    	user.setPassword(bcryptEncoder.encode(userRequest.getPassword()));
     	Set<Roles> roles = new HashSet();
     	Roles role = roleService.findById(Constant.ROLE_PATIENT);
     	roles.add(role);
