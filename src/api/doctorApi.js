@@ -46,6 +46,7 @@ const doctorApi = {
         });
     },
     delete: (id) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
         const { jwt } = auth.user;
         const url = `http://localhost:8080/api/v1/doctors/${id}`;
         return axiosClient.delete(url, {
@@ -55,6 +56,7 @@ const doctorApi = {
         })
     },
     restore: (id) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
         const { jwt } = auth.user;
         const url = `http://localhost:8080/api/v1/doctors/restore/${id}`;
         return axiosClient.get(url, {

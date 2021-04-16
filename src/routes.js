@@ -11,6 +11,7 @@ import BookingNext from "views/Booking/BookingNext";
 import ScheduleList from "views/Schedule/ScheduleList";
 import BookingList from "views/Booking/BookingList";
 import UserPage from "views/UserPage";
+import NotificationList from "views/Notifications/NotificationList";
 
 var routes = [
   {
@@ -34,7 +35,7 @@ var routes = [
     component: DoctorList,
     layout: "/admin",
     roles : ['ROLE_ADMIN']
-  } ,{
+  },{
     path: "/patients",
     name: "Bệnh nhân",
     icon: "nc-icon nc-user-run",
@@ -43,13 +44,19 @@ var routes = [
     roles : ['ROLE_ADMIN']
      
   },{
+    path: "/notifications",
+    name: "Thông báo",
+    icon: "nc-icon nc-bell-55",
+    component: NotificationList,
+    layout: "/admin",
+    roles : ['ROLE_PATIENT','ROLE_DOCTOR']
+  },{
     path: "/schedules",
     name: "Lịch khám",
     icon: "nc-icon nc-time-alarm",
     component: ScheduleList,
     layout: "/admin",
     roles : ['ROLE_ADMIN','ROLE_DOCTOR']
-    
   },{
     path: "/results",
     name: "Kết quả khám",

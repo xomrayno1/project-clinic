@@ -2,6 +2,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import user from 'user.svg'
+import hoso from 'hoso.svg'
 import './style.css'
 import {
     Row,
@@ -26,6 +27,8 @@ import {
     Image
 }
     from 'antd';
+
+
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 
 
@@ -447,7 +450,7 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                                             previewVisible: true
                                         })}
                                             src={
-                                                result.image_upload && `http://localhost:8080/${result.image_upload}` || user
+                                                result.image_upload && `http://localhost:8080/${result.image_upload}` || hoso
                                             }
                                             width="250" height="200px" />
                                     </CardBody>
@@ -474,7 +477,7 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                 <img alt="example" style={{ width: '100%' }} src={
                     preview.previewImage && `http://localhost:8080/${preview.previewImage}`
                     || result.image_upload && `http://localhost:8080/${result.image_upload}`
-                    || user
+                    || hoso
                 } />
             </Modal>
         </>

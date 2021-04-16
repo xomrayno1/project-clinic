@@ -14,9 +14,8 @@ import ResultSearch from './ResultSearch';
 import ResultTable from './ResultTable';
 
 function ResultList(props) {
-
     const {isLoading, results } = useSelector(state => state.result);
-    const {data, pagination } = results;
+    const {data, pagination } = results || {data: '', pagination: ''};
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({
         searchKey: '',

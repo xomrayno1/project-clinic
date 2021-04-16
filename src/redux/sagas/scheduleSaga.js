@@ -32,8 +32,18 @@ function* fetchSchedule({payload}){
 }
 function* updateStatusSchedule({payload}){ // ref get data add
     try {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt,id} = auth.user;
         yield call(scheduleApi.updateStatus,payload);
-        const response = yield call(scheduleApi.getAllFilterPagination,defaultScheduleFilter);
+        const response = yield call(scheduleApi.getAllFilterPagination,{
+            dateFrom: "",
+            dateTo: "",
+            key: "doctor",
+            keyId: id,
+            keySearch: "",
+            limit: 5,
+            page: 1,
+        });
         yield put({type: UPDATE_STATUS_SCHEDULE_SUCCESS, payload: response})
         message.success("Cập nhật thành công");
     } catch (error) { // ref set

@@ -4,7 +4,8 @@ import axiosClient from '../api/axiosClient'
 const resultApi = { 
     getAllFilter : (params) => {
         const auth =  JSON.parse(localStorage.getItem('auth'));
-        const {jwt} = auth.user;
+        const {jwt,id} = auth.user;
+        params.userId = id;
         const url = "http://localhost:8080/api/v1/results/search_filter_pagination";
         return axiosClient.post(url, params,{
             headers : { 

@@ -28,8 +28,16 @@ import resultApi from '../../api/resultApi'
 function* saveResult({payload, addRef,setModalResult}){
     try {
      
-        const response = yield call(resultApi.save,payload)
-        yield put({type: SAVE_RESULT_SUCCESS})
+        yield call(resultApi.save,payload)
+        const response = yield call(resultApi.getAllFilter, {
+            searchKey: '',
+            limit : 5,
+            page : 1,
+            dateTo : '',
+            dateFrom : '',
+            
+        });
+        yield put({type: SAVE_RESULT_SUCCESS, payload: response })
         setModalResult({visible : false})
         message.success( "Lưu thành công",)
     } catch (error) {
@@ -75,8 +83,8 @@ function* setModalResult({payload, addRef}){
             reason: result && result.reason || '',
             reasonDescribe: result && result.reason_describe || '',
             bloodPressure: result && result.blood_pressure || '',
-            height: result && result.height || '',
-            weight:  result && result.weight || '',
+            height: result && result.height || 0,
+            weight:  result && result.weight || 0,
             diagnose:  result && result.diagnose || '',
             note: result && result.note || '',
             id: result && result.id || 0,

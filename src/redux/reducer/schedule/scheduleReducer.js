@@ -39,7 +39,7 @@ function scheduleReducer(state = initalState, action) {
                 isLoading: false,
                 error: payload
             }
-       
+
         case DELETE_SCHEDULE:
             return {
                 ...state,
@@ -57,7 +57,7 @@ function scheduleReducer(state = initalState, action) {
                 isLoading: false,
                 error: payload
             }
-        
+
         case CREATE_SCHEDULE:
             return {
                 ...state,
@@ -75,25 +75,25 @@ function scheduleReducer(state = initalState, action) {
                 isLoading: false,
                 error: payload
             }
-            case UPDATE_STATUS_SCHEDULE:
-                return {
-                    ...state,
-                    isLoading: true
-                }
-            case UPDATE_STATUS_SCHEDULE_SUCCESS:
-                return {
-                    ...state,
-                    isLoading: false,
-                    schedules: payload
-                }
-            case UPDATE_STATUS_SCHEDULE_FAILED:
-                return {
-                    ...state,
-                    isLoading: false,
-                    error: payload
-                }
+        case UPDATE_STATUS_SCHEDULE:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case UPDATE_STATUS_SCHEDULE_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                schedules: payload
+            }
+        case UPDATE_STATUS_SCHEDULE_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         default:
             return state;
     }
 }
-export default  scheduleReducer;
+export default scheduleReducer;
