@@ -13,7 +13,10 @@ import {
     CREATE_SCHEDULE_FAILED,
     UPDATE_STATUS_SCHEDULE,
     UPDATE_STATUS_SCHEDULE_SUCCESS,
-    UPDATE_STATUS_SCHEDULE_FAILED
+    UPDATE_STATUS_SCHEDULE_FAILED,
+    SEND_SCHEDULE_SUCCESS,
+    SEND_SCHEDULE_FAILED,
+    SEND_SCHEDULE
 }
 from '../../utils/Constant'
 import scheduleApi from '../../api/scheduleApi'
@@ -65,9 +68,20 @@ function* deleteSchedule({payload}){ // ref get data add
         yield put({type: DELETE_SCHEDULE_FAILED, payload: error})
     }
 }
+function* sendSchedule({payload}){  
+    try {
+        yield call(scheduleApi.send,payload);
+        message.success(`Gửi thành công`)
+    } catch (error) { 
+        const data = error.response.data
+        message.error(`  ${data.message}`)
+ 
+    }
+}
  
 function* scheduleSaga(){
     yield takeLatest(GET_ALL_SCHEDULE, fetchSchedule)
+    yield takeLatest(SEND_SCHEDULE, sendSchedule)
     yield takeLatest(DELETE_SCHEDULE, deleteSchedule)
     yield takeLatest(UPDATE_STATUS_SCHEDULE, updateStatusSchedule)
 }

@@ -63,7 +63,7 @@ function BookingList(props) {
     }
     const columns = [
         {
-            title: 'Id',
+            title: 'Mã số',
             dataIndex: 'id',
             key: 'id',
         },{

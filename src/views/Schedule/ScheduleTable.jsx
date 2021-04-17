@@ -106,7 +106,7 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
 
     const columns = [
         {
-            title: 'Id',
+            title: 'Mã số',
             dataIndex: 'id',
             key: 'id',
         }, {

@@ -41,7 +41,7 @@ function DoctorTable({data, pagination, isLoading, handleChangePage}) {
     const dispatch = useDispatch();
     const columns = [
         {
-            title: 'Id',
+            title: 'Mã số',
             dataIndex: 'id',
             key: 'id',
         },

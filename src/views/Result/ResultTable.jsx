@@ -17,7 +17,9 @@ import {
     Space,
     Popconfirm,
     Tag,
-    Modal
+    Modal,
+    DatePicker,
+    Select
 }
     from 'antd';
 import * as Yup from 'yup'
@@ -25,6 +27,7 @@ import Textarea from '../../variables/Textarea'
 import { addResult, getResultBySchedule, setDataModalResult } from '../../redux/action/resultAction'
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux'
+import { sendSchedule } from '../../redux/action/scheduleAction';
 
 ResultTable.propTypes = {
     pagination: PropTypes.object,
@@ -40,7 +43,7 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
     const dispatch = useDispatch();
     const columns = [
         {
-            title: 'Id',
+            title: 'Mã số',
             dataIndex: 'id',
             key: 'id',
         }, {
@@ -67,6 +70,7 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                 <Space>
                     <Button key={1} color="primary" onClick={() => onHandleView(item)} >Xem</Button>
                     <Button key={2} color="warning" onClick={() => onHandleEdit(item)} >Sửa</Button>
+                    <Button type="submit" color="success" onClick={() => handleOnClickSend(item)} >Gửi lịch hẹn</Button>
                 </Space>
             )
         },
@@ -81,7 +85,6 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
         })
     }
     function onHandleView(item) {
-        console.log(item)
         setModalResult({
             ...modalResult,
             visible: true,
@@ -132,7 +135,52 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
         diagnose: Yup.string().required("Vui lòng không được để trống !"),
         note: Yup.string().required("Vui lòng không được để trống !"),
     })
+    const { Option } = Select
+    const [modalSend, setModalSend] = useState({
+        visible: false,
+        doctorId: '',
+        patientId: '',
+        date: '',
+        time: ''
+    });
 
+    function handleOnClickSend(item) {
+        console.log(item);
+        setModalSend({
+            ...modalSend,
+            visible: true,
+            patientId: item.pati_id,
+            doctorId: item.doctor_id
+        })
+    }
+    function handleOnSend() {
+        const dateArr = modalSend.date.split("/");
+        const newDate = `${dateArr[0]}-${dateArr[1]}-${dateArr[2]}`
+        const dateTimeNew = `${newDate} ${modalSend.time}`
+        const form = {
+            time: dateTimeNew,
+            doctorId: modalSend.doctorId,
+            patientId: modalSend.patientId
+        }
+        dispatch(sendSchedule(form));
+        setModalSend({
+            ...modalSend,
+            visible: false
+        })
+    }
+    function handleOnChangeDate(value, dateString) {
+        console.log(dateString)
+        setModalSend({
+            ...modalSend,
+            date: `${dateString}`
+        })
+    }
+    function handleChangeTime(value) {
+        setModalSend({
+            ...modalSend,
+            time: `${value}`
+        })
+    }
 
     return (
         <>
@@ -145,8 +193,6 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                     total: newPagination.totalRows,
                     onChange: handleChangePage
                 }} />
-
-
             <Modal
                 title="Chi tiết "
                 centered
@@ -297,11 +343,6 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                         </Row>
                     </Form>
                 </Formik>
-                <Row>
-                    <Col md="12" className="text-right">
-                        <Button type="submit" color="success"  >Gửi lịch hẹn</Button>
-                    </Col>
-                </Row>
             </Modal>
             <Modal
                 visible={preview.previewVisible}
@@ -317,6 +358,56 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                     || result.image_upload && `http://localhost:8080/${result.image_upload}`
                     || hoso
                 } />
+            </Modal>
+            <Modal
+                title="Gửi lịch hẹn"
+
+                visible={modalSend.visible}
+                footer={null}
+                onCancel={() => setModalSend({
+                    ...modalSend,
+                    visible: false,
+                })}
+            >
+                <Row>
+                    <Col md="12" className="text-center">
+                        <DatePicker
+                            zIndex={15000}
+                            onChange={handleOnChangeDate}
+                            format={"YYYY/MM/DD"}
+                            placeholder="Chọn ngày khám"
+                            style={{
+                                width: '200px'
+                            }}
+                            bordered={true}
+                        />
+                        <Select
+                            style={{ width: 120 }}
+                            onChange={handleChangeTime}
+                            placeholder="Chọn giờ khám"
+                            size="middle"
+                            style={{
+                                width: '200px'
+                            }}
+                        >
+                            <Option value="08:00:00">08:00</Option>
+                            <Option value="09:00:00">09:00</Option>
+                            <Option value="10:00:00">10:00</Option>
+                            <Option value="11:00:00">11:00</Option>
+                            <Option value="14:00:00">14:00</Option>
+                            <Option value="15:00:00">15:00</Option>
+                            <Option value="16:00:00">16:00</Option>
+                            <Option value="17:00:00">17:00</Option>
+                            <Option value="18:00:00">18:00</Option>
+                        </Select>
+                    </Col>
+
+                </Row>
+                <Row>
+                    <Col md="12" className="text-center">
+                        <Button type="primary" onClick={handleOnSend}>Gửi</Button>
+                    </Col>
+                </Row>
             </Modal>
         </>
     );

@@ -30,7 +30,16 @@ const scheduleApi  = {
                 'Authorization': `Bearer ${jwt}`
             },
         })
+    },
+    send: (params) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt} = auth.user;
+        const url = "http://localhost:8080/api/v1/schedules/send";
+        return axiosClient.post(url, params, {
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        })
     }
-     
 }
 export default scheduleApi;

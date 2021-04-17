@@ -41,7 +41,11 @@ function NotificationList(props) {
           <Row>
             <Col md="12">
               <Card>
-                <CardHeader><CardTitle>Thông báo</CardTitle></CardHeader>
+                <CardHeader>
+                    <CardTitle>
+                        Thông báo
+                    </CardTitle>
+                </CardHeader>
                 <CardBody>
                     <Spin spinning={isLoading}>
                         {
@@ -49,7 +53,7 @@ function NotificationList(props) {
                                 <Collapse accordion 
                                     onChange={()=>handleOnChange(item)}
                                 >
-                                    <Panel header={item.title} key="1" bordered 
+                                    <Panel header={`${item.title}   ${item.date}`} key="1" bordered  
                                         style={{
                                             fontWeight: item.seen === 2 ? "bold" : ''
                                         }} 

@@ -3,7 +3,9 @@ import {
      
     DELETE_SCHEDULE,
  
-    UPDATE_STATUS_SCHEDULE
+    UPDATE_STATUS_SCHEDULE,
+
+    SEND_SCHEDULE
 }
     from '../../utils/Constant'
 
@@ -24,6 +26,12 @@ export const deleteSchedule = (data)=>{
 export const updateStatusSshedule = (data)=>{
     return {
         type : UPDATE_STATUS_SCHEDULE,
+        payload : data
+    }
+}
+export const sendSchedule = (data)=>{
+    return {
+        type : SEND_SCHEDULE,
         payload : data
     }
 }
