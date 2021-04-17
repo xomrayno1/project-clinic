@@ -39,6 +39,7 @@ ResultTable.propTypes = {
 
 function ResultTable({ data, pagination, isLoading, handleChangePage }) {
     const newPagination = pagination || { limit: 10, totalRows: 1, page: 1 }
+    const auth = useSelector(state => state.auth);
 
     const dispatch = useDispatch();
     const columns = [
@@ -46,6 +47,10 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
             title: 'Mã số',
             dataIndex: 'id',
             key: 'id',
+        },{
+            title: 'Mã lịch khám',
+            dataIndex: 'schedule_id',
+            key: 'schedule_id',
         }, {
             title: 'Thời gian',
             dataIndex: 'time',
@@ -69,8 +74,12 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
             render: (_, item) => (
                 <Space>
                     <Button key={1} color="primary" onClick={() => onHandleView(item)} >Xem</Button>
-                    <Button key={2} color="warning" onClick={() => onHandleEdit(item)} >Sửa</Button>
-                    <Button type="submit" color="success" onClick={() => handleOnClickSend(item)} >Gửi lịch hẹn</Button>
+                    {
+                        auth && auth.user.roles[0].authority !== 'ROLE_PATIENT' && (<>
+                        <Button key={2} color="warning" onClick={() => onHandleEdit(item)} >Sửa</Button>
+                        <Button type="submit" color="success" onClick={() => handleOnClickSend(item)} >Gửi lịch hẹn</Button>
+                        </>)
+                    }
                 </Space>
             )
         },

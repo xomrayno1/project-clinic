@@ -63,7 +63,7 @@ var routes = [
     icon: "nc-icon nc-single-copy-04",
     component: ResultList,
     layout: "/admin",
-    roles : ['ROLE_ADMIN','ROLE_DOCTOR']
+    roles : ['ROLE_ADMIN','ROLE_DOCTOR','ROLE_PATIENT']
   },{
     path: "/booking",
     name: "Đặt lịch khám",
