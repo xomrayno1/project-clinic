@@ -1,10 +1,15 @@
 package com.tampro.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,15 +25,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tampro.entity.Patients;
 import com.tampro.entity.Schedule;
+import com.tampro.entity.Users;
 import com.tampro.exception.ApplicationException;
 import com.tampro.model.Pagination;
 import com.tampro.model.ScheduleSearchPagination;
 import com.tampro.model.search.ScheduleSearch;
+import com.tampro.request.BookingRequest;
+import com.tampro.request.NotificationRequest;
+import com.tampro.request.SendScheduleRequest;
 import com.tampro.request.UpdateStatusScheduleRequest;
 import com.tampro.response.APIResponse;
 import com.tampro.response.ScheduleResponse;
+import com.tampro.service.DoctorService;
+import com.tampro.service.NotificationService;
+import com.tampro.service.PatientService;
 import com.tampro.service.ScheduleService;
+import com.tampro.service.UserService;
+import com.tampro.utils.ApiStatus;
 import com.tampro.utils.AppUtils;
 import com.tampro.utils.Constant;
 
@@ -39,7 +54,18 @@ public class ScheduleController {
 	
 	@Autowired
 	ScheduleService scheduleService;
+	@Autowired
+	DoctorService doctorService;
+	@Autowired
+	PatientService patientService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	NotificationService notificationService;
 	
+	SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final Logger log = LoggerFactory.getLogger(ScheduleController.class);
+
  
 	@PostMapping(value = Constant.API_GET_SCHEDULE_FILTER_PAGINATION)
 	public ResponseEntity<APIResponse> findAllSearchFilterPagination(
@@ -100,5 +126,62 @@ public class ScheduleController {
 		}
 	}
  
-
+	@PostMapping("/send")
+	public ResponseEntity<Object> sendSchedule(@RequestBody SendScheduleRequest sendScheduleRequest){
+		 
+		Patients patients =	patientService.findById(sendScheduleRequest.getPatientId());
+		if(patients == null) {
+			Map<String, Object> data = new HashMap<>();
+			data.put("code" ,ApiStatus.UNREGISTED_INFO.getCode());
+			data.put("message" ,ApiStatus.UNREGISTED_INFO.getMessage());		
+			return new ResponseEntity<Object>(data,HttpStatus.NOT_FOUND);
+		}
+		try {
+			if(date.parse(sendScheduleRequest.getTime()).before(new Date())) {
+				throw new ApplicationException("Ngày đặt đã qua, Vui lòng chọn ngày khác", HttpStatus.BAD_REQUEST);
+			}
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			List<Schedule> list = 	scheduleService.findByTime(date.parse(sendScheduleRequest.getTime()), sendScheduleRequest.getDoctorId());
+			if(!list.isEmpty()) {
+				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
+			}
+			Schedule schedule = new Schedule();
+			schedule.setTime(date.parse(sendScheduleRequest.getTime()));
+			schedule.setDoctor(doctorService.getOne(sendScheduleRequest.getDoctorId()));
+			schedule.setPatients(patients);
+			schedule.setType(Constant.RE_EXAMINATION);
+			schedule.setStatus(Constant.WAITING);
+			schedule.setReason("Gửi lịch hẹn");
+			schedule = scheduleService.save(schedule);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			// send notification
+			StringBuilder messageBuilder = new StringBuilder();
+			messageBuilder.append(" Bạn nhận được một lịch hẹn khám vào ngày : ")
+							.append(sdf.format(schedule.getTime()))
+							.append(". Từ ")
+							.append(schedule.getDoctor().getDocName());
+			
+			NotificationRequest notificationRequest = new NotificationRequest();
+			notificationRequest.setMessage(messageBuilder.toString());
+			notificationRequest.setSeen(Constant.SEEN_FALSE);
+			notificationRequest.setSender("Hệ thống");
+			notificationRequest.setTitle("Lịch hẹn");
+		 
+			notificationRequest.setUserId(schedule.getPatients().getUsers().getId());
+			notificationService.saveNotification(notificationRequest);
+			
+			
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Gửi thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			throw new ApplicationException("Gửi thất bại", HttpStatus.BAD_REQUEST);
+		}
+	}
 }

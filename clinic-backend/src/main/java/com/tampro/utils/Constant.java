@@ -56,7 +56,6 @@ public class Constant {
 	public static final int SEEN_TRUE = 1; // da xem
 	public static final int SEEN_FALSE = 2; // chua xem
 	
-	public static final int TYPE_BOOKING = 1; // thư đặt khám
-	public static final int TYPE_RE = 2; // thư hẹn khám Re-examination
+	 
 	
 }

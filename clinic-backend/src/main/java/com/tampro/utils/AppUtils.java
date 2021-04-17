@@ -132,7 +132,7 @@ public class AppUtils {
 		response.setSeen(notification.getSeen());
 		response.setSender(notification.getSender());
 		response.setTitle(notification.getTitle());
-		response.setType(notification.getType());
+		 
 		response.setUserId(notification.getUserReceiver().getId());
 		response.setDate(simpleDateFormat.format(notification.getDate()) ); 
 		return response;

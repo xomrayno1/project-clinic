@@ -11,7 +11,7 @@ import com.tampro.entity.Users;
 @Repository
 public interface NotificationRepository extends CrudRepository<Notification, Long>{
  
-	List<Notification> findByUserReceiver(Users users);
+	List<Notification> findByUserReceiverOrderByIdDesc(Users users);
  
 
 }

@@ -25,7 +25,9 @@ import com.tampro.entity.Schedule;
 import com.tampro.entity.Users;
 import com.tampro.exception.ApplicationException;
 import com.tampro.request.BookingRequest;
+import com.tampro.request.NotificationRequest;
 import com.tampro.service.DoctorService;
+import com.tampro.service.NotificationService;
 import com.tampro.service.PatientService;
 import com.tampro.service.ScheduleService;
 import com.tampro.service.UserService;
@@ -45,6 +47,8 @@ public class BookingController {
 	ScheduleService scheduleService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	NotificationService notifiService;
 	
 	SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -87,7 +91,27 @@ public class BookingController {
 			schedule.setType(Constant.FIRST_EXAMINATION);
 			schedule.setStatus(Constant.WAITING);
 			schedule.setReason(bookingRequest.getReason());
-			scheduleService.save(schedule);
+			schedule = scheduleService.save(schedule);
+			
+			 
+
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			// send notification
+			StringBuilder messageBuilder = new StringBuilder();
+			messageBuilder.append(" Bạn nhận được một lịch khám vào ngày : ")
+							.append(sdf.format(schedule.getTime()))
+							.append(". Từ ")
+							.append(schedule.getPatients().getPatiName());
+			
+			NotificationRequest notificationRequest = new NotificationRequest();
+			notificationRequest.setMessage(messageBuilder.toString());
+			notificationRequest.setSeen(Constant.SEEN_FALSE);
+			notificationRequest.setSender("Hệ thống");
+			notificationRequest.setTitle("Đặt lịch khám");
+		 
+			notificationRequest.setUserId(schedule.getDoctor().getUsers().getId());
+			notifiService.saveNotification(notificationRequest);
+			
 			Map<String,String> data = new HashMap<String, String>();
 			data.put("message", "Đặt thành công");
 			return new ResponseEntity<Object>(data,HttpStatus.OK);

@@ -18,7 +18,7 @@ public interface ScheduleService {
 	
 	void cancel(Schedule schedule);
 
-	void save(Schedule schedule);
+	Schedule save(Schedule schedule);
 	
 	Schedule findById(long id);
 	

@@ -5,7 +5,7 @@ package com.tampro.request; public class NotificationRequest {
 	private int seen; // đã đọc chưa
 	private String sender;
 	private long userId;
-	private int type; /// thư thông báo , thư confirm
+	 
 	 
 	public String getTitle() {
 		return title;
@@ -36,12 +36,6 @@ package com.tampro.request; public class NotificationRequest {
 	}
 	public void setUserId(long userId) {
 		this.userId = userId;
-	}
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
 	}
  
 	

@@ -30,7 +30,7 @@ public class NotificationServiceImpl implements NotificationService{
 	@Override
 	public List<Notification> findByUsers(Users users) {
 		// TODO Auto-generated method stub
-		return notificationRepo.findByUserReceiver(users);
+		return notificationRepo.findByUserReceiverOrderByIdDesc(users);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService{
 		notification.setSeen(Constant.SEEN_FALSE);
 		notification.setSender(notificationRequest.getSender());
 		notification.setTitle(notificationRequest.getTitle());
-		notification.setType(notificationRequest.getType());
+		 
 		notification.setUserReceiver(userRepo.getOne(notificationRequest.getUserId()));
 		notificationRepo.save(notification);
 	}

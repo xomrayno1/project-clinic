@@ -76,7 +76,7 @@ public class ResultSpecification implements Specification<Results>{
 			Predicate preDoc = criteriaBuilder.equal(doctor.get("users"), userId);
 			predicates.add(preDoc);
 		}
- 
+		query.orderBy(criteriaBuilder.desc(root.get("id")));
 		 
 		Predicate preActive = criteriaBuilder.equal(root.get("activeFlag"),  1);
 		predicates.add(preActive);

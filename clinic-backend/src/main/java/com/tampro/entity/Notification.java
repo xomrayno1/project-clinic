@@ -25,7 +25,7 @@ public class Notification {
 	@JoinColumn(name = "user_receiver")
 	private Users userReceiver;
 	
-	private int type; /// thư thông báo , thư confirm
+ 
 	
 	private Date date;
 	
@@ -65,12 +65,7 @@ public class Notification {
 	public void setUserReceiver(Users userReceiver) {
 		this.userReceiver = userReceiver;
 	}
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
+ 
 	public Date getDate() {
 		return date;
 	}

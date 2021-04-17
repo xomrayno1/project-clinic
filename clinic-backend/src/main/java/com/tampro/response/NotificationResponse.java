@@ -7,7 +7,7 @@ public class NotificationResponse {
 	private int seen; // đã đọc chưa
 	private String sender;
 	private long userId;
-	private int type; /// thư thông báo , thư confirm
+	 
 	private String date;
 	
 	public long getId() {
@@ -46,12 +46,7 @@ public class NotificationResponse {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
+	 
 	public String getDate() {
 		return date;
 	}

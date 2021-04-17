@@ -14,7 +14,6 @@ import com.tampro.entity.Schedule;
 import com.tampro.model.search.ScheduleSearch;
 import com.tampro.model.specification.ScheduleSpecification;
 import com.tampro.repository.ScheduleRepository;
-import com.tampro.request.NotificationRequest;
 import com.tampro.request.UpdateStatusScheduleRequest;
 import com.tampro.service.NotificationService;
 import com.tampro.service.ScheduleService;
@@ -63,31 +62,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public void save(Schedule schedule) {
+	public Schedule save(Schedule schedule) {
 		// TODO Auto-generated method stub
 		schedule.setActiveFlag(Constant.ACTIVE);
-		schedule = scheduleRepo.save(schedule);
-		// send notification
-		StringBuilder messageBuilder = new StringBuilder();
-		messageBuilder.append(" Bạn nhận được một lịch khám vào ngày : ")
-						.append(sdf.format(schedule.getTime()))
-						.append(". Từ ")
-						.append(schedule.getPatients().getPatiName())
-						.append("<br>")
-						.append(" với nội dung : ")
-						.append(schedule.getReason());
-		
-		NotificationRequest notificationRequest = new NotificationRequest();
-		notificationRequest.setMessage(messageBuilder.toString());
-		notificationRequest.setSeen(Constant.SEEN_FALSE);
-		notificationRequest.setSender("Hệ thống");
-		notificationRequest.setTitle("Đặt lịch khám");
-		notificationRequest.setType(Constant.TYPE_BOOKING);
-		notificationRequest.setUserId(schedule.getDoctor().getUsers().getId());
-		notifiService.saveNotification(notificationRequest);
-		
+		return   scheduleRepo.save(schedule);
+		 
 	}
-
+	 
 	@Override
 	public Schedule findById(long id) {
 		// TODO Auto-generated method stub
