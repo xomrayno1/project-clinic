@@ -66,16 +66,15 @@ public class ResultSpecification implements Specification<Results>{
 		//link : https://stackoverflow.com/questions/40007354/jpa-criteria-api-how-to-retrieve-date-in-mm-dd-yyyy-format
  	
 		Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
-		List<Object> lists = authentication
-			.getAuthorities()
-			.stream()
-			.filter(item -> item.getAuthority()
-								.equals("ROLE_ADMIN"))
-			.collect(Collectors.toList());
-		if(lists.isEmpty()) {
+		String authority  = authentication.getAuthorities().iterator().next().toString();
+		if(authority.equals("ROLE_DOCTOR")) {
 			Predicate preDoc = criteriaBuilder.equal(doctor.get("users"), userId);
 			predicates.add(preDoc);
-		}
+		}else if(authority.equals("ROLE_PATIENT")) {
+			Predicate prePatient = criteriaBuilder.equal(patient.get("users"), userId);
+			predicates.add(prePatient);
+		} 
+  
 		query.orderBy(criteriaBuilder.desc(root.get("id")));
 		 
 		Predicate preActive = criteriaBuilder.equal(root.get("activeFlag"),  1);
