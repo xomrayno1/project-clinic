@@ -27,4 +27,8 @@ public interface ScheduleService {
 	Schedule getOne(long id);
 	
 	Schedule updateStatusSchedule(UpdateStatusScheduleRequest	updateStatusScheduleRequest);
+	
+	long countByActiveFlagAndStatusAndTime(int activeFlag, int status, int month);
+	
+	
 }

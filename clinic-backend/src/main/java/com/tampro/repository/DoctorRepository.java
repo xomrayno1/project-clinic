@@ -34,6 +34,8 @@ public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Lon
 	Doctor findByUsers(Users users);
 	
 	List<Doctor> findByDocNameIgnoreCaseContainingAndActiveFlag(String name,int activeFlag);
+
+	long countByActiveFlag(int activeFlag);
 	
 	
 }

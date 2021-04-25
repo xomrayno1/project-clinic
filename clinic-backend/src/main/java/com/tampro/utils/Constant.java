@@ -12,6 +12,7 @@ public class Constant {
 	 
 	public static final String API_USER = API_PREFIX + "/users";
 	public static final String API_PATIENT = API_PREFIX + "/patients";
+	public static final String API_DASHBOARD = API_PREFIX + "/dashboard";
 	
 	public static final String CROSS_ORIGIN = "http://localhost:3000";
 	//schedules

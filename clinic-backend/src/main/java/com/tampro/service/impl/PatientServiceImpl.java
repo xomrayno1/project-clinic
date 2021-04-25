@@ -66,4 +66,10 @@ public class PatientServiceImpl implements PatientService{
 		return patientRepo.findByUsers(users);
 	}
 
+	@Override
+	public long countByActiveFlag(int activeFlag) {
+		// TODO Auto-generated method stub
+		return patientRepo.countByActiveFlag(activeFlag);
+	}
+
 }

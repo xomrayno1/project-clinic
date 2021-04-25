@@ -74,6 +74,12 @@ public class DoctorServiceImpl implements DoctorService{
 		// TODO Auto-generated method stub
 		return doctorRepo.findByUsers(users);
 	}
+
+	@Override
+	public long countByActiveFlag(int activeFlag) {
+		// TODO Auto-generated method stub
+		return doctorRepo.countByActiveFlag(activeFlag);
+	}
 	
 
 	 

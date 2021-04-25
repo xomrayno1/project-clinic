@@ -27,4 +27,6 @@ public interface DoctorService {
 	
 	Doctor findByUsers(Users users);
 	
+	long countByActiveFlag(int activeFlag);
+	
 }

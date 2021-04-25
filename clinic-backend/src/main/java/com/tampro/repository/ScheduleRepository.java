@@ -25,6 +25,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSp
 	@Modifying
 	@Query(value="UPDATE Schedule sc set sc.status = ?1 where sc.id = ?2 ")
 	Schedule updateStatusSchedule(int status, int id); ///sai cmnr
+	
+	@Query("SELECT COUNT(sc)  from Schedule sc where sc.activeFlag = ?1 and sc.status = ?2 and Month(sc.time)  =  ?3 ")
+	long countByActiveFlagAndStatusAndTime(int activeFlag, int status, int month);
+	
+	
 }
  
 	

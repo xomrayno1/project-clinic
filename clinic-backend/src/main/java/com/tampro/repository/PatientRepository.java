@@ -30,4 +30,5 @@ public interface PatientRepository extends PagingAndSortingRepository<Patients, 
 	
 	Patients findByUsers(Users users);
 	 
+	long countByActiveFlag(int activeFlag);
 }

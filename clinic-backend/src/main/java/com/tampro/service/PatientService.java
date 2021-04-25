@@ -22,4 +22,7 @@ public interface PatientService {
 	boolean isExist(String email);
 	
 	Patients findByUsers(Users users);
+	
+	long countByActiveFlag(int activeFlag);
+
 }

@@ -99,4 +99,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return scheduleRepo.updateStatusSchedule(updateStatusScheduleRequest.getStatus(), updateStatusScheduleRequest.getScheduleId());
 	}
 
+	@Override
+	public long countByActiveFlagAndStatusAndTime(int activeFlag, int status, int month) {
+		// TODO Auto-generated method stub
+		return scheduleRepo.countByActiveFlagAndStatusAndTime(activeFlag, status, month);
+	}
+
 }
