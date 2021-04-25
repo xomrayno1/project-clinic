@@ -7,6 +7,7 @@ import authSaga from './authSaga'
 import bookingSaga from './bookingSaga'
 import resultSaga from './resultSaga'
 import notificationSaga from './notificationSaga'
+import dashboardSaga from './dashboardSaga'
 export default function* rootSaga(){
    yield all([
         doctorSaga(),
@@ -16,6 +17,7 @@ export default function* rootSaga(){
         authSaga(),
         bookingSaga(),
         resultSaga(),
-        notificationSaga()
+        notificationSaga(),
+        dashboardSaga()
    ]) 
 }

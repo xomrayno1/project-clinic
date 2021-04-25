@@ -10,6 +10,7 @@ import authReducer from '../reducer/auth/authReducer'
 import bookingReducer from '../reducer/booking/bookingReducer'
 import resultReducer from '../reducer/result/resultReducer'
 import notificationReducer from '../reducer/noti/notificationReducer.js'
+import statisticalReducer from '../reducer/statistical/statisticalReducer'
 const rootReducer = combineReducers({
     doctor: doctorReducer,
     stateDoctorModal: stateDoctorModalReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     auth : authReducer,
     booking: bookingReducer,
     result : resultReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    statistical: statisticalReducer
 })
 export default rootReducer;
