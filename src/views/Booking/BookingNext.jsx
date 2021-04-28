@@ -168,8 +168,6 @@ function BookingNext(props) {
                                             </Form.Item>
                                         </Col>
                                     </Row>
-
-
                                 </Form>
                             </CardBody>
                             <CardFooter>
@@ -178,9 +176,6 @@ function BookingNext(props) {
                         </Card>
                     </Col>
                 </Row>
-
-
-
             </div>
         </>
     );

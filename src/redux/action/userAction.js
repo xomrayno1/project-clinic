@@ -59,17 +59,19 @@ export const restoreUser = (data) => {
         payload: data
     }
 }
-export const updateUser = (data) => {
+export const updateUser = (data, onCancel) => {
     return {
         type: UPDATE_USER,
-        payload: data
+        payload: data,
+        onCancel
         // add them ref
     }
 }
-export const createUser = (data) => {
+export const createUser = (data, onCancel) => {
     return {
         type: CREATE_USER,
-        payload: data
+        payload: data,
+        onCancel
     }
 }
 export const setStateModal = (data) => {

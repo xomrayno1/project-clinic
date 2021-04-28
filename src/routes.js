@@ -12,6 +12,7 @@ import ScheduleList from "views/Schedule/ScheduleList";
 import BookingList from "views/Booking/BookingList";
 import UserPage from "views/UserPage";
 import NotificationList from "views/Notifications/NotificationList";
+import UserDashBoard from "views/Dashboard/UserDashBoard";
 
 var routes = [
   {
@@ -20,7 +21,14 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: Dashboard,
     layout: "/admin",
-    roles : ['ROLE_PATIENT','ROLE_ADMIN','ROLE_DOCTOR']
+    roles : ['ROLE_ADMIN']
+  },{
+    path: "/us/dashboard",
+    name: "Trang chủ",
+    icon: "nc-icon nc-bank",
+    component: UserDashBoard,
+    layout: "/admin",
+    roles : ['ROLE_PATIENT','ROLE_DOCTOR']
   },{
     path: "/users",
     name: "Tài khoản",

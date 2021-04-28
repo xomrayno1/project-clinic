@@ -27,10 +27,11 @@ export const getDoctor = (data)=>{
         payload : data
     }
 }
-export const updateDoctor = (data) =>{
+export const updateDoctor = (data, onCancel) =>{
     return {
         type: UPDATE_DOCTOR,
-        payload: data
+        payload: data,
+        onCancel
     }
 }  
 export const deleteDoctor = (data) =>{

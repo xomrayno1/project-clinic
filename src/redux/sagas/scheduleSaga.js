@@ -41,7 +41,7 @@ function* updateStatusSchedule({payload}){ // ref get data add
         const response = yield call(scheduleApi.getAllFilterPagination,{
             dateFrom: "",
             dateTo: "",
-            key: "doctor",
+            key: "",
             keyId: id,
             keySearch: "",
             limit: 5,
@@ -60,7 +60,17 @@ function* updateStatusSchedule({payload}){ // ref get data add
 function* deleteSchedule({payload}){ // ref get data add
     try {
         yield call(scheduleApi.delete,payload);
-        const response = yield call(scheduleApi.getAllFilterPagination,defaultScheduleFilter);
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt,id} = auth.user;
+        const response = yield call(scheduleApi.getAllFilterPagination,{
+            dateFrom: "",
+            dateTo: "",
+            key: "",
+            keyId: id,
+            keySearch: "",
+            limit: 5,
+            page: 1,
+        });
         yield put({type: DELETE_SCHEDULE_SUCCESS, payload: response})
     } catch (error) { // ref set
         const data = error.response.data
@@ -75,7 +85,6 @@ function* sendSchedule({payload}){
     } catch (error) { 
         const data = error.response.data
         message.error(`  ${data.message}`)
- 
     }
 }
  

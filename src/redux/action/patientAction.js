@@ -25,10 +25,11 @@ export const restorePatient = (data)=>{
         payload : data
     }
 }
-export const updatePatient = (data) =>{
+export const updatePatient = (data, onCancel) =>{
     return {
         type: UPDATE_PATIENT,
-        payload: data
+        payload: data,
+        onCancel
     }
 }
 export const setStateModal = (data) =>{

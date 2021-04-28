@@ -53,11 +53,13 @@ function* fetchUser({payload}){
         yield put({type: GET_ALL_USER_FAILED, payload: error})
     }
 }
-function* updateUser({payload}){
+function* updateUser({payload, onCancel}){
     try { //ref get dataa
-        yield call(userApi.update,payload);
+        const data = yield call(userApi.update,payload);
         const response = yield call(userApi.getAllFilter,defaultFilter);
         yield put({type: UPDATE_USER_SUCCESS, payload: response})
+        message.success(`${data.message}`)
+        onCancel()
     } catch (error) { //ref set error
         const data = error.response.data
         message.error(`  ${data.message}`)
@@ -148,11 +150,13 @@ function* restoreUser({payload}){
         yield put({type: GET_ALL_USER_FAILED, payload: error})
     }
 }
-function* createUser({payload}){
+function* createUser({payload, onCancel}){
     try {
-        yield call(userApi.create,payload);
+        const data = yield call(userApi.create,payload);
         const response = yield call(userApi.getAllFilter,defaultFilter);
         yield put({type: CREATE_USER_SUCCESS, payload: response})
+        message.success(`${data.message}`)
+        onCancel()
     } catch (error) {
         const data = error.response.data
         message.error(`  ${data.message}`)

@@ -13,13 +13,13 @@ import { useSelector } from "react-redux";
 
 var ps;
 
-function Dashboard(props) {
+function Admin(props) {
   const [backgroundColor, setBackgroundColor] = useState('black');
   const [activeColor, setActiveColor] = useState('info');
   const auth = useSelector(state => state.auth);
   const mainPanel = useRef();
   const history = useHistory();
-  const rolesUser = auth.user.roles;
+  const authority = auth.user.roles[0].authority;
 
   useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -41,12 +41,6 @@ function Dashboard(props) {
     }
   })
 
-  // const handleActiveClick = (color) => {
-  //   setActiveColor(color)
-  // };
-  // const handleBgClick = (color) => {
-  //    setBackgroundColor(color);
-  // };
   return (
     <div className="wrapper">
       <Sidebar
@@ -60,27 +54,28 @@ function Dashboard(props) {
         <Switch>
           {
             routes.map((prop, key) => {
-              return <Route
+              return prop.roles.includes(authority) ? <Route
                 path={prop.layout + prop.path}
                 component={prop.component}
+                key={key}
+                exact
+              /> : <Route /// cùng path cùng layout nhưng khác render
+                path={prop.layout + prop.path}
+                render={() => (
+                  <Redirect to="access-denied" />
+                )}
                 key={key}
                 exact
               />
             })
           }
-          {/* {
-            rolesUser.includes("ROLE_PATIENT") && <Route path="/admin/booking/:doctorId" component={BookingNext} />
-          } */}
-          <Route path="/admin/booking/:doctorId" component={BookingNext} />
+
+          {
+            authority === 'ROLE_PATIENT' ? <Route path="/admin/booking/:doctorId" component={BookingNext} /> : <Redirect to="/access-denied" />
+          }
         </Switch>
         <Footer fluid />
       </div>
-      {/* <FixedPlugin
-          bgColor={this.state.backgroundColor}
-          activeColor={this.state.activeColor}
-          handleActiveClick={this.handleActiveClick}
-          handleBgClick={this.handleBgClick}
-        /> */}
     </div>
   );
 
@@ -92,4 +87,4 @@ function Dashboard(props) {
 }
 
 
-export default Dashboard;
+export default Admin;

@@ -64,7 +64,7 @@ function PatientModal(props) {
         fd.append("id", data.id);
         fd.append("userId", data.userId);
   
-        dispatch(updatePatient(fd))
+        dispatch(updatePatient(fd, onCancel)) ////
         dispatch(setStateModal({
             ...stateModal,
             visible : true,

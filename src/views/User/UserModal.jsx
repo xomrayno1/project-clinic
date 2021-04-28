@@ -37,8 +37,7 @@ function UserModal(props) {
     }, [item]);
 
     function onFinish(data) {
-
-        console.log(formRef)
+      
         //dispatch theo ref
         const {id} = stateModal.item || {id: null}
         const form = {
@@ -47,9 +46,9 @@ function UserModal(props) {
         }
         if(id){
             form.id = id;
-            dispatch(updateUser(form));
+            dispatch(updateUser(form, onCancel));
         }else{
-            dispatch(createUser(form));
+            dispatch(createUser(form, onCancel));
         }
         onCancel();
     }
@@ -117,7 +116,12 @@ function UserModal(props) {
                         <Form.Item
                             label="Email"
                             name="email"
-                            rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
+                            rules={[{ required: true, message: 'Vui lòng nhập email!' },  
+                            {
+                                required: true,
+                                type: "email",
+                                message: "Định dạng email không chính xác!"
+                            }]}
                         >
                             <Input disabled={stateModal.viewOnly} style={{ color: 'black' }} />
                         </Form.Item>

@@ -17,62 +17,62 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import {Formik,Form,Field,ErrorMessage} from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import Textarea from "variables/Textarea";
 import CardFooter from "reactstrap/lib/CardFooter";
 import { useDispatch } from "react-redux";
-import {getDoctorByUser, updateProfileDoctor,  setModalInfo, updateUserInfo } from '../../redux/action/userAction'
+import { getDoctorByUser, updateProfileDoctor, setModalInfo, updateUserInfo } from '../../redux/action/userAction'
 import { useSelector } from "react-redux";
 
-import {Spin} from 'antd'
+import { Spin } from 'antd'
 
 function User(props) {
-    const doctorProfileSchema = Yup.object({
-      name : Yup.string().required("Vui lòng nhập tên"),
-      email : Yup.string().required("Vui lòng nhập email"),
-      phone: Yup.string().required("Vui lòng nhập số điện thoại"),
-      gender: Yup.string().required("Vui lòng nhập giới tính"),
-      domain: Yup.string().required("Vui lòng nhập chuyên nghành"),
-      education: Yup.string().required("Vui lòng nhập  trường tốt nghiệp"),
-      level: Yup.string().required("Vui lòng nhập trình độ"),
-      address: Yup.string().required("Vui lòng nhập địa chỉ"),
-      city: Yup.string().required("Vui lòng nhập thành phố"),
-    })
-    const doctorProfileRef= useRef();
-    const dispatch = useDispatch();
-    const auth = useSelector(state => state.auth);
-    const {username} = auth.user || {username:''};
-    const {profile,isLoading} = auth || {profile: '', isLoading : false}
-    
-    const infoModalSchema = Yup.object({
-      email: Yup.string().required("Vui lòng nhập email"),
-      password: Yup.string().required("Vui lòng nhập mật khẩu"),
-    })
-    const modalRef = useRef();
-    const formInfoRef = useRef();
-    const [modal, setModal] = useState(false);
-    function handleClickUpdateInfo() {
-      dispatch(setModalInfo(auth.user.id || 0, formInfoRef)); 
-      setModal(!modal);
-    }
-    function onHandleUpdateUserInfo() {
-      dispatch(updateUserInfo(formInfoRef, setModal))
-    }
-    
-    useEffect(()=>{
-      dispatch(getDoctorByUser(username,doctorProfileRef));
-    },[]);
+  const doctorProfileSchema = Yup.object({
+    name: Yup.string().required("Vui lòng nhập tên"),
+    email: Yup.string().required("Vui lòng nhập email"),
+    phone: Yup.string().required("Vui lòng nhập số điện thoại"),
+    gender: Yup.string().required("Vui lòng nhập giới tính"),
+    domain: Yup.string().required("Vui lòng nhập chuyên nghành"),
+    education: Yup.string().required("Vui lòng nhập  trường tốt nghiệp"),
+    level: Yup.string().required("Vui lòng nhập trình độ"),
+    address: Yup.string().required("Vui lòng nhập địa chỉ"),
+    city: Yup.string().required("Vui lòng nhập thành phố"),
+  })
+  const doctorProfileRef = useRef();
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
+  const { username } = auth.user || { username: '' };
+  const { profile, isLoading } = auth || { profile: '', isLoading: false }
 
-    function handleOnSubmit(){
-      dispatch(updateProfileDoctor(doctorProfileRef));
-    }
+  const infoModalSchema = Yup.object({
+    email: Yup.string().required("Vui lòng nhập email"),
+    password: Yup.string().required("Vui lòng nhập mật khẩu"),
+  })
+  const modalRef = useRef();
+  const formInfoRef = useRef();
+  const [modal, setModal] = useState(false);
+  function handleClickUpdateInfo() {
+    dispatch(setModalInfo(auth.user.id || 0, formInfoRef));
+    setModal(!modal);
+  }
+  function onHandleUpdateUserInfo() {
+    dispatch(updateUserInfo(formInfoRef, setModal))
+  }
 
-    return (
-      <>
-      
-        <div className="content">
-        <Spin spinning={isLoading}> 
+  useEffect(() => {
+    dispatch(getDoctorByUser(username, doctorProfileRef));
+  }, []);
+
+  function handleOnSubmit() {
+    dispatch(updateProfileDoctor(doctorProfileRef));
+  }
+
+  return (
+    <>
+
+      <div className="content">
+        <Spin spinning={isLoading}>
           <Row>
             <Col md="4">
               <Card className="card-user">
@@ -88,7 +88,7 @@ function User(props) {
                       <img
                         alt="..."
                         className="avatar border-gray"
-                        src={profile && profile.imageUrl && `http://localhost:8080/${profile.imageUrl }` || user}
+                        src={profile && profile.imageUrl && `http://localhost:8080/${profile.imageUrl}` || user}
                       />
                       <h5 className="title">{profile && profile.name || ''}</h5>
                     </a>
@@ -106,25 +106,25 @@ function User(props) {
                   <CardTitle tag="h5">Chỉnh sửa thông tin  </CardTitle>
                 </CardHeader>
                 <CardBody>
-                  <Formik 
-                      initialValues={{
-                          name:   '', 
-                          email :'', 
-                          phone: '',
-                          gender: 'male',
-                          description:  '',
-                          domain: '',
-                          education: '',
-                          level:  '',
-                          address:  '',
-                          city:  '',
-                      }}
-                      innerRef={doctorProfileRef}
-                      onSubmit={handleOnSubmit}
-                      validationSchema={doctorProfileSchema}
-                      validateOnBlur={false}
-                      validateOnChange={false}
-                  > 
+                  <Formik
+                    initialValues={{
+                      name: '',
+                      email: '',
+                      phone: '',
+                      gender: 'male',
+                      description: '',
+                      domain: '',
+                      education: '',
+                      level: '',
+                      address: '',
+                      city: '',
+                    }}
+                    innerRef={doctorProfileRef}
+                    onSubmit={handleOnSubmit}
+                    validationSchema={doctorProfileSchema}
+                    validateOnBlur={false}
+                    validateOnChange={false}
+                  >
                     <Form>
                       <Row>
                         <Col className="pr-1" md="4">
@@ -136,24 +136,24 @@ function User(props) {
                               name="name"
                               className="form-control"
                             />
-                            <ErrorMessage 
-                              component="div" 
-                              name="name" 
+                            <ErrorMessage
+                              component="div"
+                              name="name"
                               className="error-text" />
                           </FormGroup>
                         </Col>
                         <Col className="px-1" md="4">
                           <FormGroup>
                             <label>Email</label>
-                            <Field 
-                              placeholder="Email" 
+                            <Field
+                              placeholder="Email"
                               type="email"
                               name="email"
                               className="form-control"
-                              />
-                            <ErrorMessage 
-                              component="div" 
-                              name="email" 
+                            />
+                            <ErrorMessage
+                              component="div"
+                              name="email"
                               className="error-text" />
                           </FormGroup>
                         </Col>
@@ -162,15 +162,15 @@ function User(props) {
                             <label htmlFor="exampleInputEmail1">
                               Số điện thoại
                             </label>
-                            <Field 
-                              placeholder="Số điện thoại" 
+                            <Field
+                              placeholder="Số điện thoại"
                               type="text"
                               className="form-control"
                               name="phone"
-                              />
-                            <ErrorMessage 
-                              component="div" 
-                              name="phone" 
+                            />
+                            <ErrorMessage
+                              component="div"
+                              name="phone"
                               className="error-text" />
                           </FormGroup>
                         </Col>
@@ -185,9 +185,9 @@ function User(props) {
                               className="form-control"
                               name="domain"
                             />
-                            <ErrorMessage 
-                              component="div" 
-                              name="domain" 
+                            <ErrorMessage
+                              component="div"
+                              name="domain"
                               className="error-text" />
                           </FormGroup>
                         </Col>
@@ -200,9 +200,9 @@ function User(props) {
                               className="form-control"
                               name="education"
                             />
-                            <ErrorMessage 
-                              component="div" 
-                              name="education" 
+                            <ErrorMessage
+                              component="div"
+                              name="education"
                               className="error-text" />
                           </FormGroup>
                         </Col>
@@ -210,15 +210,15 @@ function User(props) {
                       <Row>
                         <Col className="pr-1" md="6">
                           <FormGroup check>
-                              <label>Giới tính</label>
-                              <div className="text-center ">
-                                <Label check>
-                                  <Field type="radio" name="gender" value="male" /> Nam
+                            <label>Giới tính</label>
+                            <div className="text-center ">
+                              <Label check>
+                                <Field type="radio" name="gender" value="male" /> Nam
                                 </Label>
-                                <Label check>
-                                  <Field type="radio"  name="gender" value="female" /> Nữ
-                                </Label>    
-                              </div>  
+                              <Label check>
+                                <Field type="radio" name="gender" value="female" /> Nữ
+                                </Label>
+                            </div>
                           </FormGroup>
                         </Col>
                         <Col md="6">
@@ -230,9 +230,9 @@ function User(props) {
                               name="level"
                               className="form-control"
                             />
-                            <ErrorMessage 
-                              component="div" 
-                              name="level" 
+                            <ErrorMessage
+                              component="div"
+                              name="level"
                               className="error-text" />
                           </FormGroup>
                         </Col>
@@ -247,10 +247,10 @@ function User(props) {
                               className="form-control"
                               name="city"
                             />
-                            <ErrorMessage 
-                              component="div" 
-                              name="city" 
-                              className="error-text" /> 
+                            <ErrorMessage
+                              component="div"
+                              name="city"
+                              className="error-text" />
                           </FormGroup>
                         </Col>
                         <Col md="8">
@@ -262,9 +262,9 @@ function User(props) {
                               className="form-control"
                               name="address"
                             />
-                            <ErrorMessage 
-                              component="div" 
-                              name="address" 
+                            <ErrorMessage
+                              component="div"
+                              name="address"
                               className="error-text" />
                           </FormGroup>
                         </Col>
@@ -272,8 +272,8 @@ function User(props) {
                       <Row>
                         <Col md="12">
                           <FormGroup>
-                            <Textarea 
-                              name="description" 
+                            <Textarea
+                              name="description"
                               className="form-control"
                               label="Thông tin chi tiết"
                             />
@@ -298,30 +298,30 @@ function User(props) {
             </Col>
           </Row>
         </Spin>
-        <Modal 
+        <Modal
           isOpen={modal}
           innerRef={modalRef}
         >
-        <Formik
-              initialValues={{
-                username: '',
-                password: '',
-                email: '',
-                id: '',
-                roles : ''
-              }}
-              validateOnBlur={false}
-              validateOnChange={false}
-              validationSchema={infoModalSchema}
-              innerRef={formInfoRef}
-              onSubmit={onHandleUpdateUserInfo}
-            >
-              <Form id="formUpdateUser">
-          <ModalHeader>
-            Cập nhật tài khoản
+          <Formik
+            initialValues={{
+              username: '',
+              password: '',
+              email: '',
+              id: '',
+              roles: ''
+            }}
+            validateOnBlur={false}
+            validateOnChange={false}
+            validationSchema={infoModalSchema}
+            innerRef={formInfoRef}
+            onSubmit={onHandleUpdateUserInfo}
+          >
+            <Form id="formUpdateUser">
+              <ModalHeader>
+                Cập nhật tài khoản
           </ModalHeader>
-          <ModalBody>
-             
+              <ModalBody>
+
                 <FormGroup>
                   <label>Tên tài khoản</label>
                   <Field
@@ -358,18 +358,18 @@ function User(props) {
                     name="email"
                     className="error-text" />
                 </FormGroup>
-              
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary"  type="submit">Cập nhật</Button>{' '}
-            <Button color="secondary" onClick={() => setModal(!modal)}>Cancel</Button>
-          </ModalFooter>
-          </Form>
+
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" type="submit">Cập nhật</Button>{' '}
+                <Button color="secondary" onClick={() => setModal(!modal)}>Cancel</Button>
+              </ModalFooter>
+            </Form>
           </Formik>
         </Modal>
-        </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
+}
 
 export default User;

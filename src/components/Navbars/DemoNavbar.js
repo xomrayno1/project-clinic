@@ -60,6 +60,16 @@ function Header(props) {
     });
     return brandName;
   }
+  function getUrl() {
+    let brandUrl = "";
+    routes.map((prop, key) => {
+      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+        brandUrl = prop.layout + prop.path;
+      }
+      return null;
+    });
+    return brandUrl;
+  }
   function openSidebar() {
     document.documentElement.classList.toggle("nav-open");
     sidebarToggle.current.classList.toggle("toggled");
@@ -120,7 +130,7 @@ function Header(props) {
               <span className="navbar-toggler-bar bar3" />
             </button>
           </div>
-          <NavbarBrand href="/admin/dashboard">{getBrand()}</NavbarBrand>
+          <NavbarBrand href={getUrl()}>{getBrand()}</NavbarBrand>
           {/* link branch */}
         </div>
         <NavbarToggler onClick={toggle}>

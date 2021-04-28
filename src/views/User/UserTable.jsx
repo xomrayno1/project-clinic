@@ -56,7 +56,6 @@ function UserTable({ pagination, data, isLoading, handleChangePage }) {
             title: 'Role',
             dataIndex: 'roles',
             render: roles => {
-                console.log(roles)
                 return (
                     roles.map((item, idx) => {
                         const color = item === 1 ? 'volcano' : (item === 2 ? 'geekblue' : 'green')

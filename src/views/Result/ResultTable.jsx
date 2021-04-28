@@ -19,7 +19,8 @@ import {
     Tag,
     Modal,
     DatePicker,
-    Select
+    Select,
+    Spin
 }
     from 'antd';
 import * as Yup from 'yup'
@@ -42,12 +43,15 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
     const auth = useSelector(state => state.auth);
 
     const dispatch = useDispatch();
+
+    const [loadingModal, setLoadingModal] = useState(false);
+
     const columns = [
         {
             title: 'Mã số',
             dataIndex: 'id',
             key: 'id',
-        },{
+        }, {
             title: 'Mã lịch khám',
             dataIndex: 'schedule_id',
             key: 'schedule_id',
@@ -76,8 +80,8 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                     <Button key={1} color="primary" onClick={() => onHandleView(item)} >Xem</Button>
                     {
                         auth && auth.user.roles[0].authority !== 'ROLE_PATIENT' && (<>
-                        <Button key={2} color="warning" onClick={() => onHandleEdit(item)} >Sửa</Button>
-                        <Button type="submit" color="success" onClick={() => handleOnClickSend(item)} >Gửi lịch hẹn</Button>
+                            <Button key={2} color="warning" onClick={() => onHandleEdit(item)} >Sửa</Button>
+                            <Button type="submit" color="success" onClick={() => handleOnClickSend(item)} >Gửi lịch hẹn</Button>
                         </>)
                     }
                 </Space>
@@ -86,20 +90,58 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
     ]
 
     function onHandleEdit(item) {
+        setLoadingModal(true)
         setModalResult({
             ...modalResult,
             visible: true,
             item,
             disabled: false
         })
+        setTimeout(() => {
+            formResultRef.current.setValues({
+                doc_name: item.doc_name || '',
+                pati_name: item.pati_name || '',
+                doctorId: item.doctor_id || '',
+                patientId: item.pati_id || '',
+                reason: item.reason || '',
+                reasonDescribe: item.reason_describe || '',
+                bloodPressure: item.blood_pressure || '',
+                height: item.height || '',
+                weight: item.weight || '',
+                diagnose: item.diagnose || '',
+                note: item.note || '',
+                id: item.id || '',
+                scheduleId: item.schedule_id || '',
+            })
+            setLoadingModal(false)
+        }, 300)
     }
     function onHandleView(item) {
+        setLoadingModal(true)
         setModalResult({
             ...modalResult,
             visible: true,
             item,
             disabled: true
         })
+        setTimeout(() => {
+            formResultRef.current.setValues({
+                doc_name: item.doc_name || '',
+                pati_name: item.pati_name || '',
+                doctorId: item.doctor_id || '',
+                patientId: item.pati_id || '',
+                reason: item.reason || '',
+                reasonDescribe: item.reason_describe || '',
+                bloodPressure: item.blood_pressure || '',
+                height: item.height || '',
+                weight: item.weight || '',
+                diagnose: item.diagnose || '',
+                note: item.note || '',
+                id: item.id || '',
+                scheduleId: item.schedule_id || '',
+            })
+            setLoadingModal(false)
+        }, 300)
     }
 
     const { result } = useSelector(state => state.result) || '';
@@ -190,6 +232,7 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
             time: `${value}`
         })
     }
+ 
 
     return (
         <>
@@ -215,143 +258,145 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                 zIndex={10000}
                 width={1000}
             >
-                <Formik
-                    onSubmit={handleOnSubmitResult}
-                    validateOnChange={false}
-                    validateOnBlur={false}
-                    initialValues={{
-                        doc_name: modalResult.item && modalResult.item.doc_name || '',
-                        pati_name: modalResult.item && modalResult.item.pati_name || '',
-                        doctorId: modalResult.item && modalResult.item.doctor_id || '',
-                        patientId: modalResult.item && modalResult.item.pati_id || '',
-                        reason: modalResult.item && modalResult.item.reason || '',
-                        reasonDescribe: modalResult.item && modalResult.item.reason_describe || '',
-                        bloodPressure: modalResult.item && modalResult.item.blood_pressure || '',
-                        height: modalResult.item && modalResult.item.height || '',
-                        weight: modalResult.item && modalResult.item.weight || '',
-                        diagnose: modalResult.item && modalResult.item.diagnose || '',
-                        note: modalResult.item && modalResult.item.note || '',
-                        id: modalResult.item && modalResult.item.id || '',
-                        scheduleId: modalResult.item && modalResult.item.schedule_id || '',
-                    }}
-                    validationSchema={resultSchema}
-                    innerRef={formResultRef}
+                <Spin spinning={loadingModal}> 
+                    <Formik
+                        onSubmit={handleOnSubmitResult}
+                        validateOnChange={false}
+                        validateOnBlur={false}
+                        initialValues={{
+                            doc_name: '',
+                            pati_name: '',
+                            doctorId: '',
+                            patientId: '',
+                            reason: '',
+                            reasonDescribe: '',
+                            bloodPressure: '',
+                            height: '',
+                            weight: '',
+                            diagnose: '',
+                            note: '',
+                            id: '',
+                            scheduleId: '',
+                        }}
+                        validationSchema={resultSchema}
+                        innerRef={formResultRef}
 
-                >
-                    <Form>
-                        <Row>
-                            <Col md="6">
-                                <FormGroup>
-                                    <Label >Tên bác sĩ</Label>
-                                    <Field className="form-control" name="doc_name" disabled />
-                                </FormGroup>
-                            </Col>
-                            <Col md="6">
-                                <FormGroup>
-                                    <Label >Tên bệnh nhân</Label>
-                                    <Field className="form-control" name="pati_name" disabled />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="6">
-                                <FormGroup>
-                                    <Label >Nguyên nhân khám</Label>
-                                    <Field className="form-control" name="reason"
-                                        disabled={modalResult.disabled} />
-                                    <ErrorMessage className="error-text" name="reason" component="div" />
-                                </FormGroup>
-                            </Col>
-                            <Col md="6">
-                                <FormGroup>
-                                    <Textarea name="reasonDescribe" className="form-control" label="Nguyên nhân khám chi tiết"
-                                        disabled={modalResult.disabled} />
-                                    <ErrorMessage className="error-text" name="reasonDescribe" component="div" />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="4">
-                                <FormGroup>
-                                    <Label >Huyết áp</Label>
-                                    <Field className="form-control" name="bloodPressure"
-                                        disabled={modalResult.disabled} />
-                                    <ErrorMessage className="error-text" name="bloodPressure" component="div" />
-                                </FormGroup>
-                            </Col>
-                            <Col md="4">
-                                <FormGroup>
-                                    <Label >Chiều cao (cm)</Label>
-                                    <Field className="form-control" name="height"
-                                        disabled={modalResult.disabled} />
-                                    <ErrorMessage className="error-text" name="height" component="div" />
-                                </FormGroup>
-                            </Col>
-                            <Col md="4">
-                                <FormGroup>
-                                    <Label >Cân nặng (kg)</Label>
-                                    <Field className="form-control" name="weight"
-                                        disabled={modalResult.disabled} />
-                                    <ErrorMessage className="error-text" name="weight" component="div" />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="6">
-                                <FormGroup>
-                                    <Textarea label="Chẩn đoán của bác sĩ"
-                                        className="form-control"
-                                        name="diagnose"
-                                        disabled={modalResult.disabled}
-                                    />
-                                    <ErrorMessage className="error-text" name="diagnose" component="div" />
-                                </FormGroup>
-                            </Col>
-                            <Col md="6">
-                                <FormGroup>
-                                    <Label >Ghi chú</Label>
-                                    <Textarea name="note" className="form-control"
-                                        disabled={modalResult.disabled} />
-                                    <ErrorMessage className="error-text" name="note" component="div" />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="6">
-                                <FormGroup>
-                                    <Label >Upload ảnh</Label>
-                                    <Field
-                                        className="form-control"
-                                        type="file"
-                                        name="image_upload"
-                                        onChange={(e) => {
-                                            setFileImg(e.target.files[0])
-                                        }}
-                                        disabled={modalResult.disabled}
-                                    />
-                                </FormGroup>
-                            </Col>
-                            <Col md="6">
-                                <Card>
-                                    <CardBody className="text-center">
-                                        <img onClick={() => setPreview({
-                                            previewVisible: true
-                                        })}
-                                            src={
-                                                result.image_upload && `http://localhost:8080/${result.image_upload}` || hoso
-                                            }
-                                            width="250" height="200px" />
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="12" className="text-center">
-                                <Button type="submit" color="primary" disabled={modalResult.disabled}>Lưu</Button>
-                            </Col>
-                        </Row>
-                    </Form>
-                </Formik>
+                    >
+                        <Form>
+                            <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Tên bác sĩ</Label>
+                                        <Field className="form-control" name="doc_name" disabled />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Tên bệnh nhân</Label>
+                                        <Field className="form-control" name="pati_name" disabled />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Nguyên nhân khám</Label>
+                                        <Field className="form-control" name="reason"
+                                            disabled={modalResult.disabled} />
+                                        <ErrorMessage className="error-text" name="reason" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Textarea name="reasonDescribe" className="form-control" label="Nguyên nhân khám chi tiết"
+                                            disabled={modalResult.disabled} />
+                                        <ErrorMessage className="error-text" name="reasonDescribe" component="div" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="4">
+                                    <FormGroup>
+                                        <Label >Huyết áp</Label>
+                                        <Field className="form-control" name="bloodPressure"
+                                            disabled={modalResult.disabled} />
+                                        <ErrorMessage className="error-text" name="bloodPressure" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="4">
+                                    <FormGroup>
+                                        <Label >Chiều cao (cm)</Label>
+                                        <Field className="form-control" name="height"
+                                            disabled={modalResult.disabled} />
+                                        <ErrorMessage className="error-text" name="height" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="4">
+                                    <FormGroup>
+                                        <Label >Cân nặng (kg)</Label>
+                                        <Field className="form-control" name="weight"
+                                            disabled={modalResult.disabled} />
+                                        <ErrorMessage className="error-text" name="weight" component="div" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Textarea label="Chẩn đoán của bác sĩ"
+                                            className="form-control"
+                                            name="diagnose"
+                                            disabled={modalResult.disabled}
+                                        />
+                                        <ErrorMessage className="error-text" name="diagnose" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Ghi chú</Label>
+                                        <Textarea name="note" className="form-control"
+                                            disabled={modalResult.disabled} />
+                                        <ErrorMessage className="error-text" name="note" component="div" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Upload ảnh</Label>
+                                        <Field
+                                            className="form-control"
+                                            type="file"
+                                            name="image_upload"
+                                            onChange={(e) => {
+                                                setFileImg(e.target.files[0])
+                                            }}
+                                            disabled={modalResult.disabled}
+                                        />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <Card>
+                                        <CardBody className="text-center">
+                                            <img onClick={() => setPreview({
+                                                previewVisible: true
+                                            })}
+                                                src={
+                                                    result.image_upload && `http://localhost:8080/${result.image_upload}` || hoso
+                                                }
+                                                width="250" height="200px" />
+                                        </CardBody>
+                                    </Card>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="12" className="text-center">
+                                    <Button type="submit" color="primary" disabled={modalResult.disabled}>Lưu</Button>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Formik>
+                </Spin>
             </Modal>
             <Modal
                 visible={preview.previewVisible}

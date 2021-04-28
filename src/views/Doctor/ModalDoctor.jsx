@@ -75,7 +75,7 @@ function ModalDoctor(props) {
         fd.append("id", data.id);
         fd.append("userId", data.userId);
         fd.append("domain", data.domain)
-        dispatch(updateDoctor(fd))
+        dispatch(updateDoctor(fd, onCancel))
 
    
         dispatch(setStateModal({
