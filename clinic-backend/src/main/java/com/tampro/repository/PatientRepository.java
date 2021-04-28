@@ -15,6 +15,7 @@ public interface PatientRepository extends PagingAndSortingRepository<Patients, 
 			+ " WHERE UPPER(DT.patiName) LIKE CONCAT('%',UPPER(?1),'%') "
 			+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
 			+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
+			+ " ORDER BY DT.activeFlag Asc"
 			,countQuery = "SELECT COUNT(DT) FROM Patients DT   "
 					+ " WHERE UPPER(DT.patiName) LIKE CONCAT('%',UPPER(?1),'%') "
 					+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "

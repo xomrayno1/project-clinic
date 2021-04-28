@@ -3,7 +3,9 @@ package com.tampro.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -48,24 +50,29 @@ public class DoctorController {
 	UserService userService;
 	
 	@GetMapping
-	public ResponseEntity<APIResponse> getAllSearchPagination(
+	public ResponseEntity<Object> getAllSearchPagination(
 			@RequestParam("search") String search, 
 			@RequestParam("limit") int limit,
 			@RequestParam("page") int page){
 		
-		Pageable pageable =	PageRequest.of(page - 1, limit);
-		//get value
-		Page<Doctor> doctors = doctorService.findAllSearchPagination(search, pageable);
-		//convert entity to response
-		List<DoctorResponse> data = new ArrayList<DoctorResponse>();
-		for(Doctor doctor : doctors.getContent()) {
-			DoctorResponse doctorResponse = AppUtils.convertDoctorEntityToResponse(doctor);
-			data.add(doctorResponse);
+		try {
+			Pageable pageable =	PageRequest.of(page - 1, limit);
+			//get value
+			Page<Doctor> doctors = doctorService.findAllSearchPagination(search, pageable);
+			//convert entity to response
+			List<DoctorResponse> data = new ArrayList<DoctorResponse>();
+			for(Doctor doctor : doctors.getContent()) {
+				DoctorResponse doctorResponse = AppUtils.convertDoctorEntityToResponse(doctor);
+				data.add(doctorResponse);
+			}
+			//create api response
+			APIResponse apiResponse = new APIResponse(data,
+										new Pagination(doctors.getTotalElements(), limit, page));
+			return new ResponseEntity<Object>(apiResponse,HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ApplicationException("Tải thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		//create api response
-		APIResponse apiResponse = new APIResponse(data,
-									new Pagination(doctors.getTotalElements(), limit, page));
-		return new ResponseEntity<APIResponse>(apiResponse,HttpStatus.OK);
+		
 	}
 	@GetMapping(value = Constant.API_GET_ALL_DOCTOR)
 	public ResponseEntity<APIResponse> getAllDoctors(@RequestParam("search") String search){
@@ -124,71 +131,91 @@ public class DoctorController {
 		return ResponseEntity.created(uri).body(doctorResponse);
 	}
 	@PutMapping
-	public ResponseEntity<DoctorResponse> updateDoctor(@ModelAttribute @Valid DoctorRequest doctorRequest){
+	public ResponseEntity<Object> updateDoctor(@ModelAttribute @Valid DoctorRequest doctorRequest){
 		
-		Doctor doctor = doctorService.findById(doctorRequest.getId());
-		if(doctor == null) {
-			throw new ApplicationException("Doctor not found exception with id: "+doctorRequest.getId(), HttpStatus.NOT_FOUND);
-		}
-		boolean isExist = doctorService.isExist(doctorRequest.getEmail());
-		if(isExist) {
-			if(!doctor.getEmail().equals(doctorRequest.getEmail())) {
-				throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+		try {
+			Doctor doctor = doctorService.findById(doctorRequest.getId());
+			if(doctor == null) {
+				throw new ApplicationException("Doctor not found exception with id: "+doctorRequest.getId(), HttpStatus.NOT_FOUND);
 			}
-		}
-		//convert request to entity
-		 
-		doctor.setDescription(doctorRequest.getDescription());
-		doctor.setDomain(doctorRequest.getDomain());
-		doctor.setEducation(doctorRequest.getEducation());
-		doctor.setEmail(doctorRequest.getEmail());
-		doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
-		if(doctorRequest.getImageUpload() != null) {
-			try {
-				String image = AppUtils.uploadFile(doctorRequest.getImageUpload());
-				doctor.setImageUrl("upload/"+image);
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			boolean isExist = doctorService.isExist(doctorRequest.getEmail());
+			if(isExist) {
+				if(!doctor.getEmail().equals(doctorRequest.getEmail())) {
+					throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+				}
 			}
-		}
-		doctor.setLevel(doctorRequest.getLevel());
-		doctor.setDocName(doctorRequest.getName());
-		doctor.setPhone(doctorRequest.getPhone());
-		doctor.setAddress(doctorRequest.getAddress());
-		doctor.setCity(doctorRequest.getCity());
-		doctor.setUsers(userService.getOne(doctorRequest.getUserId()));
-		// save to database
-		doctor = doctorService.save(doctor);  
+			//convert request to entity
+			 
+			doctor.setDescription(doctorRequest.getDescription());
+			doctor.setDomain(doctorRequest.getDomain());
+			doctor.setEducation(doctorRequest.getEducation());
+			doctor.setEmail(doctorRequest.getEmail());
+			doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
+			if(doctorRequest.getImageUpload() != null) {
+				try {
+					String image = AppUtils.uploadFile(doctorRequest.getImageUpload());
+					doctor.setImageUrl("upload/"+image);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			doctor.setLevel(doctorRequest.getLevel());
+			doctor.setDocName(doctorRequest.getName());
+			doctor.setPhone(doctorRequest.getPhone());
+			doctor.setAddress(doctorRequest.getAddress());
+			doctor.setCity(doctorRequest.getCity());
+			doctor.setUsers(userService.getOne(doctorRequest.getUserId()));
+			// save to database
+			doctor = doctorService.save(doctor);
+			 
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Sửa thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ApplicationException("Sửa thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
+		} 
 		//convert entity to doctorResponse
-		DoctorResponse doctorResponse =  AppUtils.convertDoctorEntityToResponse(doctor);
-		//get Uri
-		return new ResponseEntity<DoctorResponse>(doctorResponse,  HttpStatus.OK);
+//		DoctorResponse doctorResponse =  AppUtils.convertDoctorEntityToResponse(doctor);
+//		//get Uri
+//		return new ResponseEntity<DoctorResponse>(doctorResponse,  HttpStatus.OK);
 	}
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteDoctor(@PathVariable("id") Long id){
-		Doctor doctor = doctorService.findById(id);
-		if(doctor == null) {
-			throw new ApplicationException("Doctor not found exception with id : " + id, HttpStatus.NOT_FOUND);
+	public ResponseEntity<Object> deleteDoctor(@PathVariable("id") Long id){
+		try {
+			Doctor doctor = doctorService.findById(id);
+			if(doctor == null) {
+				throw new ApplicationException("Doctor not found exception with id : " + id, HttpStatus.NOT_FOUND);
+			}
+			doctorService.delete(doctor);
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Xóa thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ApplicationException("Xóa thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		doctorService.delete(doctor);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 	@GetMapping("/restore/{id}")
-	public ResponseEntity<Void> restoreDoctor(@PathVariable("id") Long id){
-		Doctor doctor = doctorService.findById(id);
-		if(doctor == null) {
-			throw new ApplicationException("Doctor not found exception with id : " + id, HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<Object> restoreDoctor(@PathVariable("id") Long id){
 		try {
-			doctorService.restore(doctor);
+			Doctor doctor = doctorService.findById(id);
+			if(doctor == null) {
+				throw new ApplicationException("Doctor not found exception with id : " + id, HttpStatus.NOT_FOUND);
+			}
+			try {
+				doctorService.restore(doctor);
+			} catch (Exception e) {
+				throw new ApplicationException("Restore failed", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Khôi phục thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
 		} catch (Exception e) {
-			throw new ApplicationException("Restore failed", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new ApplicationException("Khôi phục thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<DoctorResponse> getDoctor(@PathVariable("id") Long id){

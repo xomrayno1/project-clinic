@@ -1,9 +1,16 @@
 package com.tampro.request;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class UserRequest {
 	private Long id;
+	@NotBlank(message = "Vui lòng nhập username !")
 	private String username;
+	@NotBlank(message = "Vui lòng nhập password !")
 	private String password;
+	@NotBlank(message = "Vui lòng nhập email !")
+	@Email(message = "Lỗi format email")
 	private String email;
 	private Long[] roles;
 	public Long getId() {

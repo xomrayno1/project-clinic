@@ -28,8 +28,6 @@ public class DashBoardController {
 	@Autowired
 	private ScheduleService scheduleService;
 	
- 
-	
 	@GetMapping("/statistical")
 	public ResponseEntity<StatisticalResponse> statis(){
  

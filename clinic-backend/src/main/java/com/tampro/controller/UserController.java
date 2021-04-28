@@ -99,7 +99,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
+	public ResponseEntity<Object> deleteUser(@PathVariable("id") long id) {
 		Users users = userService.findById(id); 
 		if (users == null) {
 			log.error("users not found exception with id : " + id);
@@ -114,14 +114,17 @@ public class UserController {
 		}
 		try {
 			userService.delete(users);
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Xóa thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			log.error("Delete failed ");
 			throw new ApplicationException("Xoá thất bại", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		 
 	}
 	@GetMapping("/restore/{id}")
-	public ResponseEntity<Void> restoreUser(@PathVariable("id") long id) {
+	public ResponseEntity<Object> restoreUser(@PathVariable("id") long id) {
 		Users users = userService.findById(id);
 		if (users == null) {
 			log.error("users not found exception with id : " + id);
@@ -129,13 +132,15 @@ public class UserController {
 		}
 		try {
 			userService.restore(users);
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Khôi phục thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
 		} catch (Exception e) {
-			throw new ApplicationException("Restore failed", HttpStatus.BAD_REQUEST);
+			throw new ApplicationException("Khôi phục thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	@PostMapping
-	public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+	public ResponseEntity<Object> createUser(@RequestBody UserRequest userRequest) {
 		boolean flag = userService.isExistEmail(userRequest.getEmail());
 
 		if (flag) {
@@ -148,7 +153,7 @@ public class UserController {
 		try {
 			Users users = new Users();
 			users.setEmail(userRequest.getEmail());
-			users.setPassword(bcryptEncoder.encode(users.getPassword()));
+			users.setPassword(bcryptEncoder.encode(userRequest.getPassword()));
 			Set<Roles> roles = new HashSet<>();
 			for (Long id : userRequest.getRoles()) {
 				Roles role = new Roles(id);
@@ -156,12 +161,18 @@ public class UserController {
 			}
 			users.setRoles(roles);
 			users.setUsername(userRequest.getUsername());
+			users.setActiveFlag(Constant.ACTIVE);
 			users = userService.save(users);
-			UserResponse userResponse = AppUtils.convertUserEntityToResponse(users);
-			return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+//			UserResponse userResponse = AppUtils.convertUserEntityToResponse(users);
+//			return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Thêm thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new ApplicationException("Create failed", HttpStatus.CONFLICT);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			throw new ApplicationException("Thêm thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
@@ -205,11 +216,15 @@ public class UserController {
 			users.setId(userRequest.getId());
 			users.setUsername(userRequest.getUsername());
 			users = userService.save(users);
-			UserResponse userResponse = AppUtils.convertUserEntityToResponse(users);
-			return new ResponseEntity<Object>(userResponse, HttpStatus.OK);
+//			UserResponse userResponse = AppUtils.convertUserEntityToResponse(users);
+//			return new ResponseEntity<Object>(userResponse, HttpStatus.OK);
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Sửa thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new ApplicationException("Update failed", HttpStatus.BAD_REQUEST);
+			throw new ApplicationException("Sửa thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
+			
 		}
 	}
  
