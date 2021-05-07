@@ -27,12 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tampro.entity.Patients;
 import com.tampro.entity.Schedule;
-import com.tampro.entity.Users;
 import com.tampro.exception.ApplicationException;
 import com.tampro.model.Pagination;
 import com.tampro.model.ScheduleSearchPagination;
 import com.tampro.model.search.ScheduleSearch;
-import com.tampro.request.BookingRequest;
 import com.tampro.request.NotificationRequest;
 import com.tampro.request.SendScheduleRequest;
 import com.tampro.request.UpdateStatusScheduleRequest;
@@ -62,6 +60,7 @@ public class ScheduleController {
 	UserService userService;
 	@Autowired
 	NotificationService notificationService;
+	
 	
 	SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static final Logger log = LoggerFactory.getLogger(ScheduleController.class);
@@ -183,5 +182,52 @@ public class ScheduleController {
 			// TODO Auto-generated catch block
 			throw new ApplicationException("Gửi thất bại", HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@DeleteMapping("/cancel/{id}")
+	public ResponseEntity<Object> cancelBooking(@PathVariable("id") int id){
+		Schedule schedule =	scheduleService.findById(id);
+		if(schedule == null) {
+			throw new ApplicationException("Không tìm lấy lịch với id :"+id, HttpStatus.NOT_FOUND);
+		}
+		if(schedule.getStatus() !=  Constant.WAITING) {
+			Map<String, Object> data = new HashMap<>();
+			 
+			data.put("message" ,"Lịch đã hoàn thành");	
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if (schedule.getTime().before(new Date())) {
+			throw new ApplicationException("Lịch đã quá hạn", HttpStatus.BAD_REQUEST);
+		} // chưa test
+
+		// nếu hôm nay khám mà hôm nay huỷ thì => false
+		if (schedule.getTime().equals(new Date())) {
+			throw new ApplicationException("Bạn không thể huỷ lịch khám trong ngày", HttpStatus.BAD_REQUEST);
+		} // chưa test
+		
+		scheduleService.cancel(schedule);
+		
+		Map<String,String> data = new HashMap<String, String>();
+		data.put("message", "Huỷ thành công ");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		// send notification
+		StringBuilder messageBuilder = new StringBuilder();
+		messageBuilder.append(" Lịch khám của bạn đã bị huỷ : ")
+						.append(". Từ bác sĩ :")
+						.append(schedule.getDoctor().getDocName());
+		
+		NotificationRequest notificationRequest = new NotificationRequest();
+		notificationRequest.setMessage(messageBuilder.toString());
+		notificationRequest.setSeen(Constant.SEEN_FALSE);
+		notificationRequest.setSender("Hệ thống");
+		notificationRequest.setTitle("Huỷ lịch khám");
+	 
+		notificationRequest.setUserId(schedule.getPatients().getUsers().getId());
+		notificationService.saveNotification(notificationRequest);
+		
+		
+		return new ResponseEntity<Object>(data,HttpStatus.OK);
 	}
 }

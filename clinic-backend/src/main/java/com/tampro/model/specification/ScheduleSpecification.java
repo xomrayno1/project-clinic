@@ -12,6 +12,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.tampro.entity.Doctor;
 import com.tampro.entity.Patients;
@@ -89,16 +91,18 @@ public class ScheduleSpecification implements Specification<Schedule> {
 			Predicate preStatus = criteriaBuilder.equal(root.get("status"), status);
 			predicates.add(preStatus);
 		}
-		if(key != null && !key.trim().isEmpty() && keyId != 0) {
-			Predicate predicate;
-			 if(key.equals("doctor")){ //user id
-				 predicate = criteriaBuilder.equal(doctor.get("users"), keyId);
-				 predicates.add(predicate);
-			 }else if(key.equals("patient")){
-				 predicate = criteriaBuilder.equal(patient.get("users"),  keyId);
-				 predicates.add(predicate);
-			 }	  
-		}
+		Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
+		String authority  = authentication.getAuthorities().iterator().next().toString();
+		Predicate predicate;
+		 if(authority.equals("ROLE_DOCTOR")){ //user id
+			 System.out.println(authority + "Filter");
+			 predicate = criteriaBuilder.equal(doctor.get("users"), keyId);
+			 predicates.add(predicate);
+		 }else if(authority.equals("ROLE_PATIENT")){
+			 System.out.println(authority + "Filter");
+			 predicate = criteriaBuilder.equal(patient.get("users"),  keyId);
+			 predicates.add(predicate);
+		 }
 		
 		query.orderBy(criteriaBuilder.asc(root.get("status")),criteriaBuilder.desc(root.get("id")));
 		

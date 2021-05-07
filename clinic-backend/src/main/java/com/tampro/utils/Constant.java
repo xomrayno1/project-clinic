@@ -29,7 +29,7 @@ public class Constant {
 	public static final String API_NOTIFICATION = API_PREFIX + "/notifications";
 	 
 	
-	public static final String UPLOAD_IMAGE = "C:\\Users\\Administrator\\git\\project-clinic\\clinic-backend\\src\\main\\resources\\static\\upload\\";
+	public static final String UPLOAD_IMAGE = "C:\\Users\\Admin\\git\\project-clinic\\clinic-backend\\src\\main\\resources\\static\\upload\\";
 	 
 	public static final int ACTIVE = 1;
 	public static final int NOT_ACTIVE = 2;

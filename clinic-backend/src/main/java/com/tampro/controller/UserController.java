@@ -190,7 +190,6 @@ public class UserController {
 			} 
 		}
 		try {
-			 
 			users.setEmail(userRequest.getEmail());
 			if(!userRequest.getPassword().equals(users.getPassword())) {
 				users.setPassword(bcryptEncoder.encode(userRequest.getPassword()));

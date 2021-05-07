@@ -100,7 +100,7 @@ public class BookingController {
 			StringBuilder messageBuilder = new StringBuilder();
 			messageBuilder.append(" Bạn nhận được một lịch khám vào ngày : ")
 							.append(sdf.format(schedule.getTime()))
-							.append(". Từ ")
+							.append(". Từ bệnh nhân: ")
 							.append(schedule.getPatients().getPatiName());
 			
 			NotificationRequest notificationRequest = new NotificationRequest();
@@ -125,20 +125,47 @@ public class BookingController {
 	public ResponseEntity<Object> cancelBooking(@PathVariable("id") int id){
 		Schedule schedule =	scheduleService.findById(id);
 		if(schedule == null) {
-			throw new ApplicationException("Schedule not found exception with id :"+id, HttpStatus.NOT_FOUND);
+			throw new ApplicationException("Không tìm lấy lịch với id :"+id, HttpStatus.NOT_FOUND);
 		}
+		
 		if(schedule.getStatus() !=  Constant.WAITING) {
 			Map<String, Object> data = new HashMap<>();
 			 
 			data.put("message" ,"Lịch đã hoàn thành");	
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-//		if(schedule.getTime().before(new Date())) {
-//			throw new ApplicationException("Lịch đã quá hạn", HttpStatus.BAD_REQUEST);
-//		}
+		
+		if(schedule.getTime().before(new Date())) {
+			throw new ApplicationException("Lịch đã quá hạn", HttpStatus.BAD_REQUEST);
+		} // chưa test
+		
+		// nếu hôm nay khám mà hôm nay huỷ thì => false
+		if(schedule.getTime().equals(new Date())) {
+			throw new ApplicationException("Bạn không thể huỷ lịch khám trong ngày", HttpStatus.BAD_REQUEST);
+		} // chưa test
+		
 		scheduleService.cancel(schedule);
+		
 		Map<String,String> data = new HashMap<String, String>();
-		data.put("message", "Cancel success");
+		data.put("message", "Huỷ thành công");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		// send notification
+		StringBuilder messageBuilder = new StringBuilder();
+		messageBuilder.append(" Lịch khám của bạn đã bị huỷ : ")
+						.append(". Từ bệnh nhân : ")
+						.append(schedule.getPatients().getPatiName());
+		
+		NotificationRequest notificationRequest = new NotificationRequest();
+		notificationRequest.setMessage(messageBuilder.toString());
+		notificationRequest.setSeen(Constant.SEEN_FALSE);
+		notificationRequest.setSender("Hệ thống");
+		notificationRequest.setTitle("Huỷ lịch khám");
+	 
+		notificationRequest.setUserId(schedule.getDoctor().getUsers().getId());
+		notifiService.saveNotification(notificationRequest);
+		
+		
 		return new ResponseEntity<Object>(data,HttpStatus.OK);
 	}
 }
