@@ -382,7 +382,7 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                                                 previewVisible: true
                                             })}
                                                 src={
-                                                    result.image_upload && `http://localhost:8080/${result.image_upload}` || hoso
+                                                    modalResult.item && modalResult.item.image_upload && `http://localhost:8080/${modalResult.item.image_upload}` || hoso
                                                 }
                                                 width="250" height="200px" />
                                         </CardBody>
@@ -408,9 +408,7 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                 zIndex={12000}
             >
                 <img alt="example" style={{ width: '100%' }} src={
-                    preview.previewImage && `http://localhost:8080/${preview.previewImage}`
-                    || result.image_upload && `http://localhost:8080/${result.image_upload}`
-                    || hoso
+                    modalResult.item && modalResult.item.image_upload && `http://localhost:8080/${modalResult.item.image_upload}` || hoso
                 } />
             </Modal>
             <Modal

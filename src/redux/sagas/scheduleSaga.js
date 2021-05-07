@@ -16,10 +16,14 @@ import {
     UPDATE_STATUS_SCHEDULE_FAILED,
     SEND_SCHEDULE_SUCCESS,
     SEND_SCHEDULE_FAILED,
-    SEND_SCHEDULE
+    SEND_SCHEDULE,
+    CANCEL_SCHEDULE,
+    CANCEL_SCHEDULE_SUCCESS,
+    CANCEL_SCHEDULE_FAILED
 }
 from '../../utils/Constant'
 import scheduleApi from '../../api/scheduleApi'
+import bookingApi from '../../api/bookingApi'
 import {defaultScheduleFilter} from '../../utils/AppUtils'
 
 
@@ -87,12 +91,33 @@ function* sendSchedule({payload}){
         message.error(`  ${data.message}`)
     }
 }
- 
+function* cancelSchedule({payload}){ // ref get data add
+    try {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt,id} = auth.user;
+        yield call(scheduleApi.cancelSchedule,payload);
+        const response = yield call(scheduleApi.getAllFilterPagination,{
+            keySearch : '',
+            dateTo : '',
+            dateFrom: '',
+            page : 1,
+            limit: 5,
+            key: 'patient',
+            keyId: id
+        });
+        yield put({type: CANCEL_SCHEDULE_SUCCESS, payload: response})
+        message.success("Hủy thành công")
+    } catch (error) { // ref set
+        message.error(error.response.data.message);
+        yield put({type: CANCEL_SCHEDULE_FAILED, payload: error})
+    }
+}
 function* scheduleSaga(){
     yield takeLatest(GET_ALL_SCHEDULE, fetchSchedule)
     yield takeLatest(SEND_SCHEDULE, sendSchedule)
     yield takeLatest(DELETE_SCHEDULE, deleteSchedule)
     yield takeLatest(UPDATE_STATUS_SCHEDULE, updateStatusSchedule)
+    yield takeLatest(CANCEL_SCHEDULE, cancelSchedule)
 }
 export default scheduleSaga;
 

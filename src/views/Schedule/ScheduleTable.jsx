@@ -12,7 +12,7 @@ import {
     Card,
     CardBody
 } from "reactstrap";
- 
+
 import {
     Table,
     Space,
@@ -31,12 +31,13 @@ import { Form, Formik, Field, ErrorMessage } from 'formik';
 
 
 import { useDispatch, useSelector } from 'react-redux'
-import { createSchedule, deleteSchedule, fetchSchedule, updateStatusSshedule } from '../../redux/action/scheduleAction'
+import { cancelSchedule, deleteSchedule, fetchSchedule, updateStatusSshedule } from '../../redux/action/scheduleAction'
 import { addResult, getResultBySchedule, setDataModalResult } from '../../redux/action/resultAction'
 import Textarea from 'variables/Textarea';
 import user from 'user.svg'
 import hoso from 'hoso.svg'
 import './style.css'
+import { cancelBooking } from '../../redux/action/bookingAction'
 
 ScheduleTable.propTypes = {
     pagination: PropTypes.object,
@@ -80,25 +81,21 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
 
     function handleOnClickResult(item) {
         console.log(item);
-       //console.log(formResultRef);
-       setLoadingModal(true)
+        console.log(formResultRef);
+        setLoadingModal(true)
         setModalResult({
             visible: true,
             item
         })
-        
         setTimeout(() => {
-            formResultRef.current.setValues({
-                doc_name : item.doctor_name,
-                pati_name : item.patient_name
-            })
             setLoadingModal(false)
-        },300);
-        dispatch(setDataModalResult(item.id, formResultRef));
+            dispatch(setDataModalResult(item.id, formResultRef));
+        }, 300);
+
     }
     function handleOnSubmitResult(data) {
         console.log(data)
-       // create form data 
+        // create form data 
         var formData = new FormData();
         formData.append('scheduleId', modalResult.item.id);
         formData.append('doctorId', modalResult.item.doctorId);
@@ -113,9 +110,9 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
         formData.append('weight', data.weight);
         data.id && formData.append('id', data.id);
         ///dispatch 
-        dispatch(addResult(formData, formResultRef, setModalResult, uploadRef));
+        dispatch(addResult(formData, formResultRef, setModalResult));
     }
-    const uploadRef = useRef();
+
 
     const columns = [
         {
@@ -189,6 +186,12 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                                     Xoá
                                 </Popconfirm>
                             </Menu.Item>
+                            <Menu.Item key="3"  >
+                                <Popconfirm title="Bạn có chắc muốn huỷ lịch khám"
+                                    onConfirm={() => onCancelSchedule(item)}>
+                                    Huỷ lịch khám
+                                </Popconfirm>
+                            </Menu.Item>
                             <Menu.Item key="4"
                                 onClick={() => handleOnClickResult(item)}
                             >
@@ -203,7 +206,9 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
             )
         },
     ]
-
+    function onCancelSchedule({ id }) {
+        dispatch(cancelSchedule(id))
+    }
     function onHandleDelete({ id }) {
         dispatch(deleteSchedule(id));
     }
@@ -219,7 +224,6 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
         dispatch(updateStatusSshedule(data));
     }
     const resultSchema = Yup.object({
-
         reason: Yup.string().required("Vui lòng không được để trống !"),
         reasonDescribe: Yup.string().required("Vui lòng không được để trống !"),
         bloodPressure: Yup.string().required("Vui lòng không được để trống !"),
@@ -228,7 +232,7 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
         diagnose: Yup.string().required("Vui lòng không được để trống !"),
         note: Yup.string().required("Vui lòng không được để trống !"),
     })
-     
+
     return (
         <>
             <Table columns={columns}
@@ -337,151 +341,149 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
             </Modal>
 
 
-           
-                <Modal
-                    title="Chi tiết "
-                    centered
-                    visible={modalResult.visible}
-                    footer={null}
-                    keyboard={true}
-                    onCancel={() => setModalResult({
-                        ...modalResult,
-                        visible: false
-                    })}
-                    zIndex={10000}
-                    width={1000}
-                    
-                >
-                    <Spin spinning={loadingModal}> 
-                        <Formik
-                            onSubmit={handleOnSubmitResult}
-                            validateOnChange={false}
-                            validateOnBlur={false}
-                            initialValues={{
-                                doc_name : '',
-                                pati_name : '',
-                                reason: '',
-                                reasonDescribe: '',
-                                bloodPressure: '',
-                                height: '',
-                                weight: '',
-                                diagnose: '',
-                                note: '',
-                                id: ''
-                            }}
-                            validationSchema={resultSchema}
-                            innerRef={formResultRef}
 
-                        >
-                            <Form>
-                                <Row>
-                                    <Col md="6">
-                                        <FormGroup>
-                                            <Label >Tên bác sĩ</Label>
-                                            <Field className="form-control" name="doc_name" disabled />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md="6">
-                                        <FormGroup>
-                                            <Label >Tên bệnh nhân</Label>
-                                            <Field className="form-control" name="pati_name" disabled />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="6">
-                                        <FormGroup>
-                                            <Label >Nguyên nhân khám</Label>
-                                            <Field className="form-control" name="reason" />
-                                            <ErrorMessage className="error-text" name="reason" component="div" />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md="6">
-                                        <FormGroup>
-                                            <Textarea name="reasonDescribe" className="form-control" label="Nguyên nhân khám chi tiết" />
-                                            <ErrorMessage className="error-text" name="reasonDescribe" component="div" />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="4">
-                                        <FormGroup>
-                                            <Label >Huyết áp</Label>
-                                            <Field className="form-control" name="bloodPressure" />
-                                            <ErrorMessage className="error-text" name="bloodPressure" component="div" />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <FormGroup>
-                                            <Label >Chiều cao (cm)</Label>
-                                            <Field className="form-control" name="height" />
-                                            <ErrorMessage className="error-text" name="height" component="div" />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md="4">
-                                        <FormGroup>
-                                            <Label >Cân nặng (kg)</Label>
-                                            <Field className="form-control" name="weight" />
-                                            <ErrorMessage className="error-text" name="weight" component="div" />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="6">
-                                        <FormGroup>
-                                            <Textarea label="Chẩn đoán của bác sĩ"
-                                                className="form-control"
-                                                name="diagnose" />
-                                            <ErrorMessage className="error-text" name="diagnose" component="div" />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md="6">
-                                        <FormGroup>
-                                            <Label >Ghi chú</Label>
-                                            <Textarea name="note" className="form-control" />
-                                            <ErrorMessage className="error-text" name="note" component="div" />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="6">
-                                        <FormGroup>
-                                            <Label >Upload ảnh</Label>
-                                            <Field
-                                                className="form-control"
-                                                type="file"
-                                                name="image_upload"
-                                                onChange={(e) => {
-                                                    setFileImg(e.target.files[0])
-                                                }}
-                                                ref={uploadRef}
-                                            />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md="6">
-                                        <Card>
-                                            <CardBody className="text-center">
-                                                <img onClick={() => setPreview({
-                                                    previewVisible: true
-                                                })}
-                                                    src={
-                                                        result.image_upload && `http://localhost:8080/${result.image_upload}` || hoso
-                                                    }
-                                                    width="250" height="200px" />
-                                            </CardBody>
-                                        </Card>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md="12" className="text-center">
-                                        <Button type="submit" color="primary">Lưu</Button>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </Formik>
-                    </Spin>
-                </Modal>
-           
+            <Modal
+                title="Kết quả khám "
+                centered
+                visible={modalResult.visible}
+                footer={null}
+                keyboard={true}
+                onCancel={() => setModalResult({
+                    ...modalResult,
+                    visible: false
+                })}
+                zIndex={10000}
+                width={1000}
+
+            >
+                <Spin spinning={loadingModal}>
+                    <Formik
+                        onSubmit={handleOnSubmitResult}
+                        validateOnChange={false}
+                        validateOnBlur={false}
+                        initialValues={{
+                            // doc_name: '',
+                            // pati_name: '',
+                            reason: '',
+                            reasonDescribe: '',
+                            bloodPressure: '',
+                            height: '',
+                            weight: '',
+                            diagnose: '',
+                            note: '',
+                            id: ''
+                        }}
+                        // validationSchema={resultSchema}
+                        innerRef={formResultRef}
+
+                    >
+                        <Form>
+                            {/* <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Tên bác sĩ</Label>
+                                        <Field className="form-control" name="doc_name" disabled />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Tên bệnh nhân</Label>
+                                        <Field className="form-control" name="pati_name" disabled />
+                                    </FormGroup>
+                                </Col>
+                            </Row> */}
+                            <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Nguyên nhân khám</Label>
+                                        <Field className="form-control" name="reason" />
+                                        <ErrorMessage className="error-text" name="reason" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Textarea name="reasonDescribe" className="form-control" label="Nguyên nhân khám chi tiết" />
+                                        <ErrorMessage className="error-text" name="reasonDescribe" component="div" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="4">
+                                    <FormGroup>
+                                        <Label >Huyết áp</Label>
+                                        <Field className="form-control" name="bloodPressure" />
+                                        <ErrorMessage className="error-text" name="bloodPressure" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="4">
+                                    <FormGroup>
+                                        <Label >Chiều cao (cm)</Label>
+                                        <Field className="form-control" name="height" />
+                                        <ErrorMessage className="error-text" name="height" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="4">
+                                    <FormGroup>
+                                        <Label >Cân nặng (kg)</Label>
+                                        <Field className="form-control" name="weight" />
+                                        <ErrorMessage className="error-text" name="weight" component="div" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Textarea label="Chẩn đoán của bác sĩ" className="form-control" name="diagnose" />
+                                        <ErrorMessage className="error-text" name="diagnose" component="div" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Ghi chú</Label>
+                                        <Textarea name="note" className="form-control" />
+                                        <ErrorMessage className="error-text" name="note" component="div" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="6">
+                                    <FormGroup>
+                                        <Label >Upload ảnh</Label>
+                                        <Field
+                                            className="form-control"
+                                            type="file"
+                                            name="image_upload"
+                                            onChange={(e) => {
+                                                setFileImg(e.target.files[0])
+                                            }}
+
+                                        />
+                                    </FormGroup>
+                                </Col>
+                                <Col md="6">
+                                    <Card>
+                                        <CardBody className="text-center">
+                                            <img onClick={() => setPreview({
+                                                previewVisible: true
+                                            })}
+                                                src={
+                                                    result.image_upload && `http://localhost:8080/${result.image_upload}` || hoso
+                                                }
+                                                width="250" height="200px" />
+                                        </CardBody>
+                                    </Card>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md="12" className="text-center">
+                                    <Button type="submit" color="primary">Lưu</Button>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Formik>
+                </Spin>
+            </Modal>
+
 
 
 

@@ -1,6 +1,5 @@
 import axiosClient from '../api/axiosClient'
 
-const auth =  JSON.parse(localStorage.getItem('auth'));
 const patientApi = {
     getAll : (params) => {
         const auth =  JSON.parse(localStorage.getItem('auth'));

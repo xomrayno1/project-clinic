@@ -10,7 +10,10 @@ import {
     CREATE_SCHEDULE_FAILED,
     UPDATE_STATUS_SCHEDULE,
     UPDATE_STATUS_SCHEDULE_SUCCESS,
-    UPDATE_STATUS_SCHEDULE_FAILED
+    UPDATE_STATUS_SCHEDULE_FAILED,
+    CANCEL_SCHEDULE,
+    CANCEL_SCHEDULE_SUCCESS,
+    CANCEL_SCHEDULE_FAILED
 } from '../../../utils/Constant'
 
 const initalState = {
@@ -39,7 +42,23 @@ function scheduleReducer(state = initalState, action) {
                 isLoading: false,
                 error: payload
             }
-
+        case CANCEL_SCHEDULE:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case CANCEL_SCHEDULE_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                schedules: payload
+            }
+        case CANCEL_SCHEDULE_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            }
         case DELETE_SCHEDULE:
             return {
                 ...state,

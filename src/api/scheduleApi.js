@@ -40,6 +40,16 @@ const scheduleApi  = {
                 'Authorization': `Bearer ${jwt}`
             },
         })
+    },
+    cancelSchedule : (id) => {
+        const auth =  JSON.parse(localStorage.getItem('auth'));
+        const {jwt} = auth.user;
+        const url = `http://localhost:8080/api/v1/schedules/cancel/${id}`;
+        return axiosClient.delete(url, {
+            headers : { 
+                'Authorization': `Bearer ${jwt}`
+            },
+        })
     }
 }
 export default scheduleApi;

@@ -72,7 +72,6 @@ function* setModalResult({payload, addRef}){
     try {
       
         const result = yield call(resultApi.getResultBySchedule, payload);
-        console.log(result)
         addRef.current.resetForm();
         addRef.current.resetForm({
             image_upload : ''
