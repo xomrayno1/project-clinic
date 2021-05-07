@@ -3,7 +3,9 @@ package com.tampro.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -108,68 +110,77 @@ public class PatientController {
 		return ResponseEntity.created(uri).body(patientResponse);
 	}
 	@PutMapping
-	public ResponseEntity<PatientResponse> updatePatient(
+	public ResponseEntity<Object> updatePatient(
 			@ModelAttribute @Valid PatientRequest patientRequest){
 		
-		Patients patient = patientService.findById(patientRequest.getId());
-		if(patient == null) {
-			throw new ApplicationException("Patient not found exception with id: "+patientRequest.getId(), HttpStatus.NOT_FOUND);
-		}
-//		
-		boolean isExist = patientService.isExist(patientRequest.getEmail());
-		if(isExist) {
-			if(!patient.getEmail().equals(patientRequest.getEmail())) {
-				throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+		try {
+			Patients patient = patientService.findById(patientRequest.getId());
+			if(patient == null) {
+				throw new ApplicationException("Patient not found exception with id: "+patientRequest.getId(), HttpStatus.NOT_FOUND);
 			}
-		}
-		 
-		//convert request to entity
-		 
-		patient.setDescription(patientRequest.getDescription());
-		patient.setEmail(patientRequest.getEmail());
-		patient.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
-		patient.setPatiName(patientRequest.getName());
-		patient.setPhone(patientRequest.getPhone());
-		patient.setAddress(patientRequest.getAddress());
-		patient.setUsers(userService.getOne(patientRequest.getUserId()));
-		if(patientRequest.getImageUpload() != null) {
-			try {
-				String image = AppUtils.uploadFile(patientRequest.getImageUpload());
-				patient.setImageUrl("upload/"+image);
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+//			
+			boolean isExist = patientService.isExist(patientRequest.getEmail());
+			if(isExist) {
+				if(!patient.getEmail().equals(patientRequest.getEmail())) {
+					throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+				}
 			}
+			//convert request to entity
+			patient.setDescription(patientRequest.getDescription());
+			patient.setEmail(patientRequest.getEmail());
+			patient.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
+			patient.setPatiName(patientRequest.getName());
+			patient.setPhone(patientRequest.getPhone());
+			patient.setAddress(patientRequest.getAddress());
+			patient.setActiveFlag(Constant.ACTIVE);
+			patient.setUsers(userService.getOne(patientRequest.getUserId()));
+			if(patientRequest.getImageUpload() != null) {
+				try {
+					String image = AppUtils.uploadFile(patientRequest.getImageUpload());
+					patient.setImageUrl("upload/"+image);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			// save to database
+			patient = patientService.save(patient);  
+			//convert entity to doctorResponse
+//			PatientResponse patientResponse =  AppUtils.convertPatientEntityToResponse(patient);
+//			//get Uri
+//			return new ResponseEntity<PatientResponse>(patientResponse,  HttpStatus.OK);
+			Map<String,String> data = new HashMap<String, String>();
+			data.put("message", "Sửa thành công");
+			return new ResponseEntity<Object>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new ApplicationException("Sửa thất bại", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		 
-	 
-		// save to database
-		patient = patientService.save(patient);  
-		//convert entity to doctorResponse
-		PatientResponse patientResponse =  AppUtils.convertPatientEntityToResponse(patient);
-		//get Uri
-		return new ResponseEntity<PatientResponse>(patientResponse,  HttpStatus.OK);
 	}
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePatient(@PathVariable("id") Long id){
+	public ResponseEntity<Object> deletePatient(@PathVariable("id") Long id){
 		Patients patient = patientService.findById(id);
 		if(patient == null) {
 			throw new ApplicationException("Patient not found exception with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		patientService.delete(patient);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		Map<String,String> data = new HashMap<String, String>();
+		data.put("message", "Xóa thành công");
+		return new ResponseEntity<Object>(data,HttpStatus.OK);
 	}
 	@GetMapping("/restore/{id}")
-	public ResponseEntity<Void> restorePatient(@PathVariable("id") Long id){
+	public ResponseEntity<Object> restorePatient(@PathVariable("id") Long id){
 		Patients patient = patientService.findById(id);
 		if(patient == null) {
 			throw new ApplicationException("Patient not found exception with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		patientService.restore(patient);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		Map<String,String> data = new HashMap<String, String>();
+		data.put("message", "Khôi phục thành công");
+		return new ResponseEntity<Object>(data,HttpStatus.OK);
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<PatientResponse> getPatient(@PathVariable("id") Long id){

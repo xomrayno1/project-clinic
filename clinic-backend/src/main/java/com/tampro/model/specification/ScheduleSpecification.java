@@ -93,16 +93,18 @@ public class ScheduleSpecification implements Specification<Schedule> {
 		}
 		Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
 		String authority  = authentication.getAuthorities().iterator().next().toString();
+ 
 		Predicate predicate;
 		 if(authority.equals("ROLE_DOCTOR")){ //user id
-			 System.out.println(authority + "Filter");
+			 
 			 predicate = criteriaBuilder.equal(doctor.get("users"), keyId);
 			 predicates.add(predicate);
 		 }else if(authority.equals("ROLE_PATIENT")){
-			 System.out.println(authority + "Filter");
+			 
 			 predicate = criteriaBuilder.equal(patient.get("users"),  keyId);
 			 predicates.add(predicate);
 		 }
+ 
 		
 		query.orderBy(criteriaBuilder.asc(root.get("status")),criteriaBuilder.desc(root.get("id")));
 		
