@@ -80,7 +80,7 @@ public class BookingController {
 			e1.printStackTrace();
 		}
 		try {
-			List<Schedule> list = 	scheduleService.findByTime(date.parse(bookingRequest.getTime()), bookingRequest.getDoctorId());
+			List<Schedule> list = 	scheduleService.findByTimeAndStatus(date.parse(bookingRequest.getTime()),Constant.WAITING, bookingRequest.getDoctorId());
 			if(!list.isEmpty()) {
 				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
 			}

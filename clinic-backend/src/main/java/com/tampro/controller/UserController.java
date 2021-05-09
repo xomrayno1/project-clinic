@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -235,20 +234,20 @@ public class UserController {
 		if(doctor == null) {
 			doctor = new Doctor();
 		}
-		boolean isExist = doctorService.isExist(doctorRequest.getEmail());
-		if(isExist) {
-			if(!doctor.getEmail().equals(doctorRequest.getEmail())) {
-				Map<String, Object> data = new HashMap<>();
-				data.put("code", ApiStatus.EMAIL_IS_EXIST.getCode());
-				data.put("message", ApiStatus.EMAIL_IS_EXIST.getMessage());
-				return new ResponseEntity<Object>(data,HttpStatus.CONFLICT);
-			}
-		}
+//		boolean isExist = doctorService.isExist(doctorRequest.getEmail());
+//		if(isExist) {
+//			if(!doctor.getEmail().equals(doctorRequest.getEmail())) {
+//				Map<String, Object> data = new HashMap<>();
+//				data.put("code", ApiStatus.EMAIL_IS_EXIST.getCode());
+//				data.put("message", ApiStatus.EMAIL_IS_EXIST.getMessage());
+//				return new ResponseEntity<Object>(data,HttpStatus.CONFLICT);
+//			}
+//		}
 		//convert request to entity
 		doctor.setDescription(doctorRequest.getDescription());
 		doctor.setDomain(doctorRequest.getDomain());
 		doctor.setEducation(doctorRequest.getEducation());
-		doctor.setEmail(doctorRequest.getEmail());
+//		doctor.setEmail(doctorRequest.getEmail());
 		doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
  
 		doctor.setLevel(doctorRequest.getLevel());
@@ -270,18 +269,18 @@ public class UserController {
 		if(patients == null) {
 			patients = new Patients();
 		}
-		boolean isExist = doctorService.isExist(patientRequest.getEmail());
-		if(isExist) {
-			if(!patients.getEmail().equals(patientRequest.getEmail())) {
-				Map<String, Object> data = new HashMap<>();
-				data.put("code", ApiStatus.EMAIL_IS_EXIST.getCode());
-				data.put("message", ApiStatus.EMAIL_IS_EXIST.getMessage());
-				return new ResponseEntity<Object>(data,HttpStatus.CONFLICT);
-			}
-		}
+//		boolean isExist = doctorService.isExist(patientRequest.getEmail());
+//		if(isExist) {
+//			if(!patients.getEmail().equals(patientRequest.getEmail())) {
+//				Map<String, Object> data = new HashMap<>();
+//				data.put("code", ApiStatus.EMAIL_IS_EXIST.getCode());
+//				data.put("message", ApiStatus.EMAIL_IS_EXIST.getMessage());
+//				return new ResponseEntity<Object>(data,HttpStatus.CONFLICT);
+//			}
+//		}
 		//convert request to entity
 		patients.setDescription(patientRequest.getDescription());
-		patients.setEmail(patientRequest.getEmail());
+//		patients.setEmail(patientRequest.getEmail());
 		patients.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
 		patients.setPatiName(patientRequest.getName());
 		patients.setPhone(patientRequest.getPhone());

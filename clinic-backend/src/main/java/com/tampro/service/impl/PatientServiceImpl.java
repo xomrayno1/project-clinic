@@ -47,11 +47,11 @@ public class PatientServiceImpl implements PatientService{
 		return patientRepo.getOne(id);
 	}
 
-	@Override
-	public boolean isExist(String email) {
-		// TODO Auto-generated method stub
-		return patientRepo.findByEmail(email) != null ? true : false;
-	}
+//	@Override
+//	public boolean isExist(String email) {
+//		// TODO Auto-generated method stub
+//		return patientRepo.findByEmail(email) != null ? true : false;
+//	}
 
 	@Override
 	public void restore(Patients patients) {

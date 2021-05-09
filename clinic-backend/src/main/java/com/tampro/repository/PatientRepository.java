@@ -13,12 +13,12 @@ import com.tampro.entity.Users;
 public interface PatientRepository extends PagingAndSortingRepository<Patients, Long>{
 	@Query(value="SELECT DT FROM Patients DT "
 			+ " WHERE UPPER(DT.patiName) LIKE CONCAT('%',UPPER(?1),'%') "
-			+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
+//			+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
 			+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
 			+ " ORDER BY DT.activeFlag Asc"
 			,countQuery = "SELECT COUNT(DT) FROM Patients DT   "
 					+ " WHERE UPPER(DT.patiName) LIKE CONCAT('%',UPPER(?1),'%') "
-					+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
+//					+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
 					+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
 			)
 	Page<Patients> findAll(String search, Pageable pageable); // 
@@ -27,7 +27,7 @@ public interface PatientRepository extends PagingAndSortingRepository<Patients, 
 
 	Patients findByPatiName(String name);
 	
-	Patients findByEmail(String email);
+//	Patients findByEmail(String email);
 	
 	Patients findByUsers(Users users);
 	 

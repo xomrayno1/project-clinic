@@ -144,7 +144,7 @@ public class ScheduleController {
 			e1.printStackTrace();
 		}
 		try {
-			List<Schedule> list = 	scheduleService.findByTime(date.parse(sendScheduleRequest.getTime()), sendScheduleRequest.getDoctorId());
+			List<Schedule> list = 	scheduleService.findByTimeAndStatus(date.parse(sendScheduleRequest.getTime()),Constant.WAITING, sendScheduleRequest.getDoctorId());
 			if(!list.isEmpty()) {
 				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
 			}
@@ -202,7 +202,7 @@ public class ScheduleController {
 		} // chưa test
 
 		// nếu hôm nay khám mà hôm nay huỷ thì => false
-		if (schedule.getTime().equals(new Date())) {
+		if (schedule.getTime().after(new Date())) {
 			throw new ApplicationException("Bạn không thể huỷ lịch khám trong ngày", HttpStatus.BAD_REQUEST);
 		} // chưa test
 		

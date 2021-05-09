@@ -16,6 +16,8 @@ public interface ScheduleService {
 
 	List<Schedule> findByTime(Date dateTime, long doctorId);
 	
+	List<Schedule> findByTimeAndStatus(Date dateTime, int status,long doctorId);
+	
 	void cancel(Schedule schedule);
 
 	Schedule save(Schedule schedule);

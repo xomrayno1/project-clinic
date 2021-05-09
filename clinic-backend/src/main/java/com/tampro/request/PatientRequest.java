@@ -11,9 +11,9 @@ public class PatientRequest {
 	@NotBlank(message = "Vui lòng nhập tên!")
 	@Size(max = 16, min = 3, message = "Tên của bạn từ 3 - 16 kí tự")
 	private String name;
-	@NotBlank(message = "Vui lòng nhập email!")
-	@Email(message = "Vui lòng định dạng email")
-	private String email;
+//	@NotBlank(message = "Vui lòng nhập email!")
+//	@Email(message = "Vui lòng định dạng email")
+//	private String email;
 	@NotBlank(message = "Vui lòng nhập số điện thoại!")
 	@Size(max = 12, min = 8, message = "Số điện thoại từ 8 - 12 kí tự")
 	private String phone;
@@ -37,12 +37,12 @@ public class PatientRequest {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+//	public String getEmail() {
+//		return email;
+//	}
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
 	public String getPhone() {
 		return phone;
 	}

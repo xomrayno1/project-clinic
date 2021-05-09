@@ -21,7 +21,7 @@ public interface DoctorService {
 	
 	Doctor getOne(Long id);
 	
-	boolean isExist(String email);
+//	boolean isExist(String email);
 	
 	List<Doctor> findAll(String search);
 	

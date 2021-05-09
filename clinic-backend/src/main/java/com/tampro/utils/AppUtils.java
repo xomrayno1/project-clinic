@@ -37,7 +37,7 @@ public class AppUtils {
 		infoResponse.setPatientName(schedule.getPatients().getPatiName());
 		infoResponse.setReason(schedule.getReason());
 		infoResponse.setStatus(schedule.getStatus());
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		infoResponse.setTime(simpleDateFormat.format(schedule.getTime()));
 		infoResponse.setType(schedule.getType());
 		return infoResponse;
@@ -47,7 +47,7 @@ public class AppUtils {
 		doctorResponse.setDescription(doctor.getDescription());
 		doctorResponse.setDomain(doctor.getDomain());
 		doctorResponse.setEducation(doctor.getEducation());
-		doctorResponse.setEmail(doctor.getEmail());
+//		doctorResponse.setEmail(doctor.getEmail());
 		doctorResponse.setGender(doctor.getGender().getGenderName());
 		doctorResponse.setId(doctor.getDocId());
 		doctorResponse.setImageUrl(doctor.getImageUrl());
@@ -66,7 +66,7 @@ public class AppUtils {
 	public static PatientResponse convertPatientEntityToResponse(Patients patient) {
 		PatientResponse patientResponse = new PatientResponse();
 		patientResponse.setDescription(patient.getDescription());	 
-		patientResponse.setEmail(patient.getEmail());
+//		patientResponse.setEmail(patient.getEmail());
 		patientResponse.setGender(patient.getGender().getGenderName());
 		patientResponse.setId(patient.getPatiId());
 		patientResponse.setImageUrl(patient.getImageUrl());
@@ -98,7 +98,7 @@ public class AppUtils {
 	}
 
 	public static ResultResponse convertResultEntityToResponse(Results results) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		ResultResponse resultResponse = new ResultResponse();
 		resultResponse.setBloodPressure(results.getBloodPressure());
 		resultResponse.setDiagnose(results.getDiagnose());

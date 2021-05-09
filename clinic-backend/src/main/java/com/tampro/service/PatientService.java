@@ -19,7 +19,7 @@ public interface PatientService {
 	
 	Patients getOne(Long id);
 	
-	boolean isExist(String email);
+//	boolean isExist(String email);
 	
 	Patients findByUsers(Users users);
 	

@@ -22,6 +22,13 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSp
 			@Param("dateTo") Date dateTo,
 			@Param("doctorId") long doctorId);
 	
+	@Query(value = "SELECT SC FROM Schedule SC WHERE SC.time BETWEEN :dateFrom and :dateTo and doctor.id = :doctorId and status = :status" )
+	List<Schedule> findByTimeAndStatus(
+			@Param("dateFrom") Date dateFrom,
+			@Param("dateTo") Date dateTo,
+			@Param("status") int status,
+			@Param("doctorId") long doctorId);
+	
 	@Modifying
 	@Query(value="UPDATE Schedule sc set sc.status = ?1 where sc.id = ?2 ")
 	Schedule updateStatusSchedule(int status, int id); ///sai cmnr

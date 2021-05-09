@@ -105,4 +105,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return scheduleRepo.countByActiveFlagAndStatusAndTime(activeFlag, status, month);
 	}
 
+	@Override
+	public List<Schedule> findByTimeAndStatus(Date dateTime, int status, long doctorId) {
+		// TODO Auto-generated method stub
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dateTime);
+		calendar.add(Calendar.HOUR,  1);
+		Date dateTo = calendar.getTime();
+		return scheduleRepo.findByTimeAndStatus(dateTime,dateTo,status,doctorId);
+	}
+
 }

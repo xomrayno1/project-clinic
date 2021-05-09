@@ -16,11 +16,11 @@ public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Lon
 	
 	@Query(value="SELECT DT FROM Doctor DT "
 			+ " WHERE UPPER(DT.docName) LIKE CONCAT('%',UPPER(?1),'%') "
-			+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
+//			+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
 			+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
 			,countQuery = "SELECT COUNT(DT) FROM Doctor DT   "
 					+ " WHERE UPPER(DT.docName) LIKE CONCAT('%',UPPER(?1),'%') "
-					+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
+//					+ " OR UPPER(DT.email) LIKE CONCAT('%',UPPER(?1),'%') "
 					+ " OR UPPER(DT.users.username) LIKE CONCAT('%',UPPER(?1),'%') "
 					)
 	Page<Doctor> findAll(String search, Pageable pageable); // 
@@ -28,8 +28,8 @@ public interface DoctorRepository extends PagingAndSortingRepository<Doctor, Lon
 	Doctor getOne(Long id);
 
 	Doctor findByDocName(String name);
-	
-	Doctor findByEmail(String email);
+//	
+//	Doctor findByEmail(String email);
 	
 	Doctor findByUsers(Users users);
 	

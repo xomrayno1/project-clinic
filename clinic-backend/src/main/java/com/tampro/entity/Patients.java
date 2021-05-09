@@ -18,7 +18,7 @@ public class Patients  extends BaseEntity{
 	private Long patiId;
 	@Column(name = "name")
 	private String patiName;
-	private String email;
+//	private String email;
 	private String phone;
 	private Gender gender;
 	@ManyToOne
@@ -51,12 +51,12 @@ public class Patients  extends BaseEntity{
 	public void setPatiName(String patiName) {
 		this.patiName = patiName;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+//	public String getEmail() {
+//		return email;
+//	}
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
 	public String getPhone() {
 		return phone;
 	}

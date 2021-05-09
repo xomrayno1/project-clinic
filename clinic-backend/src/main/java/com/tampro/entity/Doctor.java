@@ -18,7 +18,7 @@ public class Doctor extends BaseEntity{
 	private Long docId;
 	@Column(name = "name")
 	private String docName;
-	private String email;
+//	private String email;
 	private String phone;
 	private Gender gender;
 	@ManyToOne
@@ -48,12 +48,12 @@ public class Doctor extends BaseEntity{
 	public void setDocName(String docName) {
 		this.docName = docName;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+//	public String getEmail() {
+//		return email;
+//	}
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
 	public String getPhone() {
 		return phone;
 	}

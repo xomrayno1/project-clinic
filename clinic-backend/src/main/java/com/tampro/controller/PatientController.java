@@ -72,14 +72,14 @@ public class PatientController {
 	@PostMapping
 	public ResponseEntity<PatientResponse> createPatient(
 			@ModelAttribute @Valid PatientRequest patientRequest){
-		boolean isExist = patientService.isExist(patientRequest.getEmail());	
-		if(isExist) {
-			throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
-		}
+//		boolean isExist = patientService.isExist(patientRequest.getEmail());	
+//		if(isExist) {
+//			throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+//		}
 		//convert request to entity
 		Patients patient = new Patients();
 		patient.setDescription(patientRequest.getDescription());	 
-		patient.setEmail(patientRequest.getEmail());
+//		patient.setEmail(patientRequest.getEmail());
 		patient.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
 		patient.setPatiName(patientRequest.getName());
 		patient.setPhone(patientRequest.getPhone());
@@ -119,15 +119,15 @@ public class PatientController {
 				throw new ApplicationException("Patient not found exception with id: "+patientRequest.getId(), HttpStatus.NOT_FOUND);
 			}
 //			
-			boolean isExist = patientService.isExist(patientRequest.getEmail());
-			if(isExist) {
-				if(!patient.getEmail().equals(patientRequest.getEmail())) {
-					throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
-				}
-			}
+//			boolean isExist = patientService.isExist(patientRequest.getEmail());
+//			if(isExist) {
+//				if(!patient.getEmail().equals(patientRequest.getEmail())) {
+//					throw new ApplicationException("Email is exist", HttpStatus.CONFLICT);
+//				}
+//			}
 			//convert request to entity
 			patient.setDescription(patientRequest.getDescription());
-			patient.setEmail(patientRequest.getEmail());
+//			patient.setEmail(patientRequest.getEmail());
 			patient.setGender(patientRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
 			patient.setPatiName(patientRequest.getName());
 			patient.setPhone(patientRequest.getPhone());

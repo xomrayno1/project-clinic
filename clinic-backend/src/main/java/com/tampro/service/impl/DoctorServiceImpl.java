@@ -50,11 +50,11 @@ public class DoctorServiceImpl implements DoctorService{
 		return doctorRepo.getOne(id);
 	}
 
-	@Override
-	public boolean isExist(String email) {
-		// TODO Auto-generated method stub
-		return doctorRepo.findByEmail(email) != null ? true : false;
-	}
+//	@Override
+//	public boolean isExist(String email) {
+//		// TODO Auto-generated method stub
+//		return doctorRepo.findByEmail(email) != null ? true : false;
+//	}
 
 	@Override
 	public List<Doctor> findAll(String search) {
