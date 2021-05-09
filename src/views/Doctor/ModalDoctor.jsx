@@ -38,7 +38,7 @@ function ModalDoctor(props) {
          if(item != null){
             form.setFieldsValue({
                 name : item.name,
-                email: item.email,
+                // email: item.email,
                 domain: item.domain,
                 phone : item.phone,
                 city : item.city,
@@ -66,7 +66,7 @@ function ModalDoctor(props) {
         fd.append("city", data.city);
         fd.append("phone", data.phone);
         fd.append("name", data.name);
-        fd.append("email", data.email);
+        // fd.append("email", data.email);
         fd.append("address", data.address);
         fd.append("education", data.education);
         fd.append("level", data.level);
@@ -143,7 +143,7 @@ function ModalDoctor(props) {
                     <Col md="4"/>
                 </Row>
                 <Row>
-                    <Col md="4">
+                    <Col md="6">
                         <Form.Item                
                             label="Tên tài khoản"
                             name="username"
@@ -151,7 +151,7 @@ function ModalDoctor(props) {
                             <Input  disabled={true}  style={{color: 'black'}}/>
                         </Form.Item>
                     </Col>
-                    <Col md="4"> 
+                    <Col md="6"> 
                         <Form.Item
                             label="Tên bác sĩ"
                             name="name"
@@ -160,7 +160,7 @@ function ModalDoctor(props) {
                             <Input disabled={stateModal.viewOnly} style={{color: 'black'}}/>
                         </Form.Item>
                     </Col>
-                    <Col md="4"> 
+                    {/* <Col md="4"> 
                         <Form.Item                
                             label="Email"
                             name="email"
@@ -170,7 +170,7 @@ function ModalDoctor(props) {
                         >
                             <Input  disabled={stateModal.viewOnly}  style={{color: 'black'}}/>
                         </Form.Item>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <Row>
                     <Col md="4"> 

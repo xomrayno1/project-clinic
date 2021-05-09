@@ -186,12 +186,14 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                                     Xoá
                                 </Popconfirm>
                             </Menu.Item>
-                            <Menu.Item key="3"  >
-                                <Popconfirm title="Bạn có chắc muốn huỷ lịch khám"
-                                    onConfirm={() => onCancelSchedule(item)}>
-                                    Huỷ lịch khám
-                                </Popconfirm>
-                            </Menu.Item>
+                            {                                
+                                 auth.user.roles[0].authority !== 'ROLE_ADMIN' ?  <Menu.Item key="3"  >
+                                    <Popconfirm title="Bạn có chắc muốn huỷ lịch khám"
+                                        onConfirm={() => onCancelSchedule(item)}>
+                                        Huỷ lịch khám
+                                    </Popconfirm>
+                                </Menu.Item> : ''
+                            }
                             <Menu.Item key="4"
                                 onClick={() => handleOnClickResult(item)}
                             >

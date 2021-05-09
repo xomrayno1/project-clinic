@@ -30,7 +30,7 @@ import { Spin } from 'antd'
 function User(props) {
   const doctorProfileSchema = Yup.object({
     name: Yup.string().required("Vui lòng nhập tên"),
-    email: Yup.string().required("Vui lòng nhập email"),
+    // email: Yup.string().required("Vui lòng nhập email"),
     phone: Yup.string().required("Vui lòng nhập số điện thoại"),
     gender: Yup.string().required("Vui lòng nhập giới tính"),
     domain: Yup.string().required("Vui lòng nhập chuyên nghành"),
@@ -92,7 +92,7 @@ function User(props) {
                       />
                       <h5 className="title">{profile && profile.name || ''}</h5>
                     </a>
-                    <p className="description">{profile && profile.email || ''}</p>
+                    {/* <p className="description">{profile && profile.email || ''}</p> */}
                   </div>
                 </CardBody>
                 <CardFooter className="text-center">
@@ -109,7 +109,7 @@ function User(props) {
                   <Formik
                     initialValues={{
                       name: '',
-                      email: '',
+                      // email: '',
                       phone: '',
                       gender: 'male',
                       description: '',
@@ -127,7 +127,7 @@ function User(props) {
                   >
                     <Form>
                       <Row>
-                        <Col className="pr-1" md="4">
+                        <Col className="pr-1" md="6">
                           <FormGroup>
                             <label>Tên</label>
                             <Field
@@ -142,7 +142,7 @@ function User(props) {
                               className="error-text" />
                           </FormGroup>
                         </Col>
-                        <Col className="px-1" md="4">
+                        {/* <Col className="px-1" md="4">
                           <FormGroup>
                             <label>Email</label>
                             <Field
@@ -156,8 +156,8 @@ function User(props) {
                               name="email"
                               className="error-text" />
                           </FormGroup>
-                        </Col>
-                        <Col className="pl-1" md="4">
+                        </Col> */}
+                        <Col className="pl-1" md="6">
                           <FormGroup>
                             <label htmlFor="exampleInputEmail1">
                               Số điện thoại

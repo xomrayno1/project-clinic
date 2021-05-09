@@ -34,7 +34,7 @@ function PatientModal(props) {
          if(item != null){
             form.setFieldsValue({
                 name : item.name,
-                email: item.email,
+                // email: item.email,
                 phone : item.phone,
                 address : item.address,
                 description : item.description,
@@ -57,7 +57,7 @@ function PatientModal(props) {
         file &&  fd.append("imageUpload",file);
         fd.append("phone", data.phone);
         fd.append("name", data.name);
-        fd.append("email", data.email);
+        // fd.append("email", data.email);
         fd.append("address", data.address);
         fd.append("description", data.description);
         fd.append("gender", data.gender);
@@ -127,7 +127,7 @@ function PatientModal(props) {
                     <Col md="4"/>
                 </Row>
                 <Row>
-                    <Col md="4">
+                    <Col md="6">
                         <Form.Item                
                             label="Tên tài khoản"
                             name="username"
@@ -135,7 +135,7 @@ function PatientModal(props) {
                             <Input  disabled={true}  style={{color: 'black'}}/>
                         </Form.Item>
                     </Col>
-                    <Col md="4"> 
+                    <Col md="6"> 
                         <Form.Item
                             label="Tên bác sĩ"
                             name="name"
@@ -144,7 +144,7 @@ function PatientModal(props) {
                             <Input disabled={stateModal.viewOnly} style={{color: 'black'}}/>
                         </Form.Item>
                     </Col>
-                    <Col md="4"> 
+                    {/* <Col md="4"> 
                         <Form.Item                
                             label="Email"
                             name="email"
@@ -152,7 +152,7 @@ function PatientModal(props) {
                         >
                             <Input  disabled={stateModal.viewOnly}  style={{color: 'black'}}/>
                         </Form.Item>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <Row>
                     <Col md="4"> 

@@ -64,7 +64,7 @@ function UserModal(props) {
         setRoleCheckbox([])
     }
     const options = [
-        { label: 'ROLE_ADMIN', value: 1 },
+        // { label: 'ROLE_ADMIN', value: 1 },
         { label: 'ROLE_DOCTOR', value: 2 },
         { label: 'ROLE_PATIENT', value: 3 },
     ];

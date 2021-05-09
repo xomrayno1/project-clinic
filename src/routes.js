@@ -87,13 +87,6 @@ var routes = [
     layout: "/admin",
     roles : ['ROLE_PATIENT']
   },{
-    path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-diamond",
-    component: Icons,
-    layout: "/admin",
-    roles : ['ROLE_ADMIN','ROLE_DOCTOR','ROLE_PATIENT']
-  },{
     path: "/user-page",
     name: "Thông tin cá nhân",
     icon: "nc-icon nc-single-02",
