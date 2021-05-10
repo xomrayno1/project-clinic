@@ -11,7 +11,7 @@ import {
     Card,
     CardBody
 } from "reactstrap";
-
+import moment from 'moment'
 import {
     Table,
     Space,
@@ -29,6 +29,7 @@ import { addResult, getResultBySchedule, setDataModalResult } from '../../redux/
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux'
 import { sendSchedule } from '../../redux/action/scheduleAction';
+import { date } from 'yup/lib/locale';
 
 ResultTable.propTypes = {
     pagination: PropTypes.object,
@@ -42,6 +43,9 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
     const newPagination = pagination || { limit: 10, totalRows: 1, page: 1 }
     const auth = useSelector(state => state.auth);
 
+    var dateAdd = moment().add(5, 'days');
+    var someDate = moment(dateAdd, "DD/MM/YYYY");
+   
     const dispatch = useDispatch();
 
     const [loadingModal, setLoadingModal] = useState(false);
@@ -192,7 +196,7 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
         doctorId: '',
         patientId: '',
         date: '',
-        time: ''
+        time: '08:00:00'
     });
 
     function handleOnClickSend(item) {
@@ -205,9 +209,16 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
         })
     }
     function handleOnSend() {
-        const dateArr = modalSend.date.split("/");
-        const newDate = `${dateArr[0]}-${dateArr[1]}-${dateArr[2]}`
-        const dateTimeNew = `${newDate} ${modalSend.time}`
+        let dateTimeNew = '';
+        if(modalSend.date){
+            const dateArr = modalSend.date.split("/");
+            const newDate = `${dateArr[0]}-${dateArr[1]}-${dateArr[2]}`
+            dateTimeNew = `${newDate} ${modalSend.time}`
+        }else{
+            dateTimeNew = `${someDate.format("YYYY-MM-DD")} ${modalSend.time}`
+        }
+         
+        console.log(dateTimeNew)
         const form = {
             time: dateTimeNew,
             doctorId: modalSend.doctorId,
@@ -413,7 +424,6 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
             </Modal>
             <Modal
                 title="Gửi lịch hẹn"
-
                 visible={modalSend.visible}
                 footer={null}
                 onCancel={() => setModalSend({
@@ -426,7 +436,10 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                         <DatePicker
                             zIndex={15000}
                             onChange={handleOnChangeDate}
+
                             format={"YYYY/MM/DD"}
+                            defaultValue={someDate}
+                            defaultPickerValue={someDate}
                             placeholder="Chọn ngày khám"
                             style={{
                                 width: '200px'
@@ -441,6 +454,7 @@ function ResultTable({ data, pagination, isLoading, handleChangePage }) {
                             style={{
                                 width: '200px'
                             }}
+                            defaultValue="08:00:00"
                         >
                             <Option value="08:00:00">08:00</Option>
                             <Option value="09:00:00">09:00</Option>
