@@ -57,6 +57,6 @@ public class Constant {
 	public static final int SEEN_TRUE = 1; // da xem
 	public static final int SEEN_FALSE = 2; // chua xem
 	
-	 
+	public static final int MAX_BOONGKING = 5; // max 5ng/1h
 	
 }

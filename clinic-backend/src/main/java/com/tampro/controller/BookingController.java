@@ -80,9 +80,13 @@ public class BookingController {
 			e1.printStackTrace();
 		}
 		try {
-			List<Schedule> list = 	scheduleService.findByTimeAndStatus(date.parse(bookingRequest.getTime()),Constant.WAITING, bookingRequest.getDoctorId());
-			if(!list.isEmpty()) {
-				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
+//			List<Schedule> list = 	scheduleService.findByTimeAndStatus(date.parse(bookingRequest.getTime()),Constant.WAITING, bookingRequest.getDoctorId());
+//			if(!list.isEmpty()) {
+//				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
+//			}
+			int countSche = scheduleService.countByTimeAndStatus(date.parse(bookingRequest.getTime()),Constant.WAITING, bookingRequest.getDoctorId());
+			if(countSche == Constant.MAX_BOONGKING) {
+				throw new ApplicationException("Giờ đã đầy", HttpStatus.BAD_REQUEST);
 			}
 			Schedule schedule = new Schedule();
 			schedule.setTime(date.parse(bookingRequest.getTime()));

@@ -47,10 +47,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public List<Schedule> findByTime(Date dateTime,long doctorId) {
 		// TODO Auto-generated method stub
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dateTime);
-		calendar.add(Calendar.HOUR,  1);
-		Date dateTo = calendar.getTime();
+		Date dateTo = addHour(dateTime, 1);
 		return scheduleRepo.findByTime(dateTime,dateTo,doctorId);
 	}
 
@@ -108,11 +105,23 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public List<Schedule> findByTimeAndStatus(Date dateTime, int status, long doctorId) {
 		// TODO Auto-generated method stub
+		Date dateTo = addHour(dateTime, 1);
+		return scheduleRepo.findByTimeAndStatus(dateTime,dateTo,status,doctorId);
+	}
+
+	@Override
+	public int countByTimeAndStatus(Date dateTime, int status, long doctorId) {
+		// TODO Auto-generated method stub
+		Date dateTo = addHour(dateTime, 1);
+		return scheduleRepo.countByTimeAndStatus(dateTime, dateTo, status, doctorId);
+	}
+	
+	public Date addHour(Date dateTime, int countHour) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(dateTime);
-		calendar.add(Calendar.HOUR,  1);
+		calendar.add(Calendar.HOUR,  countHour);
 		Date dateTo = calendar.getTime();
-		return scheduleRepo.findByTimeAndStatus(dateTime,dateTo,status,doctorId);
+		return dateTo;
 	}
 
 }

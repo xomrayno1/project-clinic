@@ -32,5 +32,5 @@ public interface ScheduleService {
 	
 	long countByActiveFlagAndStatusAndTime(int activeFlag, int status, int month);
 	
-	
+	int countByTimeAndStatus(Date dateTime, int status,long doctorId);
 }

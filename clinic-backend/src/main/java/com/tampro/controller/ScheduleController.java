@@ -144,10 +144,15 @@ public class ScheduleController {
 			e1.printStackTrace();
 		}
 		try {
-			List<Schedule> list = 	scheduleService.findByTimeAndStatus(date.parse(sendScheduleRequest.getTime()),Constant.WAITING, sendScheduleRequest.getDoctorId());
-			if(!list.isEmpty()) {
-				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
+//			List<Schedule> list = 	scheduleService.findByTimeAndStatus(date.parse(sendScheduleRequest.getTime()),Constant.WAITING, sendScheduleRequest.getDoctorId());
+//			if(!list.isEmpty()) {
+//				throw new ApplicationException("Lịch đã tồn tại", HttpStatus.BAD_REQUEST);
+//			}
+			int countSche = scheduleService.countByTimeAndStatus(date.parse(sendScheduleRequest.getTime()),Constant.WAITING, sendScheduleRequest.getDoctorId());
+			if(countSche >= Constant.MAX_BOONGKING) {
+				throw new ApplicationException("Giờ đã đầy", HttpStatus.BAD_REQUEST);
 			}
+			
 			Schedule schedule = new Schedule();
 			schedule.setTime(date.parse(sendScheduleRequest.getTime()));
 			schedule.setDoctor(doctorService.getOne(sendScheduleRequest.getDoctorId()));
