@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.tampro.entity.Schedule;
+import com.tampro.model.StatisticalSchedule;
 import com.tampro.model.search.ScheduleSearch;
 import com.tampro.request.UpdateStatusScheduleRequest;
 
@@ -33,4 +34,6 @@ public interface ScheduleService {
 	long countByActiveFlagAndStatusAndTime(int activeFlag, int status, int month);
 	
 	int countByTimeAndStatus(Date dateTime, int status,long doctorId);
+	
+	List<StatisticalSchedule> statisticalScheduleByYear(int year);
 }

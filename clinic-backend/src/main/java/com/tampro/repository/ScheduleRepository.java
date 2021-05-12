@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tampro.entity.Schedule;
+import com.tampro.model.StatisticalSchedule;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSpecificationExecutor<Schedule>{
@@ -44,6 +45,12 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long>, JpaSp
 	@Query("SELECT COUNT(sc)  from Schedule sc where sc.activeFlag = ?1 and sc.status = ?2 and Month(sc.time)  =  ?3 ")
 	long countByActiveFlagAndStatusAndTime(int activeFlag, int status, int month);
 	
+	@Query(value = "select month(sc.create_date) as 'month', sc.status as 'status', count(*) as 'count' from schedule sc "
+			+ " where YEAR(sc.create_date) = ?1"
+			+ " group by month(sc.create_date),sc.status"
+			+ " having sc.status != 1", 
+			nativeQuery = true)
+	List<StatisticalSchedule> statisticalScheduleByYear(int year);
 	
 }
  

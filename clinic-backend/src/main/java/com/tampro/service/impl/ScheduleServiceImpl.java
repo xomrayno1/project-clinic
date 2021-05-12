@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.tampro.entity.Schedule;
+import com.tampro.model.StatisticalSchedule;
 import com.tampro.model.search.ScheduleSearch;
 import com.tampro.model.specification.ScheduleSpecification;
 import com.tampro.repository.ScheduleRepository;
@@ -122,6 +123,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 		calendar.add(Calendar.HOUR,  countHour);
 		Date dateTo = calendar.getTime();
 		return dateTo;
+	}
+
+	@Override
+	public List<StatisticalSchedule> statisticalScheduleByYear(int year) {
+		// TODO Auto-generated method stub
+		return scheduleRepo.statisticalScheduleByYear(year);
 	}
 
 }
