@@ -1,4 +1,218 @@
- 
+// const chart = [
+//   {
+//       "month": 1,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 2,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 3,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 4,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 1
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 5,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 1
+//           },
+//           {
+//               "status": 3,
+//               "count": 5
+//           }
+//       ]
+//   },
+//   {
+//       "month": 6,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 7,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 8,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 9,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 10,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 11,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   },
+//   {
+//       "month": 12,
+//       "data": [
+//           {
+//               "status": 2,
+//               "count": 0
+//           },
+//           {
+//               "status": 3,
+//               "count": 0
+//           }
+//       ]
+//   }
+// ]
+function getChartData(chart){
+  const dataSuccess = [];
+  const dataCancel =[]
+  
+  chart.map(item => (
+    item.data.map(dt => {
+        if(dt.status == 2){
+          dataSuccess.push(dt.count);
+        }else{
+          dataCancel.push(dt.count);
+        }
+        return []
+    }  
+    )
+  ))
+
+  // console.log(dataSuccess);
+  // console.log(dataCancel);
+  return {
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    datasets: [
+      {
+        label : "Lịch đã hoàn thành",
+        borderColor: "#6bd098",
+        backgroundColor: "#6bd098",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 3,
+        data: dataSuccess,
+      },
+      {
+        label: "Lịch huỷ",
+        borderColor: "#f17e5d",
+        backgroundColor: "#f17e5d",
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        borderWidth: 3,
+        data: dataCancel,
+      },
+    ],
+  };
+}
+
+
 const dashboard24HoursPerformanceChart = {
   data: (canvas) => {
     return {
@@ -196,4 +410,5 @@ module.exports = {
   dashboard24HoursPerformanceChart,
   dashboardEmailStatisticsChart,
   dashboardNASDAQChart,
+  getChartData
 };

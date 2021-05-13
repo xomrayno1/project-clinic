@@ -131,7 +131,7 @@ function ModalDoctor(props) {
                     <Col md="4"/>
                     <Col md="4">
                         <Card > 
-                            <CardImg top width="100%" height="150" 
+                            <CardImg top width="100%" height="200" 
                             src={
                                 imagePreview === null 
                                 ? (stateModal.image === null ? user :  `http://localhost:8080/${stateModal.image}`)

@@ -1,10 +1,10 @@
 
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 // react plugin used to create charts
 import { Line, Pie, Bar } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
-import {getStatistical} from '../redux/action/dashboardAction'
-
+import {getStatistical, getChartSchedule} from '../redux/action/dashboardAction'
+ 
 // reactstrap components
 import {
   Card,
@@ -18,10 +18,12 @@ import {
 // core components
 import {
   dashboard24HoursPerformanceChart,
+  getChartData
 } from "variables/charts.js";
 import dashboardApi from "api/dashboardApi";
 import { Spin } from "antd";
-import { createNoSubstitutionTemplateLiteral } from "typescript";
+import ChartSchedule from "./ChartSchedule";
+ 
 
 function Dashboard(props) {
   
@@ -33,7 +35,7 @@ function Dashboard(props) {
     count_schdule_waiting: ''
   });
   const [isLoading,setIsLoading] = useState(false);
-  console.log(isLoading);
+  
   useEffect(()=>{
     setIsLoading(true)
     async function fetchStatistical(){
@@ -43,9 +45,24 @@ function Dashboard(props) {
     }
     fetchStatistical()
   },[updateStatistical])
+
   function onUpdateNow(){
     setUpdateStatistical(!updateStatistical)
   }
+  const dispatch = useDispatch();
+  const {chart} = useSelector(state => state.statistical) || [];
+
+  useEffect(()=>{
+    dispatch(getChartSchedule());
+  },[]);
+ 
+  
+
+  const chartDataSchedule = useCallback(()=>getChartData(chart),[chart]);
+  // const chartDataSchedule = ()=> {
+  //   console.log("chart -redender");
+  //   return getChartData(chart);
+  // }
   return (
     <>
       <div className="content">
@@ -158,27 +175,7 @@ function Dashboard(props) {
         </Row>
        </Spin>
         <Row>
-          <Col md="12">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h5">Biểu đồ lịch khám của năm</CardTitle>
-                <p className="card-category">24 Hours performance</p>
-              </CardHeader>
-              <CardBody>
-
-                <Bar data={dashboard24HoursPerformanceChart.data}
-                  width={400} height={500}
-                  options={{ maintainAspectRatio: false }}
-                />
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="fa fa-history" /> Updated 3 minutes ago
-                  </div>
-              </CardFooter>
-            </Card>
-          </Col>
+          <ChartSchedule  chartData={chartDataSchedule}  />
         </Row>
         {/* <Row>
             <Col md="4">
@@ -239,5 +236,5 @@ function Dashboard(props) {
   );
 }
 
-
+ 
 export default Dashboard;
