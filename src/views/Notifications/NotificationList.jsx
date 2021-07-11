@@ -47,11 +47,11 @@ function NotificationList(props) {
                             <CardBody>
                                 <Spin spinning={isLoading}>
                                     {
-                                        data && data.map(item => (
+                                        data && data.map((item, key) => (
                                             <Collapse accordion
                                                 onChange={() => handleOnChange(item)}
                                             >
-                                                <Panel header={`${item.title}   ${item.date}`} key="1" bordered
+                                                <Panel header={`${item.title}   ${item.date}`} key={key} bordered
                                                     style={{
                                                         fontWeight: item.seen === 2 ? "bold" : ''
                                                     }}
