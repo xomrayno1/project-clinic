@@ -25,5 +25,6 @@ public interface UserRepository extends PagingAndSortingRepository<Users, Long>{
 	
 	Users findByEmail(String email);
 	
+	@Query("SELECT U FROM Users U WHERE U.username = ?1 and U.activeFlag = 1")
 	Users findByUsername(String username);
 }

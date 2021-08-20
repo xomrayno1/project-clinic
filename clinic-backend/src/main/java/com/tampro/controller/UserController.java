@@ -249,7 +249,7 @@ public class UserController {
 		doctor.setEducation(doctorRequest.getEducation());
 //		doctor.setEmail(doctorRequest.getEmail());
 		doctor.setGender(doctorRequest.getGender().equals(Gender.FEMALE.getGenderName()) ? Gender.FEMALE : Gender.MALE );
- 
+		doctor.setActiveFlag(Constant.ACTIVE);
 		doctor.setLevel(doctorRequest.getLevel());
 		doctor.setDocName(doctorRequest.getName());
 		doctor.setPhone(doctorRequest.getPhone());
@@ -286,6 +286,7 @@ public class UserController {
 		patients.setPhone(patientRequest.getPhone());
 		patients.setAddress(patientRequest.getAddress());
 		patients.setUsers(userService.getOne(patientRequest.getUserId()));
+		patients.setActiveFlag(Constant.ACTIVE);
 		// save to database
 		patients = patientService.save(patients);  
 		//convert entity to doctorResponse
