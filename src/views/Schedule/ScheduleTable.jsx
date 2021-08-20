@@ -161,7 +161,7 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
             title: '+',
             dataIndex: 'action',
             align: 'center',
-            render: (_, item) => (
+            render: (_, item) => item.status !== 3 ? (
                 <Space>
                     <Dropdown.Button overlay={() => (
                         <Menu  >
@@ -203,9 +203,8 @@ function ScheduleTable({ handleChangePage, isLoading, data, pagination }) {
                     )}>
                         Hành động
                     </Dropdown.Button>
-
                 </Space>
-            )
+            ) : ""
         },
     ]
     function onCancelSchedule({ id }) {

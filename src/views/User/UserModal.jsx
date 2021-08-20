@@ -30,6 +30,7 @@ function UserModal(props) {
                 email: item.email,
                 username: item.username,
                 password: item.password,
+                role: item.roles,
                 id: item.id
             })
             setRoleCheckbox(item.roles);
@@ -96,6 +97,7 @@ function UserModal(props) {
                         <Form.Item
                             label="Tên tài khoản"
                             name="username"
+                            rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }, ]}
                         >
                             <Input disabled={stateModal.viewOnly} style={{ color: 'black' }} />
                         </Form.Item>
@@ -106,6 +108,7 @@ function UserModal(props) {
                         <Form.Item
                             label="Mật khẩu"
                             name="password"
+                            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }, ]}
                         >
                             <Input type="password" disabled={stateModal.viewOnly} style={{ color: 'black' }} />
                         </Form.Item>
@@ -116,12 +119,7 @@ function UserModal(props) {
                         <Form.Item
                             label="Email"
                             name="email"
-                            rules={[{ required: true, message: 'Vui lòng nhập email!' },  
-                            {
-                                required: true,
-                                type: "email",
-                                message: "Định dạng email không chính xác!"
-                            }]}
+                            rules={[{ required: true, message: 'Vui lòng nhập email!' }, ]}
                         >
                             <Input disabled={stateModal.viewOnly} style={{ color: 'black' }} />
                         </Form.Item>
@@ -131,6 +129,8 @@ function UserModal(props) {
                     <Col md="12">
                         <Form.Item
                             label="Roles"
+                            rules={[{ required: true, message: 'Vui lòng chọn quyền!' }, ]}
+                            name="role"
                         >
                             <Checkbox.Group options={options}
                                 value={roleCheckBox}
